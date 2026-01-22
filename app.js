@@ -43,11 +43,16 @@ btnLogout.addEventListener("click", ()=>{
 
 async function apiPost(payload){
   const res = await fetch(API_URL, {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify(payload)
+    method: "POST",
+    // 중요: JSON 헤더 제거해서 OPTIONS(프리플라이트) 안 뜨게 함
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
   });
-  return await res.json();
+
+  // Apps Script가 가끔 text로 주는 경우 대비
+  const txt = await res.text();
+  try { return JSON.parse(txt); }
+  catch { return { ok:false, error:"BAD_JSON", raw: txt }; }
 }
 
 function setBrand(settings){
