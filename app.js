@@ -160,57 +160,44 @@ function renderLatest(){
 }
 
 async function handleLogin(){
-
-  alert("handleLogin called");
-
   const phone = normalizePhone(el("inputPhone").value);
-  const code = String(el("inputCode").value||"").trim();
-  const keep = el("keepLogin").checked;
+  const code  = String(el("inputCode").value||"").trim();
+  const keep  = el("keepLogin").checked;
 
   const err = el("loginError");
   err.hidden = true;
 
   if(!phone){ err.hidden=false; err.textContent="휴대폰번호를 입력하세요(숫자만)"; return; }
-  if(!code){ err.hidden=false; err.textContent="접속코드를 입력하세요"; return; }
+  if(!code){  err.hidden=false; err.textContent="접속코드를 입력하세요"; return; }
 
   el("btnLogin").disabled = true;
-  el("btnLogin").textContent = "확인중…";
+  el("btnLogin").textContent = "확인중...";
 
-try {
-  const json = await apiPost({ action: "data", phone, code });
+  try {
+    const json = await apiPost({ action:"data", phone, code });
+    if(!json.ok) throw new Error(json.error || "LOGIN_FAILED");
 
-  // 🔴 서버 응답 강제 출력(디버그)
-  err.hidden = false;
-  err.textContent = "DEBUG: " + JSON.stringify(json, null, 2);
-
-  return; // 디버그 끝 (아래 로직 잠시 중단)
-} catch (e) {
-  err.hidden = false;
-  err.textContent =
-    "DEBUG CATCH: " + (e && e.message ? e.message : String(e));
-  return;
-}
-
-
+    state.me = json.me;
     state.settings = json.settings;
-    state.members = (json.members||[]).map(m=>({...m, phone: normalizePhone(m.phone)}));
+    state.members = (json.members||[]).map(m => ({...m, phone: normalizePhone(m.phone)}));
     state.announcements = json.announcements || [];
 
     setBrand(state.settings);
-    state.members.sort((a,b)=>(a.name||"").localeCompare(b.name||"", "ko"));
+    state.members.sort((a,b)=>(a.name||"").localeCompare(b.name||"","ko"));
     renderLatest();
     renderAnnouncements();
 
-    if(keep) localStorage.setItem(LS_KEY, JSON.stringify({phone, code}));
+    if(keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
     else localStorage.removeItem(LS_KEY);
 
     state.navStack = ["home"];
     showScreen("home");
     toast("접속완료");
-  }catch(e){
-    err.hidden=false;
+
+  } catch(e) {
+    err.hidden = false;
     err.textContent = "승인되지 않았거나 정보가 틀렸습니다.";
-  }finally{
+  } finally {
     el("btnLogin").disabled = false;
     el("btnLogin").textContent = "로그인";
   }
