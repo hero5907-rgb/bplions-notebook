@@ -173,9 +173,15 @@ async function handleLogin(){
   el("btnLogin").disabled = true;
   el("btnLogin").textContent = "확인중…";
 
-  try{
-    const json = await apiPost({ action:"data", phone, code });
-    if(!json.ok) throw new Error(json.error || "LOGIN_FAILED");
+try{
+  const json = await apiPost({ action:"data", phone, code });
+
+  // 🔴🔴🔴 여기 딱 한 줄 추가 🔴🔴🔴
+  alert(JSON.stringify(json, null, 2));
+
+  if(!json.ok) throw new Error(json.error || "LOGIN_FAILED");
+
+
 
     state.me = json.me;
     state.settings = json.settings;
