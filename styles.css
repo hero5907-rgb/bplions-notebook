@@ -109,3 +109,10 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 /* ✅ 로그인에서만 topbar를 더 깔끔하게 보이게 하고 싶으면 아래 사용
    (원치 않으면 이 블록은 삭제) */
 .login-bg ~ * {} /* 아무것도 안함 (안전) */
+#screenLogin .hero-logo{
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
+}
