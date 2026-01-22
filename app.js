@@ -202,6 +202,10 @@ function renderLatest(){
 async function handleLogin(){
   const phone = normalizePhone(el("inputPhone").value);
   const code  = String(el("inputCode").value||"").trim();
+  console.log("LOGIN_INPUT", { phone, code, rawPhone: el("inputPhone").value, rawCode: el("inputCode").value });
+  toast(`폰:${phone} 코드:${code}`);
+
+
   const keep  = el("keepLogin").checked;
 
   const err = el("loginError");
