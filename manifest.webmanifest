@@ -1,0 +1,9 @@
+{
+  "name": "북포항라이온스클럽 수첩",
+  "short_name": "북포항수첩",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f2f5fa",
+  "theme_color": "#0b4ea2",
+  "lang": "ko-KR"
+}
