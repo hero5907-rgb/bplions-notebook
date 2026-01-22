@@ -41,22 +41,44 @@ btnLogout.addEventListener("click", ()=>{
   toast("로그아웃");
 });
 
-async function apiPost(payload) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    // ✅ 여기 핵심
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(payload),
-  });
+function apiPost(payload) {
+  // JSONP로 GAS doGet 호출 (CORS 우회)
+  return new Promise((resolve, reject) => {
+    const cbName = "__cb_" + Math.random().toString(36).slice(2);
+    const params = new URLSearchParams();
 
-  // GAS가 text로 주는 경우 대비
-  const txt = await res.text();
-  try {
-    return JSON.parse(txt);
-  } catch {
-    return { ok: false, error: "BAD_JSON", raw: txt };
-  }
+    // payload -> querystring
+    Object.entries(payload || {}).forEach(([k, v]) => {
+      params.set(k, String(v ?? ""));
+    });
+
+    // JSONP callback + 캐시방지
+    params.set("callback", cbName);
+    params.set("_", String(Date.now()));
+
+    const url = API_URL + "?" + params.toString();
+
+    window[cbName] = (data) => {
+      cleanup();
+      resolve(data);
+    };
+
+    const script = document.createElement("script");
+    script.src = url;
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("JSONP_LOAD_FAILED"));
+    };
+
+    function cleanup() {
+      try { delete window[cbName]; } catch {}
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    document.head.appendChild(script);
+  });
 }
+
 
 function setBrand(settings){
   el("districtText").textContent = settings?.district || "국제라이온스협회 356-E지구";
