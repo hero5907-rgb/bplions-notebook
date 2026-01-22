@@ -58,26 +58,41 @@ function apiPost(payload) {
 
     const url = API_URL + "?" + params.toString();
 
+    let done = false;
+    const script = document.createElement("script");
+
+    function cleanup() {
+      if (script.parentNode) script.parentNode.removeChild(script);
+      try { delete window[cbName]; } catch {}
+    }
+
     window[cbName] = (data) => {
+      if (done) return;
+      done = true;
       cleanup();
       resolve(data);
     };
 
-    const script = document.createElement("script");
-    script.src = url;
     script.onerror = () => {
+      if (done) return;
+      done = true;
       cleanup();
       reject(new Error("JSONP_LOAD_FAILED"));
     };
 
-    function cleanup() {
-      try { delete window[cbName]; } catch {}
-      if (script.parentNode) script.parentNode.removeChild(script);
-    }
+    script.src = url;
+    document.body.appendChild(script);
 
-    document.head.appendChild(script);
+    // 혹시 응답이 안 오는 경우 타임아웃
+    setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP_TIMEOUT"));
+    }, 12000);
   });
 }
+
 
 
 function setBrand(settings){
