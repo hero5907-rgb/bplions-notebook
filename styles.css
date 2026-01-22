@@ -48,3 +48,44 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 .mt12{margin-top:12px}.mt16{margin-top:16px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:rgba(15,23,42,.92);color:#fff;padding:10px 12px;border-radius:14px;font-weight:800;font-size:13px;box-shadow:0 12px 30px rgba(0,0,0,.25);max-width:calc(100% - 28px)}
 @media (max-width:380px){.grid{grid-template-columns:1fr}}
+/* ===== 로그인 배경 ===== */
+.login-bg{
+  /* topbar가 위에 있으니 그만큼 빼고 화면 꽉 채우기 */
+  min-height: calc(100vh - 64px); /* topbar 높이에 맞춰 필요시 56~72로 조절 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 네가 올린 배경 이미지 */
+  background: url("./login_bg.png") center center / cover no-repeat;
+  position: relative;
+  padding: 24px 16px;
+}
+
+/* 배경 위에 살짝 어둡게(글자/카드 가독성) */
+.login-bg::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+/* 로그인 카드가 오버레이 위로 올라오게 */
+.login-bg > .card.hero{
+  position: relative;
+  z-index: 1;
+
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+}
+
+/* 로그인 화면에서는 위 topbar가 거슬리면 투명 처리(선택) */
+.topbar{
+  background: #0b4ea2; /* 기본 */
+}
+
+/* ✅ 로그인에서만 topbar를 더 깔끔하게 보이게 하고 싶으면 아래 사용
+   (원치 않으면 이 블록은 삭제) */
+.login-bg ~ * {} /* 아무것도 안함 (안전) */
