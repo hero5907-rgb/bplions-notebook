@@ -41,18 +41,21 @@ btnLogout.addEventListener("click", ()=>{
   toast("로그아웃");
 });
 
-async function apiPost(payload){
+async function apiPost(payload) {
   const res = await fetch(API_URL, {
     method: "POST",
-    // 중요: JSON 헤더 제거해서 OPTIONS(프리플라이트) 안 뜨게 함
+    // ✅ 여기 핵심
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload),
   });
 
-  // Apps Script가 가끔 text로 주는 경우 대비
+  // GAS가 text로 주는 경우 대비
   const txt = await res.text();
-  try { return JSON.parse(txt); }
-  catch { return { ok:false, error:"BAD_JSON", raw: txt }; }
+  try {
+    return JSON.parse(txt);
+  } catch {
+    return { ok: false, error: "BAD_JSON", raw: txt };
+  }
 }
 
 function setBrand(settings){
