@@ -160,6 +160,9 @@ function renderLatest(){
 }
 
 async function handleLogin(){
+
+  alert("handleLogin called");
+
   const phone = normalizePhone(el("inputPhone").value);
   const code = String(el("inputCode").value||"").trim();
   const keep = el("keepLogin").checked;
@@ -176,25 +179,19 @@ async function handleLogin(){
 try {
   const json = await apiPost({ action: "data", phone, code });
 
-  // ✅ 서버 응답을 화면에 강제 출력
+  // 🔴 서버 응답 강제 출력(디버그)
   err.hidden = false;
-  err.textContent = "DEBUG: " + JSON.stringify(json);
+  err.textContent = "DEBUG: " + JSON.stringify(json, null, 2);
 
-  return; // ✅ 여기서 끝 (아래 로그인 로직은 잠깐 정지)
+  return; // 디버그 끝 (아래 로직 잠시 중단)
 } catch (e) {
   err.hidden = false;
-  err.textContent = "DEBUG CATCH: " + (e && e.message ? e.message : String(e));
+  err.textContent =
+    "DEBUG CATCH: " + (e && e.message ? e.message : String(e));
   return;
 }
 
-  // 🔴🔴🔴 여기 딱 한 줄 추가 🔴🔴🔴
-  alert(JSON.stringify(json, null, 2));
 
-  if(!json.ok) throw new Error(json.error || "LOGIN_FAILED");
-
-
-
-    state.me = json.me;
     state.settings = json.settings;
     state.members = (json.members||[]).map(m=>({...m, phone: normalizePhone(m.phone)}));
     state.announcements = json.announcements || [];
