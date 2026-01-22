@@ -173,8 +173,19 @@ async function handleLogin(){
   el("btnLogin").disabled = true;
   el("btnLogin").textContent = "확인중…";
 
-try{
-  const json = await apiPost({ action:"data", phone, code });
+try {
+  const json = await apiPost({ action: "data", phone, code });
+
+  // ✅ 서버 응답을 화면에 강제 출력
+  err.hidden = false;
+  err.textContent = "DEBUG: " + JSON.stringify(json);
+
+  return; // ✅ 여기서 끝 (아래 로그인 로직은 잠깐 정지)
+} catch (e) {
+  err.hidden = false;
+  err.textContent = "DEBUG CATCH: " + (e && e.message ? e.message : String(e));
+  return;
+}
 
   // 🔴🔴🔴 여기 딱 한 줄 추가 🔴🔴🔴
   alert(JSON.stringify(json, null, 2));
