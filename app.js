@@ -239,6 +239,8 @@ async function handleLogin(){
 
     state.navStack = ["home"];
     showScreen("home");
+window.scrollTo({ top: 0, behavior: "auto" });
+
     toast("접속완료");
 
 } catch(e) {
