@@ -98,18 +98,21 @@ function apiPost(payload) {
 function setBrand(settings){
   el("districtText").textContent = settings?.district || "국제라이온스협회 356-E지구";
   el("clubNameText").textContent = settings?.clubName || "북포항라이온스클럽";
-  el("coverTitle").textContent = settings?.clubName || "북포항라이온스클럽";
-  el("coverSub").textContent = settings?.district || "국제라이온스협회 356-E지구";
+  el("coverTitle").textContent   = settings?.clubName || "북포항라이온스클럽";
+  el("coverSub").textContent     = settings?.district || "국제라이온스협회 356-E지구";
 
-  const logoUrl = settings?.logoUrl || "";
-  const s = el("clubLogoSmall"), b = el("clubLogoBig");
-  if(logoUrl){
-    s.src = logoUrl; b.src = logoUrl;
-    s.style.visibility="visible"; b.style.visibility="visible";
-  } else {
-    s.style.visibility="hidden"; b.style.visibility="hidden";
-  }
+  const logoUrl = (settings?.logoUrl || "").trim();
+  const s = el("clubLogoSmall");
+
+  if (!s) return; // ✅ 없으면 그냥 끝
+
+  // ✅ logoUrl이 있으면 그걸 쓰고, 없으면 기본 로고 유지
+  if (logoUrl) s.src = logoUrl;
+  else s.src = "./logo.png";
+
+  s.style.visibility = "visible";
 }
+
 
 function esc(s){
   return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
