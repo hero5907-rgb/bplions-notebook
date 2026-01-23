@@ -241,9 +241,12 @@ async function handleLogin(){
     showScreen("home");
     toast("접속완료");
 
-  } catch(e) {
-    err.hidden = false;
-    err.textContent = "승인되지 않았거나 정보가 틀렸습니다.";
+} catch(e) {
+  console.error("LOGIN_ERROR:", e);
+  err.hidden = false;
+  err.textContent = `에러: ${e?.message || e}`;
+}
+
   } finally {
     el("btnLogin").disabled = false;
     el("btnLogin").textContent = "로그인";
