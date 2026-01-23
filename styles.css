@@ -116,3 +116,22 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   margin-bottom: 12px;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
 }
+
+/* 로그인 타이틀 크게 + 흰색 */
+.login-bg .hero-title{
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-0.5px;
+  margin-top:12px;
+}
+
+/* 로그인 설명도 흰색(살짝 연하게) */
+.login-bg .hero-desc{
+  color:rgba(255,255,255,0.9);
+}
+
+/* 라벨도 흰색으로 */
+.login-bg .label{
+  color:rgba(255,255,255,0.92);
+}
