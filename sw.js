@@ -2,7 +2,7 @@ self.addEventListener("install", (e) => self.skipWaiting());
 self.addEventListener("activate", (e) => self.clients.claim());
 
 
-const CACHE_NAME = "bplions-v1";
+const CACHE_NAME = "bplions-v2";
 const ASSETS = [
   "./",
   "./index.html",
