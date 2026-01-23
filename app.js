@@ -302,3 +302,85 @@ function bindSearch(){
   }
   showScreen("login");
 })();
+
+// PWA Service Worker 등록
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+}
+
+
+// ===== PWA Install buttons =====
+let deferredPrompt = null;
+
+const btnA = document.getElementById("btnInstallAndroid");
+const btnI = document.getElementById("btnInstallIOS");
+const hint = document.getElementById("installHint");
+
+// 설치된 앱(standalone)에서는 설치버튼 숨김
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true; // iOS
+}
+
+function showHint(html){
+  if (!hint) return;
+  hint.innerHTML = html;
+  hint.hidden = false;
+}
+
+// 안드로이드/크롬: 설치 가능 이벤트 잡기
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  if (btnA) {
+    btnA.disabled = false;
+    btnA.style.opacity = "1";
+  }
+});
+
+// 설치 완료 후 버튼 숨김
+window.addEventListener("appinstalled", () => {
+  deferredPrompt = null;
+  if (btnA) btnA.style.display = "none";
+  if (btnI) btnI.style.display = "none";
+  if (hint) hint.hidden = true;
+});
+
+// 버튼 초기 상태
+if (btnA) {
+  btnA.disabled = true;
+  btnA.style.opacity = "0.6";
+}
+
+if (isStandalone()) {
+  if (btnA) btnA.style.display = "none";
+  if (btnI) btnI.style.display = "none";
+  if (hint) hint.hidden = true;
+}
+
+// 안드로이드 설치 버튼
+btnA?.addEventListener("click", async () => {
+  if (!deferredPrompt) {
+    showHint("설치가 아직 준비되지 않았어요. 잠깐 뒤 다시 눌러주세요.");
+    return;
+  }
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+
+  if (choice?.outcome !== "accepted") {
+    showHint("설치를 취소했어요. 필요하면 다시 눌러 설치할 수 있어요.");
+  }
+});
+
+// iOS 설치방법 버튼
+btnI?.addEventListener("click", () => {
+  showHint(`
+    <b>아이폰 설치 방법(사파리)</b><br/>
+    1) 사파리로 이 페이지 열기<br/>
+    2) 아래 <b>공유(⬆️)</b> 버튼 누르기<br/>
+    3) <b>홈 화면에 추가</b> 선택<br/>
+    4) 추가 → 홈화면 아이콘으로 실행
+  `);
+});
