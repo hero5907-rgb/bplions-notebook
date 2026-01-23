@@ -3,7 +3,20 @@
   "short_name": "북포항수첩",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f2f5fa",
+  "background_color": "#0b4ea2",
   "theme_color": "#0b4ea2",
-  "lang": "ko-KR"
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
