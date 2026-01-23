@@ -25,11 +25,17 @@ function toast(msg){
   toast._t = setTimeout(()=>t.hidden=true, 1500);
 }
 function showScreen(name){
-  Object.entries(screens).forEach(([k,node])=>node.hidden = (k!==name));
+  Object.entries(screens).forEach(([k,node])=>{
+    if(!node) return;
+    node.style.display = (k === name) ? "" : "none";   // 핵심: display로 직접 숨김
+    node.hidden = (k !== name);                        // (겸사겸사) hidden도 같이 세팅
+  });
+
   const isLoggedIn = !!state.me;
   btnLogout.hidden = !isLoggedIn || name==="login";
   btnBack.hidden = state.navStack.length<=1 || name==="home" || name==="login";
 }
+
 function pushNav(name){ state.navStack.push(name); showScreen(name); }
 function popNav(){ if(state.navStack.length>1) state.navStack.pop(); showScreen(state.navStack.at(-1)); }
 
