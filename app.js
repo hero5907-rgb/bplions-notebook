@@ -4,6 +4,7 @@ const LS_KEY = "bplions_auth_v1";
 const el = (id) => document.getElementById(id);
 
 const screens = {
+  boot: el("screenBoot"),
   login: el("screenLogin"),
   home: el("screenHome"),
   members: el("screenMembers"),
@@ -351,9 +352,6 @@ function bindSearch() {
     });
   });
 
-  // 1) 기본은 로그인 화면
-  state.navStack = ["login"];
-  showScreen("login");
 
   // 2) 저장된 값이 있으면 입력칸 채우고 자동 로그인
   const savedStr = localStorage.getItem(LS_KEY);
@@ -366,12 +364,23 @@ function bindSearch() {
       if (el("keepLogin")) el("keepLogin").checked = true;
 
       if (phone && code) {
-        setTimeout(() => handleLogin(), 200);
-      }
+  state.navStack = ["boot"];
+  showScreen("boot");
+  setTimeout(() => handleLogin(), 50);
+  return;
+}
+
     } catch (e) {
       localStorage.removeItem(LS_KEY);
     }
   }
+
+  // 1) 기본은 로그인 화면
+  state.navStack = ["login"];
+  showScreen("login");
+
+
+
 })();
 
 
