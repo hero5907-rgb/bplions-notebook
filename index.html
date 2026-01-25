@@ -85,7 +85,78 @@
   </section>
 
   <!-- 이하 홈/멤버/공지/텍스트는 그대로 -->
-  ...
+    <!-- 홈 -->
+  <section id="screenHome" class="screen" hidden>
+    <div class="card cover" id="coverCard">
+      <div class="cover-overlay"></div>
+      <div class="cover-content">
+        <div class="cover-title" id="coverTitle">북포항라이온스클럽</div>
+        <div class="cover-sub" id="coverSub">국제라이온스협회 356-E지구</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <button class="tile" data-nav="members">
+        <div class="tile-title">회원명부</div>
+        <div class="tile-desc">검색 · 통화 · 문자 · 연락처저장</div>
+      </button>
+      <button class="tile" data-nav="announcements">
+        <div class="tile-title">공지사항</div>
+        <div class="tile-desc">관리자 공지 확인</div>
+      </button>
+      <button class="tile" data-nav="purpose">
+        <div class="tile-title">클럽 목적</div>
+        <div class="tile-desc">모임의 목적</div>
+      </button>
+      <button class="tile" data-nav="bylaws">
+        <div class="tile-title">회칙</div>
+        <div class="tile-desc">회칙/규정</div>
+      </button>
+    </div>
+
+    <div class="card mt16">
+      <div class="card-header">
+        <div class="card-title">최신 공지</div>
+        <button class="link" data-nav="announcements">전체보기</button>
+      </div>
+      <div id="latestAnnouncements" class="list"></div>
+    </div>
+  </section>
+
+  <!-- 회원 -->
+  <section id="screenMembers" class="screen" hidden>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">회원명부</div>
+        <div class="pill" id="memberCountPill">0명</div>
+      </div>
+      <input id="memberSearch" class="input" placeholder="이름 / 직위 / 그룹 / 휴대폰 검색" />
+      <div id="memberList" class="list mt12"></div>
+    </div>
+  </section>
+
+  <!-- 공지 -->
+  <section id="screenAnnouncements" class="screen" hidden>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">공지사항</div>
+      </div>
+      <div id="annList" class="list"></div>
+    </div>
+  </section>
+
+  <!-- 텍스트 -->
+  <section id="screenText" class="screen" hidden>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title" id="textTitle">제목</div>
+      </div>
+      <div id="textBody" class="prose"></div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" hidden></div>
+
 </main>
 
   <script src="./app.js?v=3"></script>
