@@ -1,6 +1,6 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbyV-OzrTQaacZFecMWOubZp3TsXZgcZ41MJDMMDlVgMS61LtqyNPO7--0b19wSiFSBSjg/exec";
-
 const LS_KEY = "bplions_auth_v1";
+
 const el = (id) => document.getElementById(id);
 
 const screens = {
@@ -14,51 +14,70 @@ const screens = {
 const btnBack = el("btnBack");
 const btnLogout = el("btnLogout");
 
-let state = { me:null, settings:null, members:[], announcements:[], navStack:["login"] };
+let state = {
+  me: null,
+  settings: null,
+  members: [],
+  announcements: [],
+  navStack: ["login"],
+};
 
-function normalizePhone(p){ return String(p||"").replace(/[^0-9]/g,""); }
-function toast(msg){
+function normalizePhone(p) {
+  return String(p || "").replace(/[^0-9]/g, "");
+}
+
+function toast(msg) {
   const t = el("toast");
+  if (!t) return;
   t.textContent = msg;
   t.hidden = false;
   clearTimeout(toast._t);
-  toast._t = setTimeout(()=>t.hidden=true, 1500);
+  toast._t = setTimeout(() => (t.hidden = true), 1500);
 }
-function showScreen(name){
-  Object.entries(screens).forEach(([k,node])=>{
-    if(!node) return;
-    node.style.display = (k === name) ? "" : "none";   // 핵심: display로 직접 숨김
-    node.hidden = (k !== name);                        // (겸사겸사) hidden도 같이 세팅
+
+function showScreen(name) {
+  Object.entries(screens).forEach(([k, node]) => {
+    if (!node) return;
+    const isTarget = k === name;
+    node.style.display = isTarget ? "" : "none"; // ✅ 겹침 방지
+    node.hidden = !isTarget;                     // ✅ hidden도 같이 유지
   });
 
   const isLoggedIn = !!state.me;
-  btnLogout.hidden = !isLoggedIn || name==="login";
-  btnBack.hidden = state.navStack.length<=1 || name==="home" || name==="login";
+  if (btnLogout) btnLogout.hidden = !isLoggedIn || name === "login";
+  if (btnBack) btnBack.hidden = state.navStack.length <= 1 || name === "home" || name === "login";
 }
 
-function pushNav(name){ state.navStack.push(name); showScreen(name); }
-function popNav(){ if(state.navStack.length>1) state.navStack.pop(); showScreen(state.navStack.at(-1)); }
+function pushNav(name) {
+  state.navStack.push(name);
+  showScreen(name);
+  window.scrollTo(0, 0);
+}
 
-btnBack.addEventListener("click", ()=>popNav());
-btnLogout.addEventListener("click", ()=>{
+function popNav() {
+  if (state.navStack.length > 1) state.navStack.pop();
+  showScreen(state.navStack.at(-1));
+  window.scrollTo(0, 0);
+}
+
+btnBack?.addEventListener("click", () => popNav());
+btnLogout?.addEventListener("click", () => {
   localStorage.removeItem(LS_KEY);
-  state = { me:null, settings:null, members:[], announcements:[], navStack:["login"] };
+  state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
   toast("로그아웃");
 });
 
-function apiPost(payload) {
-  // JSONP로 GAS doGet 호출 (CORS 우회)
+// ===== API (JSONP: doGet + callback) =====
+function apiJsonp(paramsObj) {
   return new Promise((resolve, reject) => {
     const cbName = "__cb_" + Math.random().toString(36).slice(2);
     const params = new URLSearchParams();
 
-    // payload -> querystring
-    Object.entries(payload || {}).forEach(([k, v]) => {
+    Object.entries(paramsObj || {}).forEach(([k, v]) => {
       params.set(k, String(v ?? ""));
     });
 
-    // JSONP callback + 캐시방지
     params.set("callback", cbName);
     params.set("_", String(Date.now()));
 
@@ -89,7 +108,6 @@ function apiPost(payload) {
     script.src = url;
     document.body.appendChild(script);
 
-    // 혹시 응답이 안 오는 경우 타임아웃
     setTimeout(() => {
       if (done) return;
       done = true;
@@ -99,62 +117,64 @@ function apiPost(payload) {
   });
 }
 
+function setBrand(settings) {
+  if (el("districtText")) el("districtText").textContent = settings?.district || "국제라이온스협회 356-E지구";
+  if (el("clubNameText")) el("clubNameText").textContent = settings?.clubName || "북포항라이온스클럽";
+  if (el("coverTitle")) el("coverTitle").textContent = settings?.clubName || "북포항라이온스클럽";
+  if (el("coverSub")) el("coverSub").textContent = settings?.district || "국제라이온스협회 356-E지구";
 
-
-function setBrand(settings){
-  el("districtText").textContent = settings?.district || "국제라이온스협회 356-E지구";
-  el("clubNameText").textContent = settings?.clubName || "북포항라이온스클럽";
-  el("coverTitle").textContent   = settings?.clubName || "북포항라이온스클럽";
-  el("coverSub").textContent     = settings?.district || "국제라이온스협회 356-E지구";
-
-  const logoUrl = (settings?.logoUrl || "").trim();
+  // ✅ 너의 index.html에는 clubLogoBig가 원래 없음
+  // 상단 로고만 고정 사용(logoUrl 있으면 그걸로, 없으면 ./logo.png)
   const s = el("clubLogoSmall");
-
-  if (!s) return; // ✅ 없으면 그냥 끝
-
-  // ✅ logoUrl이 있으면 그걸 쓰고, 없으면 기본 로고 유지
-  if (logoUrl) s.src = logoUrl;
-  else s.src = "./logo.png";
-
+  if (!s) return;
+  const logoUrl = (settings?.logoUrl || "").trim();
+  s.src = logoUrl ? logoUrl : "./logo.png";
   s.style.visibility = "visible";
 }
 
-
-function esc(s){
-  return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+function esc(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
-function downloadVCard(m){
+function downloadVCard(m) {
   const vcf = `BEGIN:VCARD
 VERSION:3.0
-FN:${m.name||""}
-TEL;TYPE=CELL:${m.phone||""}
+FN:${m.name || ""}
+TEL;TYPE=CELL:${m.phone || ""}
 ORG:${state.settings?.clubName || "북포항라이온스클럽"}
 END:VCARD`;
-  const blob = new Blob([vcf], {type:"text/vcard;charset=utf-8"});
+  const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${m.name||"contact"}.vcf`;
+  a.download = `${m.name || "contact"}.vcf`;
   a.click();
   URL.revokeObjectURL(url);
 }
 
-function renderMembers(list){
-  el("memberCountPill").textContent = `${list.length}명`;
+function renderMembers(list) {
+  const pill = el("memberCountPill");
+  if (pill) pill.textContent = `${list.length}명`;
+
   const wrap = el("memberList");
+  if (!wrap) return;
+
   wrap.innerHTML = "";
-  if(!list.length){
+  if (!list.length) {
     wrap.innerHTML = `<div class="row-sub">검색 결과가 없습니다.</div>`;
     return;
   }
-  for(const m of list){
+
+  for (const m of list) {
     const row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">
-        <div class="row-title">${esc(m.name)} ${m.position?`<span class="badge">${esc(m.position)}</span>`:""}</div>
+        <div class="row-title">${esc(m.name)} ${m.position ? `<span class="badge">${esc(m.position)}</span>` : ""}</div>
         <div class="row-sub">${esc([m.group, m.phone].filter(Boolean).join(" / "))}</div>
         <div class="actions">
           <a class="a-btn primary" href="tel:${esc(m.phone)}">📞 통화</a>
@@ -162,199 +182,213 @@ function renderMembers(list){
           <button class="a-btn" data-vcard="1">📇 저장</button>
         </div>
       </div>`;
-    row.querySelector('[data-vcard="1"]').addEventListener("click", ()=>downloadVCard(m));
+    row.querySelector('[data-vcard="1"]')?.addEventListener("click", () => downloadVCard(m));
     wrap.appendChild(row);
   }
 }
 
-function renderAnnouncements(){
+function renderAnnouncements() {
   const wrap = el("annList");
+  if (!wrap) return;
+
   wrap.innerHTML = "";
   const items = state.announcements || [];
-  if(!items.length){
+  if (!items.length) {
     wrap.innerHTML = `<div class="row-sub">등록된 공지사항이 없습니다.</div>`;
     return;
   }
-  for(const a of items){
+
+  for (const a of items) {
     const row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
       <div class="row-main">
-        <div class="row-title">${esc(a.title||"")}</div>
-        <div class="row-sub">${esc(a.date||"")} ${a.author?(" · "+esc(a.author)):""}</div>
-        <div class="row-sub" style="white-space:normal;margin-top:8px;">${esc(a.body||"")}</div>
+        <div class="row-title">${esc(a.title || "")}</div>
+        <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
+        <div class="row-sub" style="white-space:normal;margin-top:8px;">${esc(a.body || "")}</div>
       </div>`;
     wrap.appendChild(row);
   }
 }
 
-function renderLatest(){
+function renderLatest() {
   const wrap = el("latestAnnouncements");
+  if (!wrap) return;
+
   wrap.innerHTML = "";
-  const items = (state.announcements||[]).slice(0,3);
-  if(!items.length){
+  const items = (state.announcements || []).slice(0, 3);
+  if (!items.length) {
     wrap.innerHTML = `<div class="row-sub">등록된 공지사항이 없습니다.</div>`;
     return;
   }
-  for(const a of items){
+
+  for (const a of items) {
     const row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
       <div class="row-main">
-        <div class="row-title">${esc(a.title||"")}</div>
-        <div class="row-sub">${esc(a.date||"")} ${a.author?(" · "+esc(a.author)):""}</div>
+        <div class="row-title">${esc(a.title || "")}</div>
+        <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
       </div>`;
     wrap.appendChild(row);
   }
 }
 
-async function handleLogin(){
-  const phone = normalizePhone(el("inputPhone").value);
-  const code  = String(el("inputCode").value||"").trim();
-  console.log("LOGIN_INPUT", { phone, code, rawPhone: el("inputPhone").value, rawCode: el("inputCode").value });
-  toast(`폰:${phone} 코드:${code}`);
+async function handleLogin() {
+  const rawPhone = el("inputPhone")?.value || "";
+  const rawCode = el("inputCode")?.value || "";
 
-
-  const keep  = el("keepLogin").checked;
+  const phone = normalizePhone(rawPhone);
+  const code = String(rawCode).trim();
+  const keep = !!el("keepLogin")?.checked;
 
   const err = el("loginError");
-  err.hidden = true;
+  if (err) err.hidden = true;
 
-  if(!phone){ err.hidden=false; err.textContent="휴대폰번호를 입력하세요(숫자만)"; return; }
-  if(!code){  err.hidden=false; err.textContent="접속코드를 입력하세요"; return; }
+  if (!phone) {
+    if (err) { err.hidden = false; err.textContent = "휴대폰번호를 입력하세요(숫자만)"; }
+    return;
+  }
+  if (!code) {
+    if (err) { err.hidden = false; err.textContent = "접속코드를 입력하세요"; }
+    return;
+  }
 
-  el("btnLogin").disabled = true;
-  el("btnLogin").textContent = "확인중...";
+  const btn = el("btnLogin");
+  if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
 
   try {
-    const json = await apiPost({ action:"data", phone, code });
-    if(!json.ok) throw new Error(json.error || "LOGIN_FAILED");
+    const json = await apiJsonp({ action: "data", phone, code });
+
+    if (!json || json.ok !== true) {
+      const msg = json?.error ? String(json.error) : "LOGIN_FAILED";
+      throw new Error(msg);
+    }
 
     state.me = json.me;
     state.settings = json.settings;
-    state.members = (json.members||[]).map(m => ({...m, phone: normalizePhone(m.phone)}));
+    state.members = (json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
     state.announcements = json.announcements || [];
 
     setBrand(state.settings);
-    state.members.sort((a,b)=>(a.name||"").localeCompare(b.name||"","ko"));
+    state.members.sort((a, b) => (a.name || "").localeCompare(b.name || "", "ko"));
+
     renderLatest();
     renderAnnouncements();
 
-    if(keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
+    if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
     else localStorage.removeItem(LS_KEY);
 
     state.navStack = ["home"];
     showScreen("home");
     window.scrollTo(0, 0);
 
-
-    toast("접속완료");
-
-} catch(e) {
-  console.error("LOGIN_ERROR:", e);
-  err.hidden = false;
-  err.textContent = `에러: ${e?.message || e}`;
-}
-
+    toast("접속 완료");
+  } catch (e) {
+    console.error("LOGIN_ERROR:", e);
+    if (err) {
+      err.hidden = false;
+      err.textContent = `승인되지 않았거나 정보가 틀렸습니다. (${e?.message || e})`;
+    }
   } finally {
-    el("btnLogin").disabled = false;
-    el("btnLogin").textContent = "로그인";
+    if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
   }
 }
 
-function bindNav(){
-  document.querySelectorAll("[data-nav]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
+function bindNav() {
+  document.querySelectorAll("[data-nav]").forEach((btn) => {
+    btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-nav");
-      if(target==="members"){
+      if (target === "members") {
         pushNav("members");
-        el("memberSearch").value="";
+        if (el("memberSearch")) el("memberSearch").value = "";
         renderMembers(state.members);
-      } else if(target==="announcements"){
+      } else if (target === "announcements") {
         pushNav("announcements");
         renderAnnouncements();
-      } else if(target==="purpose"){
+      } else if (target === "purpose") {
         pushNav("text");
-        el("textTitle").textContent="클럽 목적";
-        el("textBody").textContent= state.settings?.purpose || "내용 준비중";
-      } else if(target==="bylaws"){
+        if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
+        if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
+      } else if (target === "bylaws") {
         pushNav("text");
-        el("textTitle").textContent="회칙";
-        el("textBody").textContent= state.settings?.bylaws || "내용 준비중";
+        if (el("textTitle")) el("textTitle").textContent = "회칙";
+        if (el("textBody")) el("textBody").textContent = state.settings?.bylaws || "내용 준비중";
       }
     });
   });
 }
 
-function bindSearch(){
-  el("memberSearch").addEventListener("input", ()=>{
-    const q = el("memberSearch").value.trim().toLowerCase();
-    if(!q){ renderMembers(state.members); return; }
-    const filtered = state.members.filter(m=>{
-      const hay = [m.name,m.position,m.group,m.phone].filter(Boolean).join(" ").toLowerCase();
+function bindSearch() {
+  const input = el("memberSearch");
+  if (!input) return;
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { renderMembers(state.members); return; }
+    const filtered = state.members.filter((m) => {
+      const hay = [m.name, m.position, m.group, m.phone].filter(Boolean).join(" ").toLowerCase();
       return hay.includes(q);
     });
     renderMembers(filtered);
   });
 }
 
-(function init(){
+(function init() {
   bindNav();
   bindSearch();
-  el("btnLogin").addEventListener("click", handleLogin);
-  ["inputPhone","inputCode"].forEach(id=>{
-    el(id).addEventListener("keydown", e=>{ if(e.key==="Enter") handleLogin(); });
+
+  el("btnLogin")?.addEventListener("click", handleLogin);
+  ["inputPhone", "inputCode"].forEach((id) => {
+    el(id)?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleLogin();
+    });
   });
 
   const saved = localStorage.getItem(LS_KEY);
-  if(saved){
-    try{
-      const {phone, code} = JSON.parse(saved);
-      el("inputPhone").value = phone;
-      el("inputCode").value = code;
-      el("keepLogin").checked = true;
-    }catch{}
+  if (saved) {
+    try {
+      const { phone, code } = JSON.parse(saved);
+      if (el("inputPhone")) el("inputPhone").value = phone || "";
+      if (el("inputCode")) el("inputCode").value = code || "";
+      if (el("keepLogin")) el("keepLogin").checked = true;
+    } catch {}
   }
+
   showScreen("login");
 })();
 
-// PWA Service Worker 등록
+// ===== PWA Service Worker 등록 =====
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
 }
 
-
 // ===== PWA Install buttons =====
 let deferredPrompt = null;
 
-const btnA = document.getElementById("btnInstallAndroid");
-const btnI = document.getElementById("btnInstallIOS");
-const hint = document.getElementById("installHint");
+const btnA = el("btnInstallAndroid");
+const btnI = el("btnInstallIOS");
+const hint = el("installHint");
 
-// 설치된 앱(standalone)에서는 설치버튼 숨김
 function isStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches
-    || window.navigator.standalone === true; // iOS
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; // iOS
 }
 
-function showHint(html){
+function showHint(html) {
   if (!hint) return;
   hint.innerHTML = html;
   hint.hidden = false;
 }
 
-// 안드로이드/크롬: 설치 가능 이벤트 잡기
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-
   if (btnA) {
     btnA.disabled = false;
     btnA.style.opacity = "1";
   }
 });
 
-// 설치 완료 후 버튼 숨김
 window.addEventListener("appinstalled", () => {
   deferredPrompt = null;
   if (btnA) btnA.style.display = "none";
@@ -362,7 +396,6 @@ window.addEventListener("appinstalled", () => {
   if (hint) hint.hidden = true;
 });
 
-// 버튼 초기 상태
 if (btnA) {
   btnA.disabled = true;
   btnA.style.opacity = "0.6";
@@ -374,7 +407,6 @@ if (isStandalone()) {
   if (hint) hint.hidden = true;
 }
 
-// 안드로이드 설치 버튼
 btnA?.addEventListener("click", async () => {
   if (!deferredPrompt) {
     showHint("설치가 아직 준비되지 않았어요. 잠깐 뒤 다시 눌러주세요.");
@@ -389,7 +421,6 @@ btnA?.addEventListener("click", async () => {
   }
 });
 
-// iOS 설치방법 버튼
 btnI?.addEventListener("click", () => {
   showHint(`
     <b>아이폰 설치 방법(사파리)</b><br/>
