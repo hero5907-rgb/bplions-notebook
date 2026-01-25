@@ -45,8 +45,9 @@ function showScreen(name) {
   });
 
   const isLoggedIn = !!state.me;
-  if (btnLogout) btnLogout.hidden = !isLoggedIn || name === "login";
-  if (btnBack) btnBack.hidden = state.navStack.length <= 1 || name === "home" || name === "login";
+ if (btnLogout) btnLogout.hidden = !isLoggedIn || name === "login" || name === "boot";
+if (btnBack) btnBack.hidden = state.navStack.length <= 1 || name === "home" || name === "login" || name === "boot";
+
 }
 
 function pushNav(name) {

@@ -222,3 +222,80 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ===== Boot (Splash) Screen ===== */
+.screen.boot{
+  min-height: calc(100vh - 56px); /* topbar 높이 감안(대충) */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b4ea2 0%, #06346f 100%);
+}
+
+.boot-card{
+  width:min(420px, 92vw);
+  border-radius: 18px;
+  padding: 26px 22px;
+  text-align:center;
+  color:#fff;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+}
+
+.boot-logo{
+  width:84px;
+  height:84px;
+  object-fit:contain;
+  margin: 4px auto 10px;
+  display:block;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+}
+
+.boot-title{
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-top: 6px;
+}
+
+.boot-sub{
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0.92;
+  margin-top: 4px;
+}
+
+.boot-loading{
+  margin-top: 16px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+.spinner{
+  width:18px;
+  height:18px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.95);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+.boot-tip{
+  margin-top: 14px;
+  font-size: 13px;
+  opacity: 0.80;
+}
+
