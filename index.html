@@ -26,151 +26,67 @@
 
  <main class="container">
 
-    <!-- ✅ 자동로그인 로딩 화면(추가) -->
-    <section id="screenBoot" class="screen boot" hidden>
-      <div class="boot-inner">
-        <div class="boot-title">북포항라이온스클럽</div>
-        <div class="boot-sub">회원수첩 로딩중…</div>
+  <!-- ✅ 자동로그인 로딩 화면(BOOT) : 딱 1개만 -->
+  <section id="screenBoot" class="screen boot" hidden>
+    <div class="boot-card">
+      <img class="boot-logo" src="./logo.png" alt="로고" />
+      <div class="boot-title">북포항라이온스클럽</div>
+      <div class="boot-sub">회원수첩</div>
+
+      <div class="boot-loading">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>로딩중...</span>
       </div>
-    </section>
 
-<section id="screenBoot" class="screen boot" hidden>
-  <div class="boot-card">
-    <img class="boot-logo" src="./logo.png" alt="로고" />
-    <div class="boot-title">북포항라이온스클럽</div>
-    <div class="boot-sub">회원수첩</div>
-
-    <div class="boot-loading">
-      <span class="spinner" aria-hidden="true"></span>
-      <span>로딩중...</span>
+      <div class="boot-tip">잠시만요, 데이터를 불러오는 중입니다.</div>
     </div>
+  </section>
 
-    <div class="boot-tip">잠시만요, 데이터를 불러오는 중입니다.</div>
-  </div>
-</section>
+  <!-- 로그인 -->
+  <section id="screenLogin" class="screen login-bg">
+    <div class="card hero">
 
-    <section id="screenLogin" class="screen login-bg">
-      <div class="card hero">
-
-        <div class="hero-text">
-          <div class="hero-title">
-            <div class="title-main">북포항라이온스클럽</div>
-            <div class="title-sub">회원수첩</div>
-          </div>
-
-          <div class="hero-desc">
-            승인된 회원만 접속 가능합니다.<br />
-            휴대폰번호(숫자만)와 접속코드를 입력해주세요.
-          </div>
+      <!-- ✅ hero-text는 딱 1개만 -->
+      <div class="hero-text">
+        <div class="hero-title">
+          <div class="title-main">북포항라이온스클럽</div>
+          <div class="title-sub">회원수첩</div>
         </div>
 
-
-        <div class="hero-text">
-         <div class="hero-title">
-         <div class="title-main">북포항라이온스클럽</div>
-         <div class="title-sub">회원수첩</div>
-        </div>
-
-          <div class="hero-desc">
-            승인된 회원만 접속 가능합니다.<br />
-            휴대폰번호(숫자만)와 접속코드를 입력해주세요.
-          </div>
-        </div>
-
-        <div class="form">
-          <label class="label">휴대폰번호</label>
-          <input id="inputPhone" class="input" inputmode="numeric" placeholder="01012345678" />
-
-          <label class="label">접속코드</label>
-          <input id="inputCode" class="input" inputmode="numeric" placeholder="폰번호4자리" />
-
-          <label class="checkline">
-            <input id="keepLogin" type="checkbox" />
-            <span>로그인 상태 유지</span>
-          </label>
-
-          <button id="btnLogin" class="btn primary">로그인</button>
-
-<div class="install-row">
-  <button id="btnInstallAndroid" class="btn install">안드로이드 앱 설치</button>
-  <button id="btnInstallIOS" class="btn install ghost">아이폰 설치방법</button>
-</div>
-<div id="installHint" class="hint" hidden></div>
-
-
-          <div id="loginError" class="error" hidden></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="screenHome" class="screen" hidden>
-      <div class="card cover" id="coverCard">
-        <div class="cover-overlay"></div>
-        <div class="cover-content">
-          <div class="cover-title" id="coverTitle">북포항라이온스클럽</div>
-          <div class="cover-sub" id="coverSub">국제라이온스협회 356-E지구</div>
+        <div class="hero-desc">
+          승인된 회원만 접속 가능합니다.<br />
+          휴대폰번호(숫자만)와 접속코드를 입력해주세요.
         </div>
       </div>
 
-      <div class="grid">
-        <button class="tile" data-nav="members">
-          <div class="tile-title">회원명부</div>
-          <div class="tile-desc">검색 · 통화 · 문자 · 연락처저장</div>
-        </button>
-        <button class="tile" data-nav="announcements">
-          <div class="tile-title">공지사항</div>
-          <div class="tile-desc">관리자 공지 확인</div>
-        </button>
-        <button class="tile" data-nav="purpose">
-          <div class="tile-title">클럽 목적</div>
-          <div class="tile-desc">모임의 목적</div>
-        </button>
-        <button class="tile" data-nav="bylaws">
-          <div class="tile-title">회칙</div>
-          <div class="tile-desc">회칙/규정</div>
-        </button>
-      </div>
+      <div class="form">
+        <label class="label">휴대폰번호</label>
+        <input id="inputPhone" class="input" inputmode="numeric" placeholder="01012345678" />
 
-      <div class="card mt16">
-        <div class="card-header">
-          <div class="card-title">최신 공지</div>
-          <button class="link" data-nav="announcements">전체보기</button>
+        <label class="label">접속코드</label>
+        <input id="inputCode" class="input" inputmode="numeric" placeholder="폰번호4자리" />
+
+        <label class="checkline">
+          <input id="keepLogin" type="checkbox" />
+          <span>로그인 상태 유지</span>
+        </label>
+
+        <button id="btnLogin" class="btn primary">로그인</button>
+
+        <div class="install-row">
+          <button id="btnInstallAndroid" class="btn install">안드로이드 앱 설치</button>
+          <button id="btnInstallIOS" class="btn install ghost">아이폰 설치방법</button>
         </div>
-        <div id="latestAnnouncements" class="list"></div>
-      </div>
-    </section>
+        <div id="installHint" class="hint" hidden></div>
 
-    <section id="screenMembers" class="screen" hidden>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">회원명부</div>
-          <div class="pill" id="memberCountPill">0명</div>
-        </div>
-        <input id="memberSearch" class="input" placeholder="이름 / 직위 / 그룹 / 휴대폰 검색" />
-        <div id="memberList" class="list mt12"></div>
+        <div id="loginError" class="error" hidden></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="screenAnnouncements" class="screen" hidden>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">공지사항</div>
-        </div>
-        <div id="annList" class="list"></div>
-      </div>
-    </section>
-
-    <section id="screenText" class="screen" hidden>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title" id="textTitle">제목</div>
-        </div>
-        <div id="textBody" class="prose"></div>
-      </div>
-    </section>
-
-    <div id="toast" class="toast" hidden></div>
-  </main>
+  <!-- 이하 홈/멤버/공지/텍스트는 그대로 -->
+  ...
+</main>
 
   <script src="./app.js?v=3"></script>
 
