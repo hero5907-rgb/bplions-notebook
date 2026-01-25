@@ -249,10 +249,16 @@ async function handleLogin() {
     if (err) { err.hidden = false; err.textContent = "휴대폰번호를 입력하세요(숫자만)"; }
     return;
   }
+
   if (!code) {
     if (err) { err.hidden = false; err.textContent = "접속코드를 입력하세요"; }
     return;
   }
+
+if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
+else localStorage.removeItem(LS_KEY);
+
+toast("저장됨: " + (localStorage.getItem(LS_KEY) ? "YES" : "NO"));
 
   const btn = el("btnLogin");
   if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
