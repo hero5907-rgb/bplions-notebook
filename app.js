@@ -39,16 +39,29 @@ function toast(msg) {
 function showScreen(name) {
   Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
-    const isTarget = k === name;
-    node.style.display = isTarget ? "" : "none"; // ✅ 겹침 방지
-    node.hidden = !isTarget;                     // ✅ hidden도 같이 유지
+    node.hidden = (k !== name);
   });
 
   const isLoggedIn = !!state.me;
- if (btnLogout) btnLogout.hidden = !isLoggedIn || name === "login" || name === "boot";
-if (btnBack) btnBack.hidden = state.navStack.length <= 1 || name === "home" || name === "login" || name === "boot";
+  // ✅ 부트(로딩) 화면에서는 탑바 버튼 전부 숨김 (뒤로/로그아웃)
+  if (name === "boot") {
+    if (btnLogout) btnLogout.hidden = true;
+    if (btnBack) btnBack.hidden = true;
+    return;
+  }
 
+  // ✅ 로그인 화면에서는 로그아웃/뒤로 숨김
+  if (name === "login") {
+    if (btnLogout) btnLogout.hidden = true;
+    if (btnBack) btnBack.hidden = true;
+    return;
+  }
+
+  // ✅ 나머지 화면 규칙
+  if (btnLogout) btnLogout.hidden = !isLoggedIn;
+  if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
 }
+
 
 function pushNav(name) {
   state.navStack.push(name);
