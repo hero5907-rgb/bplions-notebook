@@ -364,7 +364,13 @@ function bindSearch() {
   async function autoLoginIfSaved() {
     const saved = localStorage.getItem(LS_KEY);
     if (!saved) {
-      showScreen("login");
+      
+// 저장값이 있으면 자동 로그인 시도
+if (saved) {
+  setTimeout(() => handleLogin(), 300);
+}
+
+showScreen("login");
       return;
     }
 
