@@ -351,70 +351,27 @@ function bindSearch() {
     });
   });
 
-  const saved = localStorage.getItem(LS_KEY);
-  if (saved) {
+  // 1) 기본은 로그인 화면
+  state.navStack = ["login"];
+  showScreen("login");
+
+  // 2) 저장된 값이 있으면 입력칸 채우고 자동 로그인
+  const savedStr = localStorage.getItem(LS_KEY);
+  if (savedStr) {
     try {
-      const { phone, code } = JSON.parse(saved);
+      const { phone, code } = JSON.parse(savedStr);
+
       if (el("inputPhone")) el("inputPhone").value = phone || "";
       if (el("inputCode")) el("inputCode").value = code || "";
       if (el("keepLogin")) el("keepLogin").checked = true;
-    } catch {}
-  }
 
-  async function autoLoginIfSaved() {
-    const saved = localStorage.getItem(LS_KEY);
-    if (!saved) {
-      
-// 저장값이 있으면 자동 로그인 시도
-if (saved) {
-  setTimeout(() => handleLogin(), 300);
-}
-
-showScreen("login");
-      return;
-    }
-
-    try {
-      const { phone, code } = JSON.parse(saved);
-      if (!phone || !code) throw new Error("NO_SAVED");
-
-      // 입력창에도 채워두기(사용자 눈에도 보이게)
-      el("inputPhone").value = phone;
-      el("inputCode").value = code;
-      el("keepLogin").checked = true;
-
-      // 자동 로그인 시도 (UI도 살짝 표시)
-      el("btnLogin").disabled = true;
-      el("btnLogin").textContent = "자동 로그인중...";
-
-      const json = await apiPost({ action: "data", phone: normalizePhone(phone), code: String(code).trim() });
-      if (!json.ok) throw new Error(json.error || "AUTO_LOGIN_FAILED");
-
-      state.me = json.me;
-      state.settings = json.settings;
-      state.members = (json.members || []).map(m => ({ ...m, phone: normalizePhone(m.phone) }));
-      state.announcements = json.announcements || [];
-
-      setBrand(state.settings);
-      state.members.sort((a, b) => (a.name || "").localeCompare(b.name || "", "ko"));
-      renderLatest();
-      renderAnnouncements();
-
-      state.navStack = ["home"];
-      showScreen("home");
-      toast("자동 로그인 완료");
-
+      if (phone && code) {
+        setTimeout(() => handleLogin(), 200);
+      }
     } catch (e) {
-      // 저장된 값이 잘못됐거나 승인 해제된 경우 → 저장값 삭제 후 로그인 화면
       localStorage.removeItem(LS_KEY);
-      showScreen("login");
-    } finally {
-      el("btnLogin").disabled = false;
-      el("btnLogin").textContent = "로그인";
     }
   }
-
-  autoLoginIfSaved();
 })();
 
 
