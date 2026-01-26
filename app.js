@@ -222,7 +222,7 @@ function renderMembers(list) {
           <button class="a-btn" data-vcard="1">📇 저장</button>
         </div>
       </div>`;
-    row.querySelector('[data-vcard="1"]')?.addEventListener("click", () => downloadVCard(m));
+    
     row.addEventListener("click", () => openProfileAt(list, i));
     row.querySelector(".actions")?.addEventListener("click", (e) => e.stopPropagation());
     row.querySelector('[data-vcard="1"]')?.addEventListener("click", (e) => { e.stopPropagation(); downloadVCard(m); });
@@ -281,19 +281,15 @@ function renderLatest() {
 
 async function handleLogin() {
   const rawPhone = el("inputPhone")?.value || "";
-  const rawCode = el("inputCode")?.value || "";
+  const rawCode  = el("inputCode")?.value || "";
 
   const phone = normalizePhone(rawPhone);
-  const code = String(rawCode).trim();
+  const code  = String(rawCode).trim();
+  const keep  = !!el("keepLogin")?.checked;
 
-  // ✅ phone/code 만든 다음에 저장
+  // ✅ phone/code 만든 다음에 저장 (관리자페이지 링크용)
   state._authPhone = phone;
   state._authCode  = code;
-
-  const keep = !!el("keepLogin")?.checked;
-
-  
-}
 
   const err = el("loginError");
   if (err) err.hidden = true;
@@ -308,11 +304,6 @@ async function handleLogin() {
     return;
   }
 
-if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
-else localStorage.removeItem(LS_KEY);
-
-toast("저장됨: " + (localStorage.getItem(LS_KEY) ? "YES" : "NO"));
-
   const btn = el("btnLogin");
   if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
 
@@ -325,27 +316,29 @@ toast("저장됨: " + (localStorage.getItem(LS_KEY) ? "YES" : "NO"));
     }
 
     state.me = json.me;
-
-const tileAdmin = el("tileAdmin");
-if (tileAdmin) {
-  tileAdmin.hidden = !(state.me && state.me.isAdmin === true);
-  tileAdmin.onclick = openAdminPage;
-}
-
     state.settings = json.settings;
     state.members = (json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
     state.announcements = json.announcements || [];
 
-    setBrand(state.settings);
-    state.members.sort((a, b) =>
-  (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
-  (a.name || "").localeCompare(b.name || "", "ko")
-);
+    // ✅ 관리자 버튼: 로그인 성공 시에만 표시/숨김 결정
+    const tileAdmin = el("tileAdmin");
+    if (tileAdmin) {
+      tileAdmin.hidden = !(state.me && state.me.isAdmin === true);
+      tileAdmin.onclick = openAdminPage;
+    }
 
+    setBrand(state.settings);
+
+    // 정렬
+    state.members.sort((a, b) =>
+      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
+      (a.name || "").localeCompare(b.name || "", "ko")
+    );
 
     renderLatest();
     renderAnnouncements();
 
+    // ✅ 로그인 유지 저장은 "성공했을 때만"
     if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
     else localStorage.removeItem(LS_KEY);
 
@@ -364,6 +357,7 @@ if (tileAdmin) {
     if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
   }
 }
+
 
 function bindNav() {
   document.querySelectorAll("[data-nav]").forEach((btn) => {
