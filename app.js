@@ -82,10 +82,19 @@ function popNav() {
 btnBack?.addEventListener("click", () => popNav());
 btnLogout?.addEventListener("click", () => {
   localStorage.removeItem(LS_KEY);
+
+  // ✅ 관리자 버튼 잔상 제거(무조건 숨김)
+  const tileAdmin = el("tileAdmin");
+  if (tileAdmin) {
+    tileAdmin.hidden = true;
+    tileAdmin.onclick = null;
+  }
+
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
   toast("로그아웃");
 });
+
 
 // ===== API (JSONP: doGet + callback) =====
 function apiJsonp(paramsObj) {
@@ -274,15 +283,17 @@ async function handleLogin() {
   const rawPhone = el("inputPhone")?.value || "";
   const rawCode = el("inputCode")?.value || "";
 
-
-
   const phone = normalizePhone(rawPhone);
   const code = String(rawCode).trim();
 
-state._authPhone = phone;
-state._authCode  = code;
+  // ✅ phone/code 만든 다음에 저장
+  state._authPhone = phone;
+  state._authCode  = code;
 
   const keep = !!el("keepLogin")?.checked;
+
+  ...
+}
 
   const err = el("loginError");
   if (err) err.hidden = true;
