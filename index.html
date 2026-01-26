@@ -20,12 +20,22 @@
     </div>
   </div>
 
-<button class="tile" id="tileAdmin" hidden>
-  <div class="tile-title">관리자</div>
-  <div class="tile-desc">사진 업로드</div>
+<!-- 관리자(아이콘+텍스트 칩) -->
+<button class="chip-btn" id="tileAdmin" hidden aria-label="관리자 사진 업로드">
+  <!-- gear icon -->
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L1.81 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L1.93 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.5.4 1.05.71 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/>
+  </svg>
+  <span class="chip-text">관리자</span>
 </button>
 
-  <button class="icon-btn" id="btnLogout" aria-label="로그아웃" hidden>⎋</button>
+<!-- 로그아웃(전원 아이콘) -->
+<button class="icon-btn" id="btnLogout" aria-label="로그아웃" title="로그아웃" hidden>
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M11 2h2v10h-2V2zm6.36 3.64 1.41 1.41A9 9 0 1 1 5.23 7.05l1.41-1.41A7 7 0 1 0 17.36 5.64z"/>
+  </svg>
+</button>
+
 </header>
 
 
