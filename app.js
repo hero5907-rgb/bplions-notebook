@@ -190,7 +190,7 @@ function renderMembers(list) {
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">
         <div class="row-title">${esc(m.name)} ${m.position ? `<span class="badge">${esc(m.position)}</span>` : ""}</div>
-        <div class="row-sub">${esc([m.group, m.phone].filter(Boolean).join(" / "))}</div>
+        <div class="row-sub">${esc([m.workplace, m.group, m.phone].filter(Boolean).join(" / "))}</div>
         <div class="actions">
           <a class="a-btn primary" href="tel:${esc(m.phone)}">📞 통화</a>
           <a class="a-btn" href="sms:${esc(m.phone)}">💬 문자</a>
@@ -292,7 +292,11 @@ toast("저장됨: " + (localStorage.getItem(LS_KEY) ? "YES" : "NO"));
     state.announcements = json.announcements || [];
 
     setBrand(state.settings);
-    state.members.sort((a, b) => (a.name || "").localeCompare(b.name || "", "ko"));
+    state.members.sort((a, b) =>
+  (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
+  (a.name || "").localeCompare(b.name || "", "ko")
+);
+
 
     renderLatest();
     renderAnnouncements();
@@ -348,7 +352,7 @@ function bindSearch() {
     const q = input.value.trim().toLowerCase();
     if (!q) { renderMembers(state.members); return; }
     const filtered = state.members.filter((m) => {
-      const hay = [m.name, m.position, m.group, m.phone].filter(Boolean).join(" ").toLowerCase();
+      const hay = [m.name, m.position, m.workplace, m.group, m.phone].filter(Boolean).join(" ").toLowerCase();
       return hay.includes(q);
     });
     renderMembers(filtered);
