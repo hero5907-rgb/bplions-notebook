@@ -198,7 +198,9 @@ function renderMembers(list) {
         </div>
       </div>`;
     row.querySelector('[data-vcard="1"]')?.addEventListener("click", () => downloadVCard(m));
-    wrap.appendChild(row);
+   row.addEventListener("click", () => openProfile(m));
+
+ wrap.appendChild(row);
   }
 }
 
@@ -474,3 +476,22 @@ btnI?.addEventListener("click", () => {
     4) 추가 → 홈화면 아이콘으로 실행
   `);
 });
+
+
+function openProfile(m) {
+  el("modalPhoto").src = m.photoUrl || "";
+  el("modalName").textContent = m.name || "";
+  el("modalPosition").textContent = m.position || "";
+  el("modalWorkplace").textContent = m.workplace || "";
+  el("modalPhone").textContent = m.phone || "";
+
+  el("modalCall").href = `tel:${m.phone || ""}`;
+  el("modalSms").href  = `sms:${m.phone || ""}`;
+  el("modalSave").onclick = () => downloadVCard(m);
+
+  el("profileModal").hidden = false;
+}
+
+function closeProfile() {
+  el("profileModal").hidden = true;
+}
