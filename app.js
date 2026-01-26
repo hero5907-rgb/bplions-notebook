@@ -292,7 +292,7 @@ async function handleLogin() {
 
   const keep = !!el("keepLogin")?.checked;
 
-  ...
+  
 }
 
   const err = el("loginError");
