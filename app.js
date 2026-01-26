@@ -151,6 +151,17 @@ function setBrand(settings) {
   s.style.visibility = "visible";
 }
 
+function openAdminPage() {
+  // 지금 입력한 phone/code를 저장해둔 값으로 링크 생성
+  const phone = state._authPhone || "";
+  const code  = state._authCode || "";
+  if (!phone || !code) { toast("다시 로그인 후 시도"); return; }
+
+  const url = `${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`;
+  window.open(url, "_blank"); // 새 탭
+}
+
+
 function esc(s) {
   return String(s ?? "")
     .replaceAll("&", "&amp;")
@@ -261,6 +272,10 @@ async function handleLogin() {
   const rawPhone = el("inputPhone")?.value || "";
   const rawCode = el("inputCode")?.value || "";
 
+state._authPhone = phone;
+state._authCode  = code;
+
+
   const phone = normalizePhone(rawPhone);
   const code = String(rawCode).trim();
   const keep = !!el("keepLogin")?.checked;
@@ -295,6 +310,13 @@ toast("저장됨: " + (localStorage.getItem(LS_KEY) ? "YES" : "NO"));
     }
 
     state.me = json.me;
+
+const tileAdmin = el("tileAdmin");
+if (tileAdmin) {
+  tileAdmin.hidden = !(state.me && state.me.isAdmin === true);
+  tileAdmin.onclick = openAdminPage;
+}
+
     state.settings = json.settings;
     state.members = (json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
     state.announcements = json.announcements || [];
