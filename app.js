@@ -2,7 +2,7 @@
 let modalCtx = { list: [], index: -1 };
 
 
-const API_URL = "https://script.google.com/macros/s/AKfycbw52oM1Xkgcqcy0Oqgm4BSslPoqXSR5iNEDPsAmW5C1WnUsh7proX5llz6za-5Vt8wwcg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbw4Fjz_4q7IJSIyddRS4-yEA9VmZddvQcjLtHSPzuxKBsFtYJyx6mEA_lfODVVoWtJkJQ/exec";
 const LS_KEY = "bplions_auth_v1";
 
 const el = (id) => document.getElementById(id);
