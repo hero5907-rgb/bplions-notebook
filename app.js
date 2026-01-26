@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw_cNoIeDWa-gIkHHCESJtxRz-LToKXf7jaHn0B1y4kb8oBd4ZvOcECUro4xKqQvHpEGw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxoeQTJ-d9RQ8tqFPFukD21YgsdQQHv83ymHfforA29hXEx4LR5elG0OryFRRdm2oeB7w/exec";
 const LS_KEY = "bplions_auth_v1";
 
 const el = (id) => document.getElementById(id);
