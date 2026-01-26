@@ -1,206 +1,445 @@
 [hidden] { display: none !important; }
 
-:root{
-  --blue:#0b4ea2;
-  --blue2:#0a3e83;
-  --bg:#f2f5fa;
-  --card:#fff;
-  --text:#0b1220;
-  --muted:#64748b;
-  --line:#e5eaf3;
-  --shadow:0 10px 25px rgba(12,20,38,.12);
-  --radius:18px
-}
-
-*{box-sizing:border-box}
-html,body{height:100%}
-
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  -webkit-text-size-adjust:100%;
-}
-
-/* ===== Top Bar ===== */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);
-  color:#fff;
-  padding:10px 12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 6px 16px rgba(0,0,0,.18)
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(255,255,255,.10);
-  color:#fff;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  transition:.15s;
-}
-
-.icon-btn:hover{background:rgba(255,255,255,.16)}
-.icon-btn:active{transform:scale(.97)}
-
-.brand{
-  flex:1;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0
-}
-
-.brand-logo{
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  background:rgba(255,255,255,.14);
-  object-fit:contain;
-  padding:4px
-}
-
-.brand-sub{font-size:12px;opacity:.9}
-.brand-main{font-size:16px;font-weight:800}
-
-/* ===== Layout ===== */
-.container{
-  max-width:720px;
-  margin:14px auto 40px;
-  padding:0 14px
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:14px
-}
-
-/* ===== Login Background ===== */
-.login-bg{
-  min-height:calc(100vh - 64px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:url("./login_bg.png?v=2") center/cover no-repeat;
-  position:relative;
-  padding:24px 16px;
-}
-
-.login-bg::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.25)
-}
-
-.login-bg > .card.hero{
-  position:relative;
-  z-index:1;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(6px);
-  border-radius:22px;
-  box-shadow:0 18px 45px rgba(0,0,0,.35)
-}
-
-/* ===== Modal ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:9999
-}
-
-.modal-backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.55)
-}
-
-.modal-card{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:min(92vw,360px);
-  background:#fff;
-  border-radius:16px;
-  padding:18px 16px 16px;
+:root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
+.topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.icon-btn{border:none;background:rgba(255,255,255,.16);color:#fff;width:42px;height:38px;border-radius:12px;font-size:18px}
+.brand{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
+.brand-logo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.14);object-fit:contain;padding:4px}
+.brand-title{min-width:0}.brand-sub{font-size:12px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-main{font-size:16px;font-weight:800;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.container{max-width:720px;margin:14px auto 40px;padding:0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+.hero{
+  padding:18px;
   text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.3)
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
+}
+.hero-logo-wrap{display:flex;justify-content:center;margin-top:8px}
+.hero-logo{width:120px;height:120px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+.hero-title{
+  font-size:30px;
+  font-weight:900;
+  margin-top:18px;
+  color:#fff;
+  text-shadow:0 4px 14px rgba(0,0,0,.55);
 }
 
-.modal-photo{
-  width:240px;
-  height:240px;
-  border-radius:18px;
-  object-fit:cover;
-  background:#eee;
-  transform:translate(0,0) scale(1);
-  transform-origin:center center;
-  touch-action:none;
-  user-select:none
+.hero-desc{
+  margin-top:10px;
+  color:rgba(255,255,255,.92);
+  line-height:1.45;
+  text-shadow:0 2px 8px rgba(0,0,0,.45);
 }
 
-.modal-name{
+.form{margin-top:16px;text-align:left}
+.label{display:block;font-size:13px;color:#334155;margin:10px 2px 6px;font-weight:700}
+.input{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;outline:none;font-size:15px;background:#fff}
+.input:focus{border-color:rgba(11,78,162,.55);box-shadow:0 0 0 4px rgba(11,78,162,.12)}
+.checkline{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;margin:10px 2px 0}
+.btn{width:100%;border:none;border-radius:14px;padding:12px;font-size:16px;font-weight:900;margin-top:12px}
+.btn.primary{background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff}
+.error{margin-top:10px;color:#b91c1c;background:#fee2e2;border:1px solid #fecaca;padding:10px 12px;border-radius:14px;font-size:13px}
+.cover{position:relative;overflow:hidden;padding:0;min-height:120px}
+.cover::before{content:"";position:absolute;inset:0;background:radial-gradient(1200px 200px at 10% 0%,rgba(255,255,255,.25),transparent 60%),linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%)}
+.cover-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,32,71,.78),rgba(9,32,71,.35))}
+.cover-content{position:relative;padding:16px;color:#fff}
+.cover-title{font-size:20px;font-weight:950;letter-spacing:-.3px}
+.cover-sub{margin-top:4px;opacity:.92;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.tile{text-align:left;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;box-shadow:0 10px 18px rgba(12,20,38,.08)}
+.tile-title{font-weight:950;font-size:15px}.tile-desc{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.25}
+.card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.card-title{font-weight:950;font-size:16px}
+.link{border:none;background:none;color:var(--blue);font-weight:900;padding:6px 8px;border-radius:10px}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.avatar{width:54px;height:54px;border-radius:14px;object-fit:cover;background:#e8eef8;border:1px solid var(--line)}
+.row-main{flex:1;min-width:0}
+.row-title{font-weight:950;font-size:15px;display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;font-weight:900;padding:4px 8px;border-radius:999px;background:rgba(11,78,162,.10);color:var(--blue);border:1px solid rgba(11,78,162,.18)}
+.row-sub{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.a-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:900;font-size:12px;color:#0b1220;text-decoration:none}
+.a-btn.primary{background:rgba(11,78,162,.10);border-color:rgba(11,78,162,.22);color:var(--blue)}
+.pill{font-size:12px;font-weight:950;padding:6px 10px;border-radius:999px;background:rgba(100,116,139,.10);color:#334155;border:1px solid rgba(100,116,139,.18)}
+.prose{color:#0f172a;line-height:1.6;font-size:14px;white-space:pre-wrap}
+.mt12{margin-top:12px}.mt16{margin-top:16px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:rgba(15,23,42,.92);color:#fff;padding:10px 12px;border-radius:14px;font-weight:800;font-size:13px;box-shadow:0 12px 30px rgba(0,0,0,.25);max-width:calc(100% - 28px)}
+@media (max-width:380px){.grid{grid-template-columns:1fr}}
+/* ===== 로그인 배경 ===== */
+.login-bg{
+  /* topbar가 위에 있으니 그만큼 빼고 화면 꽉 채우기 */
+  min-height: calc(100vh - 64px); /* topbar 높이에 맞춰 필요시 56~72로 조절 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 네가 올린 배경 이미지 */
+  background: url("./login_bg.png?v=2") center center / cover no-repeat;
+  position: relative;
+  padding: 24px 16px;
+}
+
+/* 배경 위에 살짝 어둡게(글자/카드 가독성) */
+.login-bg::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+/* 로그인 카드가 오버레이 위로 올라오게 */
+.login-bg > .card.hero{
+  position: relative;
+  z-index: 1;
+
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+}
+
+/* 로그인 화면에서는 위 topbar가 거슬리면 투명 처리(선택) */
+.topbar{
+  background: #0b4ea2; /* 기본 */
+}
+
+/* ✅ 로그인에서만 topbar를 더 깔끔하게 보이게 하고 싶으면 아래 사용
+   (원치 않으면 이 블록은 삭제) */
+.login-bg ~ * {} /* 아무것도 안함 (안전) */
+#screenLogin .hero-logo{
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
+}
+
+/* 로그인 타이틀 크게 + 흰색 */
+.login-bg .hero-title{
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-0.5px;
+  margin-top:12px;
+}
+
+/* 로그인 설명도 흰색(살짝 연하게) */
+.login-bg .hero-desc{
+  color:rgba(255,255,255,0.9);
+}
+
+/* 라벨도 흰색으로 */
+.login-bg .label{
+  color:rgba(255,255,255,0.92);
+}
+
+/* 로그인 타이틀 중앙 정렬 + 줄바꿈 스타일 */
+.login-bg .hero-title{
+  text-align:center;
+  margin-top:12px;
+}
+
+.login-bg .title-main{
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-0.5px;
+  line-height:1.2;
+}
+
+.login-bg .title-sub{
+  color:#fff;
   font-size:20px;
-  font-weight:700;
-  margin-top:10px
+  font-weight:800;
+  margin-top:6px;
+  letter-spacing:-0.3px;
 }
 
-.modal-position{
-  color:#0b4ea2;
-  font-weight:600;
-  margin-top:4px
-}
 
-.modal-workplace{
-  font-size:14px;
-  color:#444;
-  margin-top:6px
-}
-
-.modal-phone{
-  font-size:14px;
-  color:#666;
-  margin-top:4px
-}
-
-.modal-actions{
-  margin-top:14px;
+.install-row{
   display:flex;
-  gap:8px;
-  justify-content:center
+  gap:10px;
+  margin-top:10px;
 }
-
-.modal-close{
-  margin-top:14px;
+.btn.install{
   width:100%;
-  border-radius:12px;
-  border:none;
-  padding:10px;
-  background:#eee;
-  font-weight:600
+  padding:12px;
+  border-radius:14px;
+  font-weight:900;
+  font-size:14px;
+}
+.btn.install.ghost{
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+}
+.hint{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  font-size:13px;
+  line-height:1.35;
+  background:rgba(0,0,0,.25);
+  color:#fff;
+}
+@media (max-width:420px){
+  .install-row{flex-direction:column;}
 }
 
-/* ===== Mobile Optimization ===== */
-@media (max-width:480px){
-  html{font-size:17px}
-  .container{padding:0 12px}
-  .brand-main{font-size:17px}
-  .modal-photo{width:260px;height:260px}
+/* ===== 자동 로그인 로딩 화면 ===== */
+.boot {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0b4ea2 0%, #0a3e83 100%);
+  color: #fff;
+  text-align: center;
+}
+
+.boot-inner {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.boot-title {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.boot-sub {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* 살짝 숨쉬는 효과 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Boot (Splash) Screen ===== */
+.screen.boot{
+  min-height: calc(100vh - 56px); /* topbar 높이 감안(대충) */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b4ea2 0%, #06346f 100%);
+}
+
+.boot-card{
+  width:min(420px, 92vw);
+  border-radius: 18px;
+  padding: 26px 22px;
+  text-align:center;
+  color:#fff;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+}
+
+.boot-logo{
+  width:84px;
+  height:84px;
+  object-fit:contain;
+  margin: 4px auto 10px;
+  display:block;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+}
+
+.boot-title{
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-top: 6px;
+}
+
+.boot-sub{
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0.92;
+  margin-top: 4px;
+}
+
+.boot-loading{
+  margin-top: 16px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+.spinner{
+  width:18px;
+  height:18px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.95);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+.boot-tip{
+  margin-top: 14px;
+  font-size: 13px;
+  opacity: 0.80;
+}
+
+/* ===== 프로필 팝업 ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+}
+
+.modal-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 360px);
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 16px 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+.modal-photo {
+  width: 240px;   /* 기본 크게 */
+  height: 240px;
+  border-radius: 50% /* 동그라미 말고 카드형 느낌은 18px; (원하면 50%로) */
+  object-fit: cover;
+  background: #eee;
+
+  /* 줌/드래그를 JS로 제어할 거라 transform 준비 */
+  transform: translate(0px, 0px) scale(1);
+  transform-origin: center center;
+
+  /* 모바일에서 사진 터치 제스처를 우리가 처리 */
+  touch-action: none;
+  user-select: none;
+}
+
+}
+
+.modal-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.modal-position {
+  color: #0b4ea2;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.modal-workplace {
+  font-size: 14px;
+  color: #444;
+  margin-top: 6px;
+}
+
+.modal-phone {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.modal-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.modal-close {
+  margin-top: 14px;
+  width: 100%;
+  border-radius: 12px;
+  border: none;
+  padding: 10px;
+  background: #eee;
+  font-weight: 600;
+}
+
+
+#modalPhoto { touch-action: none; }
+
+
+/* ===== Topbar icon buttons (iOS-like) ===== */
+.icon-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+}
+.icon-btn:hover{ background: rgba(255,255,255,.16); }
+.icon-btn:active{ transform: scale(.97); }
+.icon-btn .ico{
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: block;
+}
+
+/* ===== Admin chip button ===== */
+.chip-btn{
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  transition: transform .08s ease, background .15s ease, border-color .15s ease;
+}
+.chip-btn:hover{ background: rgba(255,255,255,.16); }
+.chip-btn:active{ transform: scale(.98); }
+.chip-btn .ico{
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  display: block;
+}
+.chip-btn .chip-text{
+  font-size: 13px;
 }
