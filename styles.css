@@ -384,3 +384,6 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   background: #eee;
   font-weight: 600;
 }
+
+
+#modalPhoto { touch-action: none; }

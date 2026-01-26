@@ -215,6 +215,8 @@ function renderMembers(list) {
       </div>`;
     row.querySelector('[data-vcard="1"]')?.addEventListener("click", () => downloadVCard(m));
     row.addEventListener("click", () => openProfileAt(list, i));
+    row.querySelector(".actions")?.addEventListener("click", (e) => e.stopPropagation());
+    row.querySelector('[data-vcard="1"]')?.addEventListener("click", (e) => { e.stopPropagation(); downloadVCard(m); });
 
 
  wrap.appendChild(row);
@@ -272,12 +274,14 @@ async function handleLogin() {
   const rawPhone = el("inputPhone")?.value || "";
   const rawCode = el("inputCode")?.value || "";
 
-state._authPhone = phone;
-state._authCode  = code;
 
 
   const phone = normalizePhone(rawPhone);
   const code = String(rawCode).trim();
+
+state._authPhone = phone;
+state._authCode  = code;
+
   const keep = !!el("keepLogin")?.checked;
 
   const err = el("loginError");
@@ -531,11 +535,6 @@ function openProfileAt(list, index) {
 function closeProfile() {
   el("profileModal").hidden = true;
   resetPhotoTransform();
-}
-
-
-function closeProfile() {
-  el("profileModal").hidden = true;
 }
 
 function nextMember(dir) {
