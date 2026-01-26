@@ -1,3 +1,7 @@
+
+let modalCtx = { list: [], index: -1 };
+
+
 const API_URL = "https://script.google.com/macros/s/AKfycbw52oM1Xkgcqcy0Oqgm4BSslPoqXSR5iNEDPsAmW5C1WnUsh7proX5llz6za-5Vt8wwcg/exec";
 const LS_KEY = "bplions_auth_v1";
 
@@ -183,7 +187,8 @@ function renderMembers(list) {
     return;
   }
 
-  for (const m of list) {
+ for (let i = 0; i < list.length; i++) {
+  const m = list[i];
     const row = document.createElement("div");
     row.className = "row";
     row.innerHTML = `
@@ -198,7 +203,8 @@ function renderMembers(list) {
         </div>
       </div>`;
     row.querySelector('[data-vcard="1"]')?.addEventListener("click", () => downloadVCard(m));
-   row.addEventListener("click", () => openProfile(m));
+    row.addEventListener("click", () => openProfileAt(list, i));
+
 
  wrap.appendChild(row);
   }
@@ -478,7 +484,14 @@ btnI?.addEventListener("click", () => {
 });
 
 
-function openProfile(m) {
+function openProfileAt(list, index) {
+  modalCtx.list = list || [];
+  modalCtx.index = index ?? -1;
+
+  const m = modalCtx.list[modalCtx.index];
+  if (!m) return;
+
+  // ✅ 멤버 데이터 주입
   el("modalPhoto").src = m.photoUrl || "";
   el("modalName").textContent = m.name || "";
   el("modalPosition").textContent = m.position || "";
@@ -489,9 +502,151 @@ function openProfile(m) {
   el("modalSms").href  = `sms:${m.phone || ""}`;
   el("modalSave").onclick = () => downloadVCard(m);
 
+  resetPhotoTransform();
   el("profileModal").hidden = false;
 }
 
 function closeProfile() {
   el("profileModal").hidden = true;
+  resetPhotoTransform();
 }
+
+
+function closeProfile() {
+  el("profileModal").hidden = true;
+}
+
+function nextMember(dir) {
+  if (!modalCtx.list.length) return;
+
+  let n = modalCtx.index + dir;
+  if (n < 0) n = 0;
+  if (n >= modalCtx.list.length) n = modalCtx.list.length - 1;
+
+  if (n === modalCtx.index) return;
+  openProfileAt(modalCtx.list, n);
+}
+
+(function bindModalSwipe() {
+  const modal = el("profileModal");
+  const card = modal?.querySelector(".modal-card");
+  if (!card) return;
+
+  let sx = 0, sy = 0, st = 0;
+
+  card.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) return;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+    st = Date.now();
+  }, { passive: true });
+
+  card.addEventListener("touchend", (e) => {
+    const dt = Date.now() - st;
+    const ex = e.changedTouches?.[0]?.clientX ?? sx;
+    const ey = e.changedTouches?.[0]?.clientY ?? sy;
+
+    const dx = ex - sx;
+    const dy = ey - sy;
+
+    // ✅ 좌우 스와이프 판정 (너무 느리거나 세로가 크면 무시)
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 600) {
+      if (dx < 0) nextMember(+1); // 왼쪽으로 밀면 다음
+      else nextMember(-1);        // 오른쪽으로 밀면 이전
+    }
+  });
+})();
+
+
+let photoScale = 1;
+let photoTx = 0;
+let photoTy = 0;
+
+const ptrs = new Map(); // pointerId -> {x,y}
+let pinchStartDist = 0;
+let pinchStartScale = 1;
+let dragStart = null; // {x,y,tx,ty}
+
+function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+function applyPhotoTransform() {
+  const img = el("modalPhoto");
+  if (!img) return;
+  img.style.transform = `translate(${photoTx}px, ${photoTy}px) scale(${photoScale})`;
+}
+
+function resetPhotoTransform() {
+  photoScale = 1;
+  photoTx = 0;
+  photoTy = 0;
+  applyPhotoTransform();
+}
+
+(function bindPhotoPinch() {
+  const img = el("modalPhoto");
+  if (!img) return;
+
+  img.addEventListener("pointerdown", (e) => {
+    img.setPointerCapture(e.pointerId);
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (ptrs.size === 1) {
+      dragStart = { x: e.clientX, y: e.clientY, tx: photoTx, ty: photoTy };
+    }
+
+    if (ptrs.size === 2) {
+      // 핀치 시작
+      const pts = [...ptrs.values()];
+      pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      pinchStartScale = photoScale;
+      dragStart = null;
+    }
+  });
+
+  img.addEventListener("pointermove", (e) => {
+    if (!ptrs.has(e.pointerId)) return;
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (ptrs.size === 2) {
+      const pts = [...ptrs.values()];
+      const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      const ratio = dist / (pinchStartDist || dist);
+
+      photoScale = clamp(pinchStartScale * ratio, 1, 3); // 1~3배
+      applyPhotoTransform();
+      return;
+    }
+
+    if (ptrs.size === 1 && dragStart && photoScale > 1) {
+      const dx = e.clientX - dragStart.x;
+      const dy = e.clientY - dragStart.y;
+      photoTx = dragStart.tx + dx;
+      photoTy = dragStart.ty + dy;
+      applyPhotoTransform();
+    }
+  });
+
+  function endPtr(e) {
+    ptrs.delete(e.pointerId);
+    if (ptrs.size < 2) pinchStartDist = 0;
+    if (ptrs.size === 0) dragStart = null;
+
+    // 스케일이 1로 내려가면 위치도 초기화
+    if (photoScale <= 1) resetPhotoTransform();
+  }
+
+  img.addEventListener("pointerup", endPtr);
+  img.addEventListener("pointercancel", endPtr);
+
+  // 더블클릭/더블탭으로 리셋(PC도 편함)
+  img.addEventListener("dblclick", () => resetPhotoTransform());
+})();
+
+
+window.addEventListener("keydown", (e) => {
+  if (el("profileModal")?.hidden === false) {
+    if (e.key === "ArrowLeft") nextMember(-1);
+    if (e.key === "ArrowRight") nextMember(+1);
+    if (e.key === "Escape") closeProfile();
+  }
+});
