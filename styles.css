@@ -1,13 +1,15 @@
 [hidden] { display: none !important; }
 
 
+html, body { height: 100%; }
 html, body { overscroll-behavior-y: none; }
+
 
 :root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
 .topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
-.icon-btn{border:none;background:rgba(255,255,255,.16);color:#fff;width:42px;height:38px;border-radius:12px;font-size:18px}
+
 .brand{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
 .brand-logo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.14);object-fit:contain;padding:4px}
 .brand-title{min-width:0}.brand-sub{font-size:12px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -194,38 +196,6 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   .install-row{flex-direction:column;}
 }
 
-/* ===== 자동 로그인 로딩 화면 ===== */
-.boot {
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #0b4ea2 0%, #0a3e83 100%);
-  color: #fff;
-  text-align: center;
-}
-
-.boot-inner {
-  animation: fadeIn 0.5s ease-out;
-}
-
-.boot-title {
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-}
-
-.boot-sub {
-  margin-top: 10px;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-/* 살짝 숨쉬는 효과 */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 
 /* ===== Boot (Splash) Screen ===== */
 .screen.boot{
@@ -444,3 +414,45 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 .chip-btn .chip-text{
   font-size: 13px;
 }
+
+
+/* 홈 타일 2x3: 이미 기본이 2열이라 6개면 자동으로 2x3 됨 */
+
+.tile-image{
+  position: relative;
+  overflow: hidden;
+  min-height: 110px;
+}
+
+/* 타일 배경 이미지(라이온스 노래) */
+.tile-image::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: url("./lions_song.jpg") center center / cover no-repeat; /* ✅ 파일명만 맞춰 */
+  filter: saturate(1.05);
+  transform: scale(1.02);
+}
+
+/* 글자 가독성 오버레이 */
+.tile-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.45));
+}
+
+.tile-image .tile-title,
+.tile-image .tile-desc{
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0,0,0,.45);
+}
+
+/* 기타(준비중) 살짝 흐리게 */
+.tile-soon{
+  opacity: .65;
+}
+
+

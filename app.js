@@ -2,7 +2,9 @@
 let modalCtx = { list: [], index: -1 };
 
 
-const API_URL = "https://script.google.com/macros/s/AKfycbw4Fjz_4q7IJSIyddRS4-yEA9VmZddvQcjLtHSPzuxKBsFtYJyx6mEA_lfODVVoWtJkJQ/exec";
+const CFG = window.APP_CONFIG || {};
+const API_URL = String(CFG.apiUrl || "").trim();
+
 const LS_KEY = "bplions_auth_v1";
 
 const el = (id) => document.getElementById(id);
@@ -146,19 +148,25 @@ function apiJsonp(paramsObj) {
 }
 
 function setBrand(settings) {
-  if (el("districtText")) el("districtText").textContent = settings?.district || "국제라이온스협회 356-E지구";
-  if (el("clubNameText")) el("clubNameText").textContent = settings?.clubName || "북포항라이온스클럽";
-  if (el("coverTitle")) el("coverTitle").textContent = settings?.clubName || "북포항라이온스클럽";
-  if (el("coverSub")) el("coverSub").textContent = settings?.district || "국제라이온스협회 356-E지구";
+  const cfg = window.APP_CONFIG || {};
 
-  // ✅ 너의 index.html에는 clubLogoBig가 원래 없음
-  // 상단 로고만 고정 사용(logoUrl 있으면 그걸로, 없으면 ./logo.png)
+  const district = (settings?.district || cfg.district || "국제라이온스협회 356-E지구");
+  const clubName = (settings?.clubName || cfg.clubName || "북포항라이온스클럽");
+
+  if (el("districtText")) el("districtText").textContent = district;
+  if (el("clubNameText")) el("clubNameText").textContent = clubName;
+  if (el("coverTitle")) el("coverTitle").textContent = clubName;
+  if (el("coverSub")) el("coverSub").textContent = district;
+
   const s = el("clubLogoSmall");
   if (!s) return;
-  const logoUrl = (settings?.logoUrl || "").trim();
-  s.src = logoUrl ? logoUrl : "./logo.png";
+
+  const logoUrl = (settings?.logoUrl || cfg.logoUrl || "./logo.png").trim();
+  s.src = logoUrl;
   s.style.visibility = "visible";
 }
+
+
 
 function openAdminPage() {
   // 지금 입력한 phone/code를 저장해둔 값으로 링크 생성
@@ -351,10 +359,16 @@ async function handleLogin() {
   }
 
   const btn = el("btnLogin");
-  if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
+if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
 
-  try {
-    const json = await apiJsonp({ action: "data", phone, code });
+try {
+
+  if (!API_URL) {
+    throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
+  }
+
+  const json = await apiJsonp({ action: "data", phone, code });
+
 
     if (!json || json.ok !== true) {
       const msg = json?.error ? String(json.error) : "LOGIN_FAILED";
@@ -749,19 +763,20 @@ window.addEventListener("keydown", (e) => {
 });
 
 
-// ===== 안드로이드 시스템 뒤로가기 제어 (안정판) =====
+// ===== 안드로이드 시스템 뒤로가기 제어 (완성형) =====
 (function handleAndroidBack() {
-  // history에 최소 1개는 항상 남게 만들기
+
   function pushDummy() {
     history.pushState({ __app: true }, "", location.href);
   }
 
-  // 시작할 때 1개 넣기
   pushDummy();
+
+  let lastBackAt = 0;
 
   window.addEventListener("popstate", () => {
 
-    // 1) 모달이 열려있으면: 닫고 더미 다시 쌓기
+    // 1) 모달 닫기
     if (el("profileModal")?.hidden === false) {
       closeProfile();
       pushDummy();
@@ -778,18 +793,25 @@ window.addEventListener("keydown", (e) => {
       return;
     }
 
-    // 2) 화면 스택이 남아있으면: 이전 화면으로
+    // 2) 화면 뒤로
     if (state.navStack.length > 1) {
       popNav();
       pushDummy();
       return;
     }
 
-    // 3) 홈(또는 로그인)에서는: "한 번 더 누르면 종료" 안내만
+    // 3) 홈 → 2초내 2번 누르면 종료
+    const now = Date.now();
+    if (now - lastBackAt < 2000) {
+      history.back(); // 실제 종료
+      return;
+    }
+
+    lastBackAt = now;
     toast("한 번 더 누르면 종료됩니다");
-    // 종료시키지 말고 더미 유지
     pushDummy();
   });
+
 })();
 
 
