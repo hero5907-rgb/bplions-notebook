@@ -194,19 +194,34 @@ function renderBylawsView() {
 
   const safeText = esc(text || "내용 준비중");
 
-  let topHtml = "";
-  if (url) {
-   topHtml = `
-  <div style="margin-bottom:16px;text-align:center;">
-    <a href="${url}" target="_blank" rel="noopener"
-       style="display:inline-block;padding:12px 22px;border-radius:14px;
-              background:linear-gradient(135deg,#0b4ea2,#083a78);
-              color:#fff;font-weight:900;text-decoration:none;
-              box-shadow:0 6px 18px rgba(11,78,162,.35);">
-      📄 원본보기(PDF)
-    </a>
-  </div>
-`;
+let topHtml = "";
+
+if (url) {
+  topHtml = `
+    <div style="position:sticky;top:12px;display:flex;justify-content:flex-end;z-index:5;">
+      <a href="${url}" target="_blank" rel="noopener"
+         title="회칙 원본 PDF 열기"
+         style="
+           display:inline-flex;
+           align-items:center;
+           gap:4px;
+           padding:6px 10px;
+           border-radius:10px;
+           background:#0b4ea2;
+           color:#fff;
+           font-weight:800;
+           font-size:.78rem;
+           text-decoration:none;
+           box-shadow:0 4px 10px rgba(11,78,162,.25);
+         ">
+        📄 PDF
+      </a>
+    </div>
+  `;
+} else {
+  topHtml = ""; // PDF 링크 없으면 버튼 아예 안 보이게
+}
+
 
   } else {
     // ✅ URL이 진짜로 없으면 화면에 표시(원인 파악용)
