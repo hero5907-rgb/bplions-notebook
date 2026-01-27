@@ -182,20 +182,41 @@ function renderBylawsView() {
   const body = el("textBody");
   if (!body) return;
 
-  const text = String(state.settings?.bylaws || "").trim();      // F2
-  const url  = String(state.settings?.bylawsUrl || "").trim();   // G2
+  const text = String(state.settings?.bylaws || "").trim(); // F2 텍스트
 
-  // 텍스트는 예쁘게(줄바꿈 유지) 보여주기
+  // ✅ URL 키가 혹시 다르게 들어와도 대응
+  const url = String(
+    state.settings?.bylawsUrl ||
+    state.settings?.bylawsURL ||
+    state.settings?.bylaws_url ||
+    ""
+  ).trim();
+
   const safeText = esc(text || "내용 준비중");
 
-  // URL 있으면 버튼 추가
-  const btnHtml = url
-    ? `<div style="margin-bottom:10px;">
-         <a class="a-btn primary" href="${esc(url)}" target="_blank" rel="noopener">📄 원본보기(PDF)</a>
-       </div>`
-    : "";
+  let topHtml = "";
+  if (url) {
+    topHtml = `
+      <div style="margin-bottom:12px;">
+        <a href="${url}" target="_blank" rel="noopener"
+           style="display:inline-block;padding:10px 14px;border-radius:12px;background:#0b4ea2;color:#fff;font-weight:900;text-decoration:none;">
+          📄 원본보기(PDF)
+        </a>
+        <div style="margin-top:6px;color:#6b7280;font-size:.88rem;word-break:break-all;">
+          (링크) ${esc(url)}
+        </div>
+      </div>
+    `;
+  } else {
+    // ✅ URL이 진짜로 없으면 화면에 표시(원인 파악용)
+    topHtml = `
+      <div style="margin-bottom:12px;color:#ef4444;font-weight:900;">
+        원본 PDF 링크가 아직 없습니다. (관리자에서 PDF 업로드 필요)
+      </div>
+    `;
+  }
 
-  body.innerHTML = btnHtml + `<div class="prose">${safeText}</div>`;
+  body.innerHTML = topHtml + `<div style="white-space:pre-wrap;line-height:1.6;">${safeText}</div>`;
 }
 
 
