@@ -194,28 +194,26 @@ function renderBylawsView() {
 
   const safeText = esc(text || "내용 준비중");
 
-  // ✅ PDF 버튼: 작게 + 우측 상단(sticky)
   const topHtml = url ? `
-    <div style="position:sticky;top:12px;display:flex;justify-content:flex-end;z-index:5;">
-      <a href="${url}" target="_blank" rel="noopener"
-         title="회칙 원본 PDF 열기"
-         style="
-           display:inline-flex;
-           align-items:center;
-           gap:4px;
-           padding:6px 10px;
-           border-radius:10px;
-           background:#0b4ea2;
-           color:#fff;
-           font-weight:800;
-           font-size:.78rem;
-           text-decoration:none;
-           box-shadow:0 4px 10px rgba(11,78,162,.25);
-         ">
-        📄 PDF
-      </a>
-    </div>
-  ` : "";
+  <div style="display:flex;justify-content:flex-end;margin:0 0 8px;">
+    <a href="${url}" target="_blank" rel="noopener"
+       title="회칙 원본 PDF"
+       style="
+         display:inline-block;
+         padding:3px 6px;
+         border-radius:7px;
+         background:#0b4ea2;
+         color:#fff;
+         font-weight:800;
+         font-size:10px;
+         line-height:1;
+         text-decoration:none;
+         box-shadow:none;
+       ">
+      PDF
+    </a>
+  </div>
+` : "";
 
   body.innerHTML =
     topHtml +
