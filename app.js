@@ -295,6 +295,9 @@ function renderAnnouncements() {
         <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
         <div class="row-sub" style="white-space:normal;margin-top:8px;">${esc(a.body || "")}</div>
       </div>`;
+
+   row.addEventListener("click", () => openAnnModal(a));
+
     wrap.appendChild(row);
   }
 }
@@ -421,7 +424,10 @@ function bindNav() {
         pushNav("text");
          if (el("textTitle")) el("textTitle").textContent = "회칙";
          renderBylawsView(); // ✅ 텍스트 + 원본보기 버튼
-      }
+      } else if (target === "song") {
+           // ✅ 라이온스 노래 이미지 크게 보기
+         openImgModal("./lions_song.jpg");
+}
 
     });
   });
@@ -741,3 +747,32 @@ window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeProfile();
   }
 });
+
+
+function openImgModal(src){
+  const m = el("imgModal");
+  const img = el("imgModalPhoto");
+  if (!m || !img) return;
+  img.src = src;
+  m.hidden = false;
+}
+
+function closeImgModal(){
+  const m = el("imgModal");
+  if (m) m.hidden = true;
+}
+
+
+function openAnnModal(a){
+  const m = el("annModal");
+  if (!m) return;
+  el("annModalTitle").textContent = a?.title || "";
+  el("annModalMeta").textContent = [a?.date, a?.author].filter(Boolean).join(" · ");
+  el("annModalBody").textContent = a?.body || "";
+  m.hidden = false;
+}
+
+function closeAnnModal(){
+  const m = el("annModal");
+  if (m) m.hidden = true;
+}
