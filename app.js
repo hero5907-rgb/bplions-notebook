@@ -393,12 +393,19 @@ try {
 
     toast("접속 완료");
   } catch (e) {
-    console.error("LOGIN_ERROR:", e);
-    if (err) {
-      err.hidden = false;
-      err.textContent = `승인되지 않았거나 정보가 틀렸습니다. (${e?.message || e})`;
-    }
-  } finally {
+  console.error("LOGIN_ERROR:", e);
+
+  // ✅ 자동로그인(BOOT) 중 실패하면 로그인 화면으로 복귀
+  state.navStack = ["login"];
+  showScreen("login");
+  window.scrollTo(0, 0);
+
+  if (err) {
+    err.hidden = false;
+    err.textContent = `승인되지 않았거나 정보가 틀렸습니다. (${e?.message || e})`;
+  }
+} finally {
+
     if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
   }
 }
