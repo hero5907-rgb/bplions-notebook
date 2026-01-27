@@ -184,7 +184,7 @@ function renderBylawsView() {
 
   const text = String(state.settings?.bylaws || "").trim(); // F2 텍스트
 
-  // ✅ URL 키가 혹시 다르게 들어와도 대응
+  // URL 키가 혹시 다르게 들어와도 대응
   const url = String(
     state.settings?.bylawsUrl ||
     state.settings?.bylawsURL ||
@@ -194,10 +194,8 @@ function renderBylawsView() {
 
   const safeText = esc(text || "내용 준비중");
 
-let topHtml = "";
-
-if (url) {
-  topHtml = `
+  // ✅ PDF 버튼: 작게 + 우측 상단(sticky)
+  const topHtml = url ? `
     <div style="position:sticky;top:12px;display:flex;justify-content:flex-end;z-index:5;">
       <a href="${url}" target="_blank" rel="noopener"
          title="회칙 원본 PDF 열기"
@@ -217,24 +215,12 @@ if (url) {
         📄 PDF
       </a>
     </div>
-  `;
-} else {
-  topHtml = ""; // PDF 링크 없으면 버튼 아예 안 보이게
+  ` : "";
+
+  body.innerHTML =
+    topHtml +
+    `<div style="white-space:pre-wrap;line-height:1.6;">${safeText}</div>`;
 }
-
-
-  } else {
-    // ✅ URL이 진짜로 없으면 화면에 표시(원인 파악용)
-    topHtml = `
-      <div style="margin-bottom:12px;color:#ef4444;font-weight:900;">
-        원본 PDF 링크가 아직 없습니다. (관리자에서 PDF 업로드 필요)
-      </div>
-    `;
-  }
-
-  body.innerHTML = topHtml + `<div style="white-space:pre-wrap;line-height:1.6;">${safeText}</div>`;
-}
-
 
 
 function downloadVCard(m) {
