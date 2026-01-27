@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0b4ea2" />
-  <title>북포항라이온스클럽 수첩</title>
+  <title id="docTitle">클럽 수첩</title>
+
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -45,8 +46,9 @@
   <section id="screenBoot" class="screen boot" hidden>
     <div class="boot-card">
       <img class="boot-logo" src="./logo.png" alt="로고" />
-      <div class="boot-title">북포항라이온스클럽</div>
-      <div class="boot-sub">회원수첩</div>
+	<div class="boot-title" id="bootTitle">클럽명</div>
+	<div class="boot-sub" id="bootSub">회원수첩</div>
+
 
       <div class="boot-loading">
         <span class="spinner" aria-hidden="true"></span>
@@ -64,8 +66,9 @@
       <!-- ✅ hero-text는 딱 1개만 -->
       <div class="hero-text">
         <div class="hero-title">
-          <div class="title-main">북포항라이온스클럽</div>
-          <div class="title-sub">회원수첩</div>
+          	<div class="title-main" id="loginTitleMain">클럽명</div>
+	<div class="title-sub" id="loginTitleSub">회원수첩</div>
+
         </div>
 
         <div class="hero-desc">
@@ -201,7 +204,7 @@
     <div class="modal-actions">
       <a id="modalCall" class="a-btn primary">📞 통화</a>
       <a id="modalSms" class="a-btn">💬 문자</a>
-      <button id="modalSave" class="a-btn">📇 저장</button>
+   
     </div>
 
     <button class="modal-close" onclick="closeProfile()">닫기</button>

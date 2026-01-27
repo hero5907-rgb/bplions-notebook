@@ -229,21 +229,6 @@ function renderBylawsView() {
 }
 
 
-function downloadVCard(m) {
-  const vcf = `BEGIN:VCARD
-VERSION:3.0
-FN:${m.name || ""}
-TEL;TYPE=CELL:${m.phone || ""}
-ORG:${state.settings?.clubName || "북포항라이온스클럽"}
-END:VCARD`;
-  const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${m.name || "contact"}.vcf`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 function renderMembers(list) {
   const pill = el("memberCountPill");
@@ -270,13 +255,13 @@ function renderMembers(list) {
         <div class="actions">
           <a class="a-btn primary" href="tel:${esc(m.phone)}">📞 통화</a>
           <a class="a-btn" href="sms:${esc(m.phone)}">💬 문자</a>
-          <button class="a-btn" data-vcard="1">📇 저장</button>
+        
         </div>
       </div>`;
     
     row.addEventListener("click", () => openProfileAt(list, i));
     row.querySelector(".actions")?.addEventListener("click", (e) => e.stopPropagation());
-    row.querySelector('[data-vcard="1"]')?.addEventListener("click", (e) => { e.stopPropagation(); downloadVCard(m); });
+ 
 
 
  wrap.appendChild(row);
@@ -616,7 +601,7 @@ function openProfileAt(list, index) {
 
   el("modalCall").href = `tel:${m.phone || ""}`;
   el("modalSms").href  = `sms:${m.phone || ""}`;
-  el("modalSave").onclick = () => downloadVCard(m);
+  
 
   resetPhotoTransform();
   el("profileModal").hidden = false;
