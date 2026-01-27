@@ -749,43 +749,47 @@ window.addEventListener("keydown", (e) => {
 });
 
 
-// ===== 안드로이드 시스템 뒤로가기 제어 =====
+// ===== 안드로이드 시스템 뒤로가기 제어 (안정판) =====
 (function handleAndroidBack() {
+  // history에 최소 1개는 항상 남게 만들기
+  function pushDummy() {
+    history.pushState({ __app: true }, "", location.href);
+  }
 
-  // 최초 1회 history 상태 넣기
-  history.pushState({ page: "root" }, "", location.href);
+  // 시작할 때 1개 넣기
+  pushDummy();
 
-  window.addEventListener("popstate", (e) => {
+  window.addEventListener("popstate", () => {
 
-    // 모달 열려있으면 → 모달 닫기
+    // 1) 모달이 열려있으면: 닫고 더미 다시 쌓기
     if (el("profileModal")?.hidden === false) {
       closeProfile();
-      history.pushState({ modal: true }, "", location.href);
+      pushDummy();
       return;
     }
-
     if (el("annModal")?.hidden === false) {
       closeAnnModal();
-      history.pushState({ modal: true }, "", location.href);
+      pushDummy();
       return;
     }
-
     if (el("imgModal")?.hidden === false) {
       closeImgModal();
-      history.pushState({ modal: true }, "", location.href);
+      pushDummy();
       return;
     }
 
-    // 일반 화면 → 뒤로가기 처리
+    // 2) 화면 스택이 남아있으면: 이전 화면으로
     if (state.navStack.length > 1) {
       popNav();
-      history.pushState({ nav: true }, "", location.href);
-    } else {
-      // 홈 or 로그인 → 앱 종료
-      history.back();
+      pushDummy();
+      return;
     }
-  });
 
+    // 3) 홈(또는 로그인)에서는: "한 번 더 누르면 종료" 안내만
+    toast("한 번 더 누르면 종료됩니다");
+    // 종료시키지 말고 더미 유지
+    pushDummy();
+  });
 })();
 
 
