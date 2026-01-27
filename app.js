@@ -178,6 +178,28 @@ function esc(s) {
     .replaceAll(">", "&gt;");
 }
 
+function renderBylawsView() {
+  const body = el("textBody");
+  if (!body) return;
+
+  const text = String(state.settings?.bylaws || "").trim();      // F2
+  const url  = String(state.settings?.bylawsUrl || "").trim();   // G2
+
+  // 텍스트는 예쁘게(줄바꿈 유지) 보여주기
+  const safeText = esc(text || "내용 준비중");
+
+  // URL 있으면 버튼 추가
+  const btnHtml = url
+    ? `<div style="margin-bottom:10px;">
+         <a class="a-btn primary" href="${esc(url)}" target="_blank" rel="noopener">📄 원본보기(PDF)</a>
+       </div>`
+    : "";
+
+  body.innerHTML = btnHtml + `<div class="prose">${safeText}</div>`;
+}
+
+
+
 function downloadVCard(m) {
   const vcf = `BEGIN:VCARD
 VERSION:3.0
@@ -376,9 +398,10 @@ function bindNav() {
         if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
       } else if (target === "bylaws") {
         pushNav("text");
-        if (el("textTitle")) el("textTitle").textContent = "회칙";
-        if (el("textBody")) el("textBody").textContent = state.settings?.bylaws || "내용 준비중";
+         if (el("textTitle")) el("textTitle").textContent = "회칙";
+         renderBylawsView(); // ✅ 텍스트 + 원본보기 버튼
       }
+
     });
   });
 }
