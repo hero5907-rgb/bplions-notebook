@@ -1,6 +1,6 @@
 // config.js (클럽별로 이 파일만 수정하면 됨)
 window.APP_CONFIG = {
-  apiUrl: "https://script.google.com/macros/s/여기에_각클럽_GAS_URL/exec",
+  apiUrl: "https://script.google.com/macros/s/AKfycbw4Fjz_4q7IJSIyddRS4-yEA9VmZddvQcjLtHSPzuxKBsFtYJyx6mEA_lfODVVoWtJkJQ/exec",
 
   clubName: "동서남북포항라이온스클럽",
   district: "미아국제라이온스협회 356-E지구",
