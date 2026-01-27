@@ -210,7 +210,7 @@ function renderBylawsView() {
          text-decoration:none;
          box-shadow:none;
        ">
-      PDF
+      원본pdf
     </a>
   </div>
 ` : "";
