@@ -749,6 +749,46 @@ window.addEventListener("keydown", (e) => {
 });
 
 
+// ===== 안드로이드 시스템 뒤로가기 제어 =====
+(function handleAndroidBack() {
+
+  // 최초 1회 history 상태 넣기
+  history.pushState({ page: "root" }, "", location.href);
+
+  window.addEventListener("popstate", (e) => {
+
+    // 모달 열려있으면 → 모달 닫기
+    if (el("profileModal")?.hidden === false) {
+      closeProfile();
+      history.pushState({ modal: true }, "", location.href);
+      return;
+    }
+
+    if (el("annModal")?.hidden === false) {
+      closeAnnModal();
+      history.pushState({ modal: true }, "", location.href);
+      return;
+    }
+
+    if (el("imgModal")?.hidden === false) {
+      closeImgModal();
+      history.pushState({ modal: true }, "", location.href);
+      return;
+    }
+
+    // 일반 화면 → 뒤로가기 처리
+    if (state.navStack.length > 1) {
+      popNav();
+      history.pushState({ nav: true }, "", location.href);
+    } else {
+      // 홈 or 로그인 → 앱 종료
+      history.back();
+    }
+  });
+
+})();
+
+
 function openImgModal(src){
   const m = el("imgModal");
   const img = el("imgModalPhoto");
