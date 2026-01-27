@@ -164,6 +164,17 @@ function setBrand(settings) {
   const logoUrl = (settings?.logoUrl || cfg.logoUrl || "./logo.png").trim();
   s.src = logoUrl;
   s.style.visibility = "visible";
+
+  // ✅ 부트/로그인/탭 제목도 config 값으로 바꾸기
+  if (el("bootTitle"))      el("bootTitle").textContent      = clubName;
+  if (el("bootSub"))        el("bootSub").textContent        = "회원수첩";
+
+  if (el("loginTitleMain")) el("loginTitleMain").textContent = clubName;
+  if (el("loginTitleSub"))  el("loginTitleSub").textContent  = "회원수첩";
+
+  if (el("docTitle"))       el("docTitle").textContent       = `${clubName} 수첩`;
+
+
 }
 
 
