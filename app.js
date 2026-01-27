@@ -196,17 +196,18 @@ function renderBylawsView() {
 
   let topHtml = "";
   if (url) {
-    topHtml = `
-      <div style="margin-bottom:12px;">
-        <a href="${url}" target="_blank" rel="noopener"
-           style="display:inline-block;padding:10px 14px;border-radius:12px;background:#0b4ea2;color:#fff;font-weight:900;text-decoration:none;">
-          📄 원본보기(PDF)
-        </a>
-        <div style="margin-top:6px;color:#6b7280;font-size:.88rem;word-break:break-all;">
-          (링크) ${esc(url)}
-        </div>
-      </div>
-    `;
+   topHtml = `
+  <div style="margin-bottom:16px;text-align:center;">
+    <a href="${url}" target="_blank" rel="noopener"
+       style="display:inline-block;padding:12px 22px;border-radius:14px;
+              background:linear-gradient(135deg,#0b4ea2,#083a78);
+              color:#fff;font-weight:900;text-decoration:none;
+              box-shadow:0 6px 18px rgba(11,78,162,.35);">
+      📄 원본보기(PDF)
+    </a>
+  </div>
+`;
+
   } else {
     // ✅ URL이 진짜로 없으면 화면에 표시(원인 파악용)
     topHtml = `
