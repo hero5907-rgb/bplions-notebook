@@ -604,14 +604,22 @@ if ("serviceWorker" in navigator) {
     try {
       const reg = await navigator.serviceWorker.register("./sw.js");
 
+      // ✅ 즉시 업데이트 체크
+      reg.update();
+
+      // ✅ 이미 waiting 상태면 바로 토스트
+      if (reg.waiting && navigator.serviceWorker.controller) {
+        showUpdateToast(() => {
+          reg.waiting.postMessage({ type: "SKIP_WAITING" });
+        });
+      }
+
       // ✅ 새 SW가 설치되면(대기 상태) 토스트 띄우기
       reg.addEventListener("updatefound", () => {
         const nw = reg.installing;
         if (!nw) return;
 
         nw.addEventListener("statechange", () => {
-          // installed: 새 SW 설치 완료
-          // controller가 있으면 = “기존 버전이 이미 실행중” → 업데이트 상황
           if (nw.state === "installed" && navigator.serviceWorker.controller) {
             showUpdateToast(() => {
               const w = reg.waiting || reg.installing;
@@ -621,7 +629,7 @@ if ("serviceWorker" in navigator) {
         });
       });
 
-      // ✅ 새 SW가 활성화되어 컨트롤러가 바뀌면 자동 새로고침
+      // ✅ 새 SW가 활성화되면 자동 새로고침
       let refreshing = false;
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (refreshing) return;
