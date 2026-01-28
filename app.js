@@ -210,33 +210,23 @@ function renderBylawsView() {
     state.settings?.bylaws_url ||
     ""
   ).trim();
-
   const safeText = esc(text || "내용 준비중");
+  // ✅ 헤더 오른쪽 "원본PDF" 버튼 제어
+  const pdfBtn = el("btnBylawsPdf");
+  if (pdfBtn) {
+    if (url) {
+      pdfBtn.href = url;
+      pdfBtn.hidden = false;
+      pdfBtn.textContent = "원본PDF";
+    } else {
+      pdfBtn.hidden = true;
+    }
+  }
 
-  const topHtml = url ? `
-  <div style="display:flex;justify-content:flex-end;margin:0 0 8px;">
-    <a href="${url}" target="_blank" rel="noopener"
-       title="회칙 원본 PDF"
-       style="
-         display:inline-block;
-         padding:3px 6px;
-         border-radius:7px;
-         background:#0b4ea2;
-         color:#fff;
-         font-weight:800;
-         font-size:10px;
-         line-height:1;
-         text-decoration:none;
-         box-shadow:none;
-       ">
-      원본pdf
-    </a>
-  </div>
-` : "";
 
-  body.innerHTML =
-    topHtml +
-    `<div style="white-space:pre-wrap;line-height:1.6;">${safeText}</div>`;
+
+    body.innerHTML = `<div style="white-space:pre-wrap;line-height:1.6;">${safeText}</div>`;
+
 }
 
 // ✅ 회원여부 필터: isMember === false 인 사람은 회원명부/인원수에서 제외
@@ -436,6 +426,9 @@ function bindNav() {
   document.querySelectorAll("[data-nav]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-nav");
+if (el("btnBylawsPdf")) el("btnBylawsPdf").hidden = true; // ✅ 기본은 숨김
+
+
       if (target === "members") {
         pushNav("members");
         if (el("memberSearch")) el("memberSearch").value = "";
@@ -444,10 +437,12 @@ function bindNav() {
         pushNav("announcements");
         renderAnnouncements();
       } else if (target === "purpose") {
-        pushNav("text");
-        if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
-        if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
-      } else if (target === "bylaws") {
+  pushNav("text");
+  if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
+  if (el("btnBylawsPdf")) el("btnBylawsPdf").hidden = true;   // ✅ 추가
+  if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
+}
+ else if (target === "bylaws") {
         pushNav("text");
          if (el("textTitle")) el("textTitle").textContent = "회칙";
          renderBylawsView(); // ✅ 텍스트 + 원본보기 버튼

@@ -30,6 +30,11 @@
   <span class="chip-text">관리자</span>
 </button>
 
+
+
+<!-- 회칙 원본 PDF -->
+<a id="btnBylawsPdf" class="pdf-btn" href="#" target="_blank" rel="noopener" hidden>원본PDF</a>
+
 <!-- 로그아웃(전원 아이콘) -->
 <button class="icon-btn" id="btnLogout" aria-label="로그아웃" title="로그아웃" hidden>
   <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -181,9 +186,11 @@
   <!-- 텍스트 -->
   <section id="screenText" class="screen" hidden>
     <div class="card">
-      <div class="card-header">
-        <div class="card-title" id="textTitle">제목</div>
-      </div>
+<div class="card-header">
+  <div class="card-title" id="textTitle">제목</div>
+
+</div>
+
       <div id="textBody" class="prose"></div>
     </div>
   </section>
