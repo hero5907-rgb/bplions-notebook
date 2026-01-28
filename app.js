@@ -426,31 +426,34 @@ function bindNav() {
   document.querySelectorAll("[data-nav]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-nav");
-if (el("btnBylawsPdf")) el("btnBylawsPdf").hidden = true; // ✅ 기본은 숨김
 
+      // ✅ 텍스트 화면 들어갈 때마다 기본은 숨김 (회칙에서만 renderBylawsView가 켬)
+      const pdfBtn = el("btnBylawsPdf");
+      if (pdfBtn) pdfBtn.hidden = true;
 
       if (target === "members") {
         pushNav("members");
         if (el("memberSearch")) el("memberSearch").value = "";
         renderMembers(state.members);
+
       } else if (target === "announcements") {
         pushNav("announcements");
         renderAnnouncements();
-      } else if (target === "purpose") {
-  pushNav("text");
-  if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
-  if (el("btnBylawsPdf")) el("btnBylawsPdf").hidden = true;   // ✅ 추가
-  if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
-}
- else if (target === "bylaws") {
-        pushNav("text");
-         if (el("textTitle")) el("textTitle").textContent = "회칙";
-         renderBylawsView(); // ✅ 텍스트 + 원본보기 버튼
-      } else if (target === "song") {
-           // ✅ 라이온스 노래 이미지 크게 보기
-         openImgModal("./lions_song.jpg");
-}
 
+      } else if (target === "purpose") {
+        pushNav("text");
+        if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
+        if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
+        // pdfBtn은 위에서 이미 hidden=true 처리됨
+
+      } else if (target === "bylaws") {
+        pushNav("text");
+        if (el("textTitle")) el("textTitle").textContent = "회칙";
+        renderBylawsView(); // ✅ 여기서 url 있으면 pdfBtn을 보여줌
+
+      } else if (target === "song") {
+        openImgModal("./lions_song.jpg");
+      }
     });
   });
 }
