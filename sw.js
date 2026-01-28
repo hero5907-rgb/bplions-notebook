@@ -5,7 +5,7 @@ self.addEventListener("activate", (e) => self.clients.claim());
 // 북포항라이온스클럽 수첩 PWA Service Worker
 // ✅ 캐시 갱신이 필요할 때는 CACHE_NAME만 올리면 됩니다 (v5 -> v6 ...)
 
-const CACHE_NAME = "bplions-v41";
+const CACHE_NAME = "bplions-v42";
 const ASSETS = [
   "./",
   "./index.html",
