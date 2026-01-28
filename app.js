@@ -576,27 +576,41 @@ function showUpdateToast(onRefresh) {
   const t = el("toast");
   if (!t) return;
 
+  // ✅ 기존 toast() 자동 숨김 타이머가 남아있으면 업데이트 토스트가 클릭 전에 사라질 수 있음
+  clearTimeout(toast._t);
+
   // 기존 toast()는 textContent를 쓰니까, 업데이트 토스트는 HTML로 별도 구성
   t.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;">
       <div style="font-weight:900;">새 버전이 있어요</div>
-      <button id="btnSwRefresh"
+      <button id="btnSwRefresh" type="button"
         style="border:none;border-radius:12px;padding:8px 12px;font-weight:900;cursor:pointer;">
-        새로고침
+        업데이트
       </button>
     </div>
   `;
   t.hidden = false;
 
   const b = document.getElementById("btnSwRefresh");
-  if (b) {
-    b.onclick = () => {
-      // 버튼 누르면 “대기중(waiting) SW → 즉시 활성화” 요청
-      try { onRefresh?.(); } catch {}
-      b.disabled = true;
-      b.textContent = "적용중...";
-    };
-  }
+  if (!b) return;
+
+  let done = false;
+  const run = (ev) => {
+    if (done) return;
+    done = true;
+    try { ev?.preventDefault?.(); ev?.stopPropagation?.(); } catch {}
+    try { onRefresh?.(); } catch {}
+
+    b.disabled = true;
+    b.textContent = "적용중...";
+
+    // ✅ 일부 모바일(PWA/iOS)에서 controllerchange가 안 뜨는 경우가 있어 안전장치로 강제 리로드
+    setTimeout(() => location.reload(), 1200);
+  };
+
+  // ✅ iOS/PWA는 click이 늦게 오거나 누락되는 경우가 있어 touchend도 같이 받음
+  b.addEventListener("click", run, { once: true });
+  b.addEventListener("touchend", run, { once: true, passive: false });
 }
 
 if ("serviceWorker" in navigator) {
