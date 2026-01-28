@@ -616,5 +616,4 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 
-/* === FINAL OVERRIDE (always wins) === */
-.slogan-box .slogan-text{ font-size:18px !important; line-height:1.25 !important; word-break:keep-all; }
+
