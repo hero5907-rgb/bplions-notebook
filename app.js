@@ -157,6 +157,22 @@ function setBrand(settings) {
   if (el("clubNameText")) el("clubNameText").textContent = clubName;
   if (el("coverTitle")) el("coverTitle").textContent = clubName;
   if (el("coverSub")) el("coverSub").textContent = district;
+  if (el("sloganText")) el("sloganText").textContent =
+  settings?.slogan || CFG.slogan || "";
+
+  if (el("generationText")) el("generationText").textContent =
+  `제${settings?.generation || CFG.generation || ""}대 ${settings?.clubName || CFG.clubName || ""}`;
+
+if (el("hallAddress")) el("hallAddress").textContent =
+  "📍 " + (settings?.hallAddress || CFG.hallAddress || "");
+
+if (el("hallPhone")) el("hallPhone").textContent =
+  "☎ " + (settings?.hallPhone || CFG.hallPhone || "");
+
+if (el("copyrightText")) el("copyrightText").textContent =
+  settings?.copyright || CFG.copyright || "";
+
+
 
   const s = el("clubLogoSmall");
   if (!s) return;
