@@ -487,6 +487,7 @@ document.addEventListener("touchmove", (e) => {
 
 
 (function init() {
+  setBrand(null);   // ✅ 로그인 전에도 config 값으로 로고/클럽명/지구명 세팅
   bindNav();
   bindSearch();
 
