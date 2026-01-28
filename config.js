@@ -2,8 +2,8 @@
 window.APP_CONFIG = {
   apiUrl: "https://script.google.com/macros/s/AKfycbzpi93PZlp1PZWFuimbw91d_8Sc-jVXyjBX94oqNF-Yt2NnIkN-6R4f5ke__wIaV4ml7Q/exec",
 
-  clubName: "동서남북포항라이온스클럽",
-  district: "미아국제라이온스협회 356-E지구",
+  clubName: "북포항라이온스클럽",
+  district: "국제라이온스협회 356-E지구",
 
   slogan: "참여하는 봉사 희망찬 북포항",
   address: "회관 주소 : 경상북도 포항시 북구 흥해읍 달전로5번길 52-29",
