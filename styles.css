@@ -488,3 +488,14 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   cursor: pointer;
 }
 .pdf-btn:active{ transform: scale(.98); }
+
+
+/* 탭 줄 고정 */
+.header .tabs{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #fff;
+  padding: 10px 0;
+}
+
