@@ -631,8 +631,12 @@ function openProfileAt(list, index) {
   const left = parts.join(" ");               // 예: "삼성전자 과장"
   const right = address ? address : "";       // 예: "포항시 북구 ..."
 
-  const line = [left, right].filter(Boolean).join(" / ");  // "삼성전자 과장 / 포항시..."
-  el("modalWorkplace").textContent = line || "";
+ const line1 = left;     // 직장 + 직함
+const line2 = right;    // 주소
+
+el("modalWorkplace").textContent =
+  [line1, line2].filter(Boolean).join("\n");   // ✅ 줄바꿈(슬래시 없음)
+
 
   // 폰번호(굵게는 CSS에서 처리)
   el("modalPhone").textContent = m.phone || "";

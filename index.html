@@ -196,20 +196,25 @@
   <div class="modal-backdrop" onclick="closeProfile()"></div>
   <div class="modal-card">
     <img id="modalPhoto" class="modal-photo" />
+
     <div class="modal-name" id="modalName"></div>
-    <div class="modal-position" id="modalPosition"></div>
+
+    <div class="modal-position">
+      <span class="badge" id="modalPosition"></span>
+    </div>
+
     <div class="modal-workplace" id="modalWorkplace"></div>
     <div class="modal-phone" id="modalPhone"></div>
 
     <div class="modal-actions">
       <a id="modalCall" class="a-btn primary">📞 통화</a>
       <a id="modalSms" class="a-btn">💬 문자</a>
-   
     </div>
 
     <button class="modal-close" onclick="closeProfile()">닫기</button>
   </div>
 </div>
+
 
 <!-- ===== 공지 상세 모달 ===== -->
 <div id="annModal" class="modal" hidden>
