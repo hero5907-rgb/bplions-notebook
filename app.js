@@ -634,8 +634,9 @@ function openProfileAt(list, index) {
  const line1 = left;     // 직장 + 직함
 const line2 = right;    // 주소
 
-el("modalWorkplace").textContent =
-  [line1, line2].filter(Boolean).join("\n");   // ✅ 줄바꿈(슬래시 없음)
+// 직장 / 직함 / 주소 줄바꿈 처리
+const workplace = (m.workplace || "").replaceAll(" / ", "\n").replaceAll("/", "\n");
+el("modalWorkplace").textContent = workplace;
 
 
   // 폰번호(굵게는 CSS에서 처리)
