@@ -1,7 +1,7 @@
 // 북포항라이온스클럽 수첩 PWA Service Worker (stable cache + reliable updates)
 // 운영 규칙: 배포할 때 CACHE_NAME만 +1
 
-const CACHE_NAME = "bplions-v57";
+const CACHE_NAME = "bplions-v58";
 
 const ASSETS = [
   "./",

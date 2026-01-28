@@ -604,5 +604,17 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 
+/* ===== 슬로건 한줄 최적화 ===== */
+.slogan-box .slogan-text{
+  font-size: clamp(19px, 4.6vw, 22px);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 /* === FINAL OVERRIDE (always wins) === */
 .slogan-box .slogan-text{ font-size:18px !important; line-height:1.25 !important; word-break:keep-all; }
