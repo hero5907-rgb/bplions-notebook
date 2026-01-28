@@ -239,6 +239,15 @@ function renderBylawsView() {
     `<div style="white-space:pre-wrap;line-height:1.6;">${safeText}</div>`;
 }
 
+// ✅ 회원여부 필터: isMember === false 인 사람은 회원명부/인원수에서 제외
+function onlyRealMembers(arr){
+  const list = Array.isArray(arr) ? arr : [];
+  return list.filter(m => {
+    // 서버에서 isMember를 안 내려주면(구버전) 기존처럼 "회원" 취급
+    if (m && typeof m.isMember === "boolean") return m.isMember === true;
+    return true;
+  });
+}
 
 
 function renderMembers(list) {
@@ -373,7 +382,8 @@ try {
 
     state.me = json.me;
     state.settings = json.settings;
-    state.members = (json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
+   state.members = onlyRealMembers(json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
+
     state.announcements = json.announcements || [];
 
     // ✅ 관리자 버튼: 로그인 성공 시에만 표시/숨김 결정
