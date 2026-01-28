@@ -453,7 +453,10 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 #modalName { font-weight: 800; }
-#modalPhone { font-weight: 900; }
+#modalPhone { 
+  font-weight: 900 !important;
+  text-shadow: 0 0 0.3px rgba(0,0,0,.6);
+}
 
 
 
