@@ -43,6 +43,29 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // ✅ 정적파일은 cache-first
+  // ✅ "페이지 이동(=index.html)" 은 network-first (온라인이면 새 버전 우선)
+  if (req.mode === "navigate") {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          // 최신 index를 캐시에 넣어둠(다음 오프라인 대비)
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          return res;
+        })
+        .catch(() => caches.match(req).then((c) => c || caches.match("./index.html")))
+    );
+    return;
+  }
+
+  // ✅ 나머지 정적파일은 cache-first
   event.respondWith(caches.match(req).then((cached) => cached || fetch(req)));
+
+
+// ✅ 앱에서 "업데이트 적용" 눌렀을 때 즉시 대기중 SW를 활성화
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
+

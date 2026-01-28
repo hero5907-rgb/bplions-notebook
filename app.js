@@ -571,10 +571,70 @@ document.addEventListener("touchmove", (e) => {
 })();
 
 
-// ===== PWA Service Worker 등록 =====
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+// ===== PWA Service Worker 등록 + 업데이트 토스트 =====
+function showUpdateToast(onRefresh) {
+  const t = el("toast");
+  if (!t) return;
+
+  // 기존 toast()는 textContent를 쓰니까, 업데이트 토스트는 HTML로 별도 구성
+  t.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="font-weight:900;">새 버전이 있어요</div>
+      <button id="btnSwRefresh"
+        style="border:none;border-radius:12px;padding:8px 12px;font-weight:900;cursor:pointer;">
+        새로고침
+      </button>
+    </div>
+  `;
+  t.hidden = false;
+
+  const b = document.getElementById("btnSwRefresh");
+  if (b) {
+    b.onclick = () => {
+      // 버튼 누르면 “대기중(waiting) SW → 즉시 활성화” 요청
+      try { onRefresh?.(); } catch {}
+      b.disabled = true;
+      b.textContent = "적용중...";
+    };
+  }
 }
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const reg = await navigator.serviceWorker.register("./sw.js");
+
+      // ✅ 새 SW가 설치되면(대기 상태) 토스트 띄우기
+      reg.addEventListener("updatefound", () => {
+        const nw = reg.installing;
+        if (!nw) return;
+
+        nw.addEventListener("statechange", () => {
+          // installed: 새 SW 설치 완료
+          // controller가 있으면 = “기존 버전이 이미 실행중” → 업데이트 상황
+          if (nw.state === "installed" && navigator.serviceWorker.controller) {
+            showUpdateToast(() => {
+              const w = reg.waiting || reg.installing;
+              if (w) w.postMessage({ type: "SKIP_WAITING" });
+            });
+          }
+        });
+      });
+
+      // ✅ 새 SW가 활성화되어 컨트롤러가 바뀌면 자동 새로고침
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshing) return;
+        refreshing = true;
+        location.reload();
+      });
+
+    } catch (e) {
+      console.error("SW_REGISTER_FAILED:", e);
+    }
+  });
+}
+
 
 // ===== PWA Install buttons =====
 let deferredPrompt = null;

@@ -595,3 +595,10 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   margin-left: 4px;
   opacity: 0.9;
 }
+
+
+.toast{
+  min-height:44px;
+  font-size:14px;
+  cursor:pointer;
+}
