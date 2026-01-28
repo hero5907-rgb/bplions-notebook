@@ -613,14 +613,32 @@ function openProfileAt(list, index) {
 
   // ✅ 멤버 데이터 주입
   el("modalPhoto").src = m.photoUrl || "";
+
+  // 이름(굵게) + 직위(지금처럼)
   el("modalName").textContent = m.name || "";
   el("modalPosition").textContent = m.position || "";
-  el("modalWorkplace").textContent = m.workplace || "";
+
+  // 직장 / 직함 / 주소 (한 줄로 합치기)
+  const workplace = String(m.workplace || "").trim();
+  const title = String(m.title || "").trim();
+  const address = String(m.address || "").trim();
+
+  // 보기 좋게 "직장 직함 / 주소" 형태
+  const parts = [];
+  if (workplace) parts.push(workplace);
+  if (title) parts.push(title);
+
+  const left = parts.join(" ");               // 예: "삼성전자 과장"
+  const right = address ? address : "";       // 예: "포항시 북구 ..."
+
+  const line = [left, right].filter(Boolean).join(" / ");  // "삼성전자 과장 / 포항시..."
+  el("modalWorkplace").textContent = line || "";
+
+  // 폰번호(굵게는 CSS에서 처리)
   el("modalPhone").textContent = m.phone || "";
 
   el("modalCall").href = `tel:${m.phone || ""}`;
   el("modalSms").href  = `sms:${m.phone || ""}`;
-  
 
   resetPhotoTransform();
   el("profileModal").hidden = false;
