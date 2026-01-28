@@ -618,25 +618,20 @@ function openProfileAt(list, index) {
   el("modalName").textContent = m.name || "";
   el("modalPosition").textContent = m.position || "";
 
-  // 직장 / 직함 / 주소 (한 줄로 합치기)
-  const workplace = String(m.workplace || "").trim();
+    // 직장 / 직함 / 주소 (두 줄로 표시)
+  const workplaceRaw = String(m.workplace || "").trim();
   const title = String(m.title || "").trim();
   const address = String(m.address || "").trim();
 
-  // 보기 좋게 "직장 직함 / 주소" 형태
   const parts = [];
-  if (workplace) parts.push(workplace);
+  if (workplaceRaw) parts.push(workplaceRaw);
   if (title) parts.push(title);
 
-  const left = parts.join(" ");               // 예: "삼성전자 과장"
-  const right = address ? address : "";       // 예: "포항시 북구 ..."
+  const line1 = parts.join(" ");     // 예: "삼성전자 과장"
+  const line2 = address || "";       // 예: "포항시 북구 ..."
 
- const line1 = left;     // 직장 + 직함
-const line2 = right;    // 주소
-
-// 직장 / 직함 / 주소 줄바꿈 처리
-const workplace = (m.workplace || "").replaceAll(" / ", "\n").replaceAll("/", "\n");
-el("modalWorkplace").textContent = workplace;
+  // ✅ 화면 표시 (line1 + line2 줄바꿈)
+  el("modalWorkplace").textContent = [line1, line2].filter(Boolean).join("\n");
 
 
   // 폰번호(굵게는 CSS에서 처리)
