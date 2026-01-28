@@ -33,7 +33,8 @@ function normalizePhone(p) {
   return String(p || "").replace(/[^0-9]/g, "");
 }
 
-function toast(msg) {
+function toast(msg, opts) {
+  if (toast._lock && !(opts && opts.force)) return;
   const t = el("toast");
   if (!t) return;
   t.textContent = msg;
@@ -576,48 +577,27 @@ function showUpdateToast(onRefresh) {
   const t = el("toast");
   if (!t) return;
 
-  // 기존 toast() 자동 숨김 타이머 제거
-  clearTimeout(toast._t);
-
+  // 기존 toast()는 textContent를 쓰니까, 업데이트 토스트는 HTML로 별도 구성
   t.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;">
       <div style="font-weight:900;">새 버전이 있어요</div>
-      <button id="btnSwRefresh" type="button"
+      <button id="btnSwRefresh"
         style="border:none;border-radius:12px;padding:8px 12px;font-weight:900;cursor:pointer;">
-        업데이트
+        새로고침
       </button>
     </div>
   `;
   t.hidden = false;
 
   const b = document.getElementById("btnSwRefresh");
-  if (!b) return;
-
-  let done = false;
-  const run = (ev) => {
-    if (done) return;
-    done = true;
-    try { ev?.preventDefault?.(); ev?.stopPropagation?.(); } catch {}
-    try { onRefresh?.(); } catch {}
-
-    b.disabled = true;
-    b.textContent = "적용중...";
-
-    // iOS/PWA 안전장치: controllerchange가 안 와도 강제 리로드
-    setTimeout(() => location.reload(), 1200);
-  };
-
-  b.addEventListener("click", run, { once: true });
-  b.addEventListener("touchend", run, { once: true, passive: false });
-}
-
-function maybePromptUpdate(reg) {
-  const w = reg.waiting;
-  if (w) {
-    showUpdateToast(() => w.postMessage({ type: "SKIP_WAITING" }));
-    return true;
+  if (b) {
+    b.onclick = () => {
+      // 버튼 누르면 “대기중(waiting) SW → 즉시 활성화” 요청
+      try { onRefresh?.(); } catch {}
+      b.disabled = true;
+      b.textContent = "적용중...";
+    };
   }
-  return false;
 }
 
 if ("serviceWorker" in navigator) {
@@ -625,29 +605,49 @@ if ("serviceWorker" in navigator) {
     try {
       const reg = await navigator.serviceWorker.register("./sw.js");
 
-      // 매 실행 시 업데이트 체크
+      // ✅ 즉시 업데이트 체크
       reg.update();
 
-      // waiting이면 컨트롤러 유무 상관없이 토스트 (처음 설치 직후도 대비)
-      maybePromptUpdate(reg);
+      const askRefresh = () => {
+        const w = reg.waiting || reg.installing;
+        if (w) w.postMessage({ type: "SKIP_WAITING" });
+      };
 
+      // ✅ 이미 waiting 상태면 바로 토스트(컨트롤러 유무 상관없음)
+      if (reg.waiting) showUpdateToast(askRefresh);
+
+      // ✅ 설치가 끝나 waiting이 되면 토스트
       reg.addEventListener("updatefound", () => {
         const nw = reg.installing;
         if (!nw) return;
-
         nw.addEventListener("statechange", () => {
-          // installed가 되면 waiting이 생기므로 토스트
           if (nw.state === "installed") {
-            maybePromptUpdate(reg);
+            // installed 후 waiting이 잡히는 타이밍이 있어서 한 번 더 체크
+            setTimeout(() => {
+              if (reg.waiting) showUpdateToast(askRefresh);
+            }, 50);
           }
         });
       });
 
-      // 새 SW가 컨트롤을 가져오면 새로고침
+      // ✅ 짧은 시간 동안 waiting 폴링(모바일에서 이벤트 놓치는 케이스 방지)
+      let tries = 0;
+      const iv = setInterval(() => {
+        tries++;
+        if (reg.waiting) {
+          showUpdateToast(askRefresh);
+          clearInterval(iv);
+        }
+        if (tries >= 20) clearInterval(iv); // 10초
+      }, 500);
+
+      // ✅ 새 SW가 활성화되면 자동 새로고침
       let refreshing = false;
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (refreshing) return;
         refreshing = true;
+        // 업데이트가 실제 적용됐으니 잠금 해제
+        toast._lock = false;
         location.reload();
       });
 
@@ -659,6 +659,7 @@ if ("serviceWorker" in navigator) {
 
 
 // ===== PWA Install buttons =====
+
 let deferredPrompt = null;
 
 const btnA = el("btnInstallAndroid");
