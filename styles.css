@@ -541,7 +541,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 .slogan-text{
-  font-size: 22px;
+  font-size: 33px;
   font-weight: 900;
   letter-spacing: -0.4px;
   color: #fff;
@@ -584,3 +584,14 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   opacity:0.75;
 }
 
+.slogan-text::before{
+  content: "“";
+  margin-right: 4px;
+  opacity: 0.9;
+}
+
+.slogan-text::after{
+  content: "”";
+  margin-left: 4px;
+  opacity: 0.9;
+}
