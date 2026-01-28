@@ -631,7 +631,14 @@ function openProfileAt(list, index) {
   const line2 = address || "";       // 예: "포항시 북구 ..."
 
   // ✅ 화면 표시 (line1 + line2 줄바꿈)
-  el("modalWorkplace").textContent = [line1, line2].filter(Boolean).join("\n");
+ // ✅ 주소를 무조건 다음 줄로(HTML 2줄 고정)
+const wEl = el("modalWorkplace");
+if (wEl) {
+  wEl.innerHTML =
+    `<div>${esc(line1 || "")}</div>` +
+    `<div>${esc(line2 || "")}</div>`;
+}
+
 
 
   // 폰번호(굵게는 CSS에서 처리)
