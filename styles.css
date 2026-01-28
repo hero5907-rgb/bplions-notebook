@@ -84,7 +84,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   justify-content: center;
 
   /* 네가 올린 배경 이미지 */
-  background: url("./login_bg.png") center center / cover no-repeat;
+  background: url("./login_bg.png?v=2") center center / cover no-repeat;
   position: relative;
   padding: 24px 16px;
 }
