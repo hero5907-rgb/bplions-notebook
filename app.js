@@ -153,24 +153,41 @@ function setBrand(settings) {
   const district = (settings?.district || cfg.district || "국제라이온스협회 356-E지구");
   const clubName = (settings?.clubName || cfg.clubName || "북포항라이온스클럽");
 
+// ✅ (여기 바로 아래에) 추가
+  if (el("districtText2")) el("districtText2").textContent = district;
+  if (el("genClubText")) el("genClubText").textContent =
+    `제${settings?.generation || CFG.generation || ""}대 ${clubName}`;
+
+
   if (el("districtText")) el("districtText").textContent = district;
   if (el("clubNameText")) el("clubNameText").textContent = clubName;
   if (el("coverTitle")) el("coverTitle").textContent = clubName;
   if (el("coverSub")) el("coverSub").textContent = district;
-  if (el("sloganText")) el("sloganText").textContent =
-  settings?.slogan || CFG.slogan || "";
+ if (el("districtHomeText")) el("districtHomeText").textContent = district;
 
-  if (el("generationText")) el("generationText").textContent =
-  `제${settings?.generation || CFG.generation || ""}대 ${settings?.clubName || CFG.clubName || ""}`;
 
-if (el("hallAddress")) el("hallAddress").textContent =
-  "📍 " + (settings?.hallAddress || CFG.hallAddress || "");
+// ===== 홈 화면: 슬로건/기수/주소/전화/카피 =====
+// (서버 settings가 있으면 settings 우선, 없으면 config.js 사용)
+// (키 이름이 다른 버전도 섞여있어서 address/hallAddress, phone/hallPhone 둘 다 받게 함)
 
-if (el("hallPhone")) el("hallPhone").textContent =
-  "☎ " + (settings?.hallPhone || CFG.hallPhone || "");
+const slogan = (settings?.slogan ?? cfg.slogan ?? "");
+if (el("sloganText")) el("sloganText").textContent = slogan;
 
-if (el("copyrightText")) el("copyrightText").textContent =
-  settings?.copyright || CFG.copyright || "";
+const gen = (settings?.generation ?? cfg.generation ?? "");
+const club = (settings?.clubName ?? cfg.clubName ?? clubName);
+if (el("generationText")) {
+  el("generationText").textContent = gen ? `제${gen}대 ${club}` : club;
+}
+
+const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
+if (el("hallAddress")) el("hallAddress").textContent = addr ? `📍 ${addr}` : "";
+
+const phone = (settings?.phone ?? settings?.hallPhone ?? cfg.phone ?? cfg.hallPhone ?? "");
+if (el("hallPhone")) el("hallPhone").textContent = phone ? `☎ ${phone}` : "";
+
+const cr = (settings?.copyright ?? cfg.copyright ?? "");
+if (el("copyrightText")) el("copyrightText").textContent = cr;
+
 
 
 
