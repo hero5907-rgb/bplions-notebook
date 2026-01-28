@@ -576,10 +576,9 @@ function showUpdateToast(onRefresh) {
   const t = el("toast");
   if (!t) return;
 
-  // ✅ 기존 toast() 자동 숨김 타이머가 남아있으면 업데이트 토스트가 클릭 전에 사라질 수 있음
+  // 기존 toast() 자동 숨김 타이머 제거
   clearTimeout(toast._t);
 
-  // 기존 toast()는 textContent를 쓰니까, 업데이트 토스트는 HTML로 별도 구성
   t.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;">
       <div style="font-weight:900;">새 버전이 있어요</div>
@@ -604,13 +603,21 @@ function showUpdateToast(onRefresh) {
     b.disabled = true;
     b.textContent = "적용중...";
 
-    // ✅ 일부 모바일(PWA/iOS)에서 controllerchange가 안 뜨는 경우가 있어 안전장치로 강제 리로드
+    // iOS/PWA 안전장치: controllerchange가 안 와도 강제 리로드
     setTimeout(() => location.reload(), 1200);
   };
 
-  // ✅ iOS/PWA는 click이 늦게 오거나 누락되는 경우가 있어 touchend도 같이 받음
   b.addEventListener("click", run, { once: true });
   b.addEventListener("touchend", run, { once: true, passive: false });
+}
+
+function maybePromptUpdate(reg) {
+  const w = reg.waiting;
+  if (w) {
+    showUpdateToast(() => w.postMessage({ type: "SKIP_WAITING" }));
+    return true;
+  }
+  return false;
 }
 
 if ("serviceWorker" in navigator) {
@@ -618,32 +625,25 @@ if ("serviceWorker" in navigator) {
     try {
       const reg = await navigator.serviceWorker.register("./sw.js");
 
-      // ✅ 즉시 업데이트 체크
+      // 매 실행 시 업데이트 체크
       reg.update();
 
-      // ✅ 이미 waiting 상태면 바로 토스트
-      if (reg.waiting && navigator.serviceWorker.controller) {
-        showUpdateToast(() => {
-          reg.waiting.postMessage({ type: "SKIP_WAITING" });
-        });
-      }
+      // waiting이면 컨트롤러 유무 상관없이 토스트 (처음 설치 직후도 대비)
+      maybePromptUpdate(reg);
 
-      // ✅ 새 SW가 설치되면(대기 상태) 토스트 띄우기
       reg.addEventListener("updatefound", () => {
         const nw = reg.installing;
         if (!nw) return;
 
         nw.addEventListener("statechange", () => {
-          if (nw.state === "installed" && navigator.serviceWorker.controller) {
-            showUpdateToast(() => {
-              const w = reg.waiting || reg.installing;
-              if (w) w.postMessage({ type: "SKIP_WAITING" });
-            });
+          // installed가 되면 waiting이 생기므로 토스트
+          if (nw.state === "installed") {
+            maybePromptUpdate(reg);
           }
         });
       });
 
-      // ✅ 새 SW가 활성화되면 자동 새로고침
+      // 새 SW가 컨트롤을 가져오면 새로고침
       let refreshing = false;
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (refreshing) return;
