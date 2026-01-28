@@ -459,5 +459,11 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 
+.modal-map-actions{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:6px;
+}
 
 

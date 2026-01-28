@@ -639,6 +639,25 @@ if (wEl) {
     `<div>${esc(line2 || "")}</div>`;
 }
 
+  // ✅ 지도/로드뷰 버튼 연결 (주소가 있을 때만)
+  const addr = String(m.address || "").trim();
+  const btnMap  = el("btnMap");
+  const btnRoad = el("btnRoad");
+
+  if (btnMap) btnMap.hidden = !addr;
+  if (btnRoad) btnRoad.hidden = !addr;
+
+  if (addr && btnMap && btnRoad) {
+    const q = encodeURIComponent(addr);
+
+    btnMap.onclick = () => {
+      window.open(`https://map.naver.com/v5/search/${q}`, "_blank");
+    };
+
+    btnRoad.onclick = () => {
+      window.open(`https://map.naver.com/v5/search/${q}?c=15,0,0,0,dh`, "_blank");
+    };
+  }
 
 
   // 폰번호(굵게는 CSS에서 처리)
