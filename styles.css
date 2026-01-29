@@ -540,13 +540,6 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   margin-bottom: 10px;
 }
 /* ================슬로건 글짜 크기 ============================== */
-.slogan-text{
-  font-size: 27px;
-  font-weight: 900;
-  letter-spacing: -0.4px;
-  color: #fff;
-  line-height: 1.25;
-}
 
 /* 아래 정보 블럭 */
 .clubinfo-box{
@@ -604,27 +597,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 
-/* ===== 슬로건 한줄 최적화 ===== */
-.slogan-box .slogan-text{
-  font-size: clamp(19px, 4.6vw, 22px);
-  font-weight: 900;
-  line-height: 1.25;
-  letter-spacing: -0.3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
-/* ===== 슬로건: 한 줄 꽉 차게 (최종) ===== */
-.slogan-box .slogan-text{
-  font-size: clamp(22px, 6.2vw, 28px);
-  font-weight: 900;
-  line-height: 1.15;
-  letter-spacing: -0.6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
-}
 
 /* 따옴표(“ ”)로 폭이 줄어드는 것 방지 */
 .slogan-text::before,
