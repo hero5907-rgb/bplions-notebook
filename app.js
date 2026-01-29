@@ -156,81 +156,49 @@ function setBrand(settings) {
   const district = (settings?.district || cfg.district || "국제라이온스협회 356-E지구");
   const clubName = (settings?.clubName || cfg.clubName || "북포항라이온스클럽");
 
-// ✅ (여기 바로 아래에) 추가
   if (el("districtText2")) el("districtText2").textContent = district;
-if (el("genClubText")) {
-  const term = formatTerm(settings?.term, settings?.generation || CFG.generation);
-  el("genClubText").textContent = term ? `${term} ${clubName}` : clubName;
-}
 
-
+  if (el("genClubText")) {
+    const term = formatTerm(settings?.term, settings?.generation || CFG.generation);
+    el("genClubText").textContent = term ? `${term} ${clubName}` : clubName;
+  }
 
   if (el("districtText")) el("districtText").textContent = district;
   if (el("clubNameText")) el("clubNameText").textContent = clubName;
   if (el("coverTitle")) el("coverTitle").textContent = clubName;
   if (el("coverSub")) el("coverSub").textContent = district;
- if (el("districtHomeText")) el("districtHomeText").textContent = district;
+  if (el("districtHomeText")) el("districtHomeText").textContent = district;
 
+  const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
+  if (el("sloganText")) el("sloganText").textContent = slogan ? `“${slogan}”` : "";
 
-// ===== 홈 화면: 슬로건/기수/주소/전화/카피 =====
-// (서버 settings가 있으면 settings 우선, 없으면 config.js 사용)
-// (키 이름이 다른 버전도 섞여있어서 address/hallAddress, phone/hallPhone 둘 다 받게 함)
+  const club = (settings?.clubName ?? cfg.clubName ?? clubName);
+  const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
+  if (el("generationText")) el("generationText").textContent = term ? `${term} ${club}` : club;
 
-const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
-if (el("sloganText")) {
-  el("sloganText").textContent = slogan ? `“${slogan}”` : "";
-}
+  const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
+  if (el("hallAddress")) el("hallAddress").textContent = addr ? `📍 ${addr}` : "";
 
+  const phone = (settings?.phone ?? settings?.hallPhone ?? cfg.phone ?? cfg.hallPhone ?? "");
+  if (el("hallPhone")) el("hallPhone").textContent = phone ? `☎ ${phone}` : "";
 
-const club = (settings?.clubName ?? cfg.clubName ?? clubName);
-const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
-if (el("generationText")) {
-  el("generationText").textContent = term ? `${term} ${club}` : club;
-}
-
-
-const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
-if (el("hallAddress")) el("hallAddress").textContent = addr ? `📍 ${addr}` : "";
-
-const phone = (settings?.phone ?? settings?.hallPhone ?? cfg.phone ?? cfg.hallPhone ?? "");
-if (el("hallPhone")) el("hallPhone").textContent = phone ? `☎ ${phone}` : "";
-
-const cr = (settings?.copyright ?? cfg.copyright ?? "");
-if (el("copyrightText")) el("copyrightText").textContent = cr;
-
-
-function formatTerm(termRaw, fallbackGen){
-  const s = String(termRaw ?? "").trim();
-  if (s) {
-    // 숫자만이면 제NN대
-    if (/^\d+$/.test(s)) return `제${s}대`;
-    // 이미 "제25대" 같은 형태면 그대로
-    return s;
-  }
-  // term이 비었으면 기존 generation으로 fallback
-  const g = String(fallbackGen ?? "").trim();
-  if (!g) return "";
-  return /^\d+$/.test(g) ? `제${g}대` : g;
-}
-
+  const cr = (settings?.copyright ?? cfg.copyright ?? "");
+  if (el("copyrightText")) el("copyrightText").textContent = cr;
 
   const s = el("clubLogoSmall");
-  if (!s) return;
+  if (s) {
+    const logoUrl = (settings?.logoUrl || cfg.logoUrl || "./logo.png").trim();
+    s.src = logoUrl;
+    s.style.visibility = "visible";
+  }
 
-  const logoUrl = (settings?.logoUrl || cfg.logoUrl || "./logo.png").trim();
-  s.src = logoUrl;
-  s.style.visibility = "visible";
-
-  // ✅ 부트/로그인/탭 제목도 config 값으로 바꾸기
-  if (el("bootTitle"))      el("bootTitle").textContent      = clubName;
-  if (el("bootSub"))        el("bootSub").textContent        = "회원수첩";
+  if (el("bootTitle")) el("bootTitle").textContent = clubName;
+  if (el("bootSub")) el("bootSub").textContent = "회원수첩";
 
   if (el("loginTitleMain")) el("loginTitleMain").textContent = clubName;
-  if (el("loginTitleSub"))  el("loginTitleSub").textContent  = "회원수첩";
+  if (el("loginTitleSub")) el("loginTitleSub").textContent = "회원수첩";
 
-  if (el("docTitle"))       el("docTitle").textContent       = `${clubName} 수첩`;
-
-
+  if (el("docTitle")) el("docTitle").textContent = `${clubName} 수첩`;
 }
 
 
