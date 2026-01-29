@@ -150,6 +150,26 @@ function apiJsonp(paramsObj) {
   });
 }
 
+// ✅ 기수/대수 표기 통일 (없으면 빈값)
+function formatTerm(term, generation) {
+  const t = String(term ?? "").trim();
+  if (t) return t;
+
+  const gRaw = String(generation ?? "").trim();
+  if (!gRaw) return "";
+
+  // 이미 "54대", "54기" 같은 형태면 그대로
+  if (/[대기회]/.test(gRaw)) return gRaw;
+
+  // 숫자면 "대" 붙이기
+  const n = parseInt(gRaw, 10);
+  if (!Number.isNaN(n)) return `${n}대`;
+
+  return gRaw;
+}
+
+
+
 function setBrand(settings) {
   const cfg = window.APP_CONFIG || {};
 
