@@ -501,7 +501,7 @@ else if (target === "song") {
 }
 
 
-      }
+      
     });
   });
 }
