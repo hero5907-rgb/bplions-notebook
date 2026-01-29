@@ -488,14 +488,15 @@ function bindNav() {
         // pdfBtn은 위에서 이미 hidden=true 처리됨
 
       } else if (target === "bylaws") {
-        pushNav("text");
-        if (el("textTitle")) el("textTitle").textContent = "회칙";
-        renderBylawsView(); // ✅ 여기서 url 있으면 pdfBtn을 보여줌
-} else if (target === "events") {
+  pushNav("text");
+  if (el("textTitle")) el("textTitle").textContent = "회칙";
+  renderBylawsView();
+} 
+else if (target === "events") {
   pushNav("events");
   loadEvents();
-
-} else if (target === "song") {
+}
+else if (target === "song") {
   openImgModal("./lions_song.jpg");
 }
 
