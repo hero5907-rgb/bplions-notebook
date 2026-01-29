@@ -1087,3 +1087,34 @@ async function loadEvents(yyyymm){
     el("eventsList").innerHTML = "일정 불러오기 실패";
   }
 }
+
+function loadUpcomingEvents(){
+  google.script.run
+    .withSuccessHandler((list)=>{
+      const wrap = document.getElementById("eventListMain");
+      if (!wrap) return;
+
+      const arr = Array.isArray(list) ? list : [];
+      if (!arr.length){
+        wrap.textContent = "예정된 일정이 없습니다.";
+        return;
+      }
+
+      wrap.innerHTML = arr.map(e=>{
+        return `
+          <div style="padding:6px 0;border-bottom:1px solid #eee;">
+            <b>${e.title}</b><br/>
+            <span style="color:#64748b;font-size:.9rem;">
+              ${e.date} ${e.startTime || ""} ${e.place || ""}
+            </span>
+          </div>
+        `;
+      }).join("");
+    })
+    .getUpcomingEvents();
+}
+
+
+
+loadUpcomingEvents();
+
