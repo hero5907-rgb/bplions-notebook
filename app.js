@@ -391,7 +391,8 @@ function renderLatest() {
       <div class="row-main">
         <div class="row-title">
   ${esc(a.title || "")}
-  ${isAnnNew(a) ? `<span class="badge-new">NEW</span>` : ``}
+  ${isAnnNew(a) ? `<span class="badge-new">NEW</span>` : ""}
+
 </div>
 
         <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
