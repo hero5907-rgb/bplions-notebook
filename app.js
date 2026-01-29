@@ -531,13 +531,6 @@ function bindNav() {
 }
 
 
-  // ✅ 라이온스 노래는 "이미지 모달"로 띄우기
-  // 파일명은 네가 실제로 넣은 이미지로 바꿔라 (예: lions_song.jpg)
-  openImgModal("./lions_song.jpg");
-}
-
-
-
       }
     });
   });
