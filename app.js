@@ -522,12 +522,15 @@ function bindNav() {
         pushNav("text");
         if (el("textTitle")) el("textTitle").textContent = "회칙";
         renderBylawsView(); // ✅ 여기서 url 있으면 pdfBtn을 보여줌
-
 } else if (target === "events") {
   pushNav("events");
-  loadEvents(); // ✅ 일정표 불러오기
+  loadEvents();
 
 } else if (target === "song") {
+  openImgModal("./lions_song.jpg");
+}
+
+
   // ✅ 라이온스 노래는 "이미지 모달"로 띄우기
   // 파일명은 네가 실제로 넣은 이미지로 바꿔라 (예: lions_song.jpg)
   openImgModal("./lions_song.jpg");
