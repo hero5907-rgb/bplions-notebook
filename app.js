@@ -174,8 +174,11 @@ if (el("genClubText")) {
 // (서버 settings가 있으면 settings 우선, 없으면 config.js 사용)
 // (키 이름이 다른 버전도 섞여있어서 address/hallAddress, phone/hallPhone 둘 다 받게 함)
 
-const slogan = (settings?.slogan ?? cfg.slogan ?? "");
-if (el("sloganText")) el("sloganText").textContent = slogan;
+const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
+if (el("sloganText")) {
+  el("sloganText").textContent = slogan ? `“${slogan}”` : "";
+}
+
 
 const club = (settings?.clubName ?? cfg.clubName ?? clubName);
 const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
