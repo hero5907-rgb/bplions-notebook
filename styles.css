@@ -605,3 +605,23 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   content: "" !important;
   margin: 0 !important;
 }
+
+
+/* ===============================
+   메인 슬로건 : 한줄 자동 맞춤
+   =============================== */
+
+.slogan-text{
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+
+  font-weight: 900;
+  line-height: 1.15;
+
+  /* 🔥 핵심: 화면폭 기준 자동 스케일 */
+  font-size: clamp(18px, 6.8vw, 32px);
+  letter-spacing: -0.4px;
+}
