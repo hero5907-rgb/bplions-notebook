@@ -1064,40 +1064,39 @@ async function loadEvents(yyyymm){
   const now = new Date();
   const ym = yyyymm || `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
 
-  const box = el("eventsList");
-  if (!box) return;
-
   try{
     const json = await apiJsonp({
       action: "events",
-      phone: state._authPhone || state.me?.phone || "",
-      code:  state._authCode  || "",
+      phone: state.me.phone,
+      code: state.me.code,
       yyyymm: ym
     });
 
-    // ✅ doGet에서 {ok:true, events:[...]} 로 내려오는 케이스 대응
-    const list = Array.isArray(json)
-      ? json
-      : (Array.isArray(json?.events) ? json.events : []);
+    const list = json?.events || [];
 
+    const box = el("eventsList");
     if(!list.length){
       box.innerHTML = "<div class='small'>등록된 일정이 없습니다.</div>";
       return;
     }
 
-    box.innerHTML = list.map(e=>`
-      <div class="card">
-        <b>${esc(e.date || "")} ${esc(e.startTime || "")}</b>
-        <div>${esc(e.title || "")}</div>
-        ${e.place ? `<div class="small">📍 ${esc(e.place)}</div>` : ""}
-        ${e.desc ? `<div class="small">${esc(e.desc)}</div>` : ""}
-      </div>
-    `).join("");
+    let html = "";
+    for(const e of list){
+      html += `
+        <div class="card">
+          <b>${e.date || ""} ${e.startTime || ""}</b>
+          <div>${e.title || ""}</div>
+          ${e.place ? `<div class="small">📍 ${e.place}</div>` : ""}
+          ${e.desc ? `<div class="small">${e.desc}</div>` : ""}
+        </div>
+      `;
+    }
+
+    box.innerHTML = html;
 
   }catch(e){
-    console.error("EVENTS_LOAD_FAILED:", e);
-    box.innerHTML = "<div class='small'>일정 불러오기 실패</div>";
+    console.error(e);
+    el("eventsList").innerHTML = "일정 불러오기 실패";
   }
 }
-
 
