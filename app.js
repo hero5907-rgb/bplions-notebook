@@ -1048,11 +1048,9 @@ function closeAnnModal(){
 
 async function loadEvents(yyyymm){
   const now = new Date();
-  const ym = yyyymm || `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`;
   const ym = (yyyymm || `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`)
-  .replace(/[^0-9]/g,"")
-  .slice(0,6);
-
+    .replace(/[^0-9]/g,"")
+    .slice(0,6);
 
   try{
     const json = await apiJsonp({
