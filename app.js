@@ -16,7 +16,9 @@ const screens = {
   members: el("screenMembers"),
   announcements: el("screenAnnouncements"),
   text: el("screenText"),
+  events: el("screenEvents"),   // ✅ 추가
 };
+
 
 const btnBack = el("btnBack");
 const btnLogout = el("btnLogout");
@@ -521,8 +523,18 @@ function bindNav() {
         if (el("textTitle")) el("textTitle").textContent = "회칙";
         renderBylawsView(); // ✅ 여기서 url 있으면 pdfBtn을 보여줌
 
-      } else if (target === "song") {
-        openImgModal("./lions_song.jpg");
+} else if (target === "events") {
+  pushNav("events");
+  loadEvents(); // ✅ 일정표 불러오기
+
+} else if (target === "song") {
+  // ✅ 라이온스 노래는 "이미지 모달"로 띄우기
+  // 파일명은 네가 실제로 넣은 이미지로 바꿔라 (예: lions_song.jpg)
+  openImgModal("./lions_song.jpg");
+}
+
+
+
       }
     });
   });
@@ -1047,14 +1059,45 @@ function closeAnnModal(){
 }
 
 
-function formatTerm(termRaw){
-  const s = String(termRaw || "").trim();
-  if (!s) return "";
-  // "25"면 "제25대"로
-  if (/^\d+$/.test(s)) return `제${s}대`;
-  // 이미 "제25대"면 그대로
-  return s;
-}
 
+async function loadEvents(yyyymm){
+  const now = new Date();
+  const ym = yyyymm || `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+
+  const box = el("eventsList");
+  if (!box) return;
+
+  try{
+    const json = await apiJsonp({
+      action: "events",
+      phone: state._authPhone || state.me?.phone || "",
+      code:  state._authCode  || "",
+      yyyymm: ym
+    });
+
+    // ✅ doGet에서 {ok:true, events:[...]} 로 내려오는 케이스 대응
+    const list = Array.isArray(json)
+      ? json
+      : (Array.isArray(json?.events) ? json.events : []);
+
+    if(!list.length){
+      box.innerHTML = "<div class='small'>등록된 일정이 없습니다.</div>";
+      return;
+    }
+
+    box.innerHTML = list.map(e=>`
+      <div class="card">
+        <b>${esc(e.date || "")} ${esc(e.startTime || "")}</b>
+        <div>${esc(e.title || "")}</div>
+        ${e.place ? `<div class="small">📍 ${esc(e.place)}</div>` : ""}
+        ${e.desc ? `<div class="small">${esc(e.desc)}</div>` : ""}
+      </div>
+    `).join("");
+
+  }catch(e){
+    console.error("EVENTS_LOAD_FAILED:", e);
+    box.innerHTML = "<div class='small'>일정 불러오기 실패</div>";
+  }
+}
 
 
