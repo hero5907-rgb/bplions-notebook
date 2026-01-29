@@ -359,6 +359,18 @@ function renderAnnouncements() {
   }
 }
 
+function isAnnNew(a){
+  if (!a) return false;
+  if (a.isNew === true) return true; // 서버에서 내려준 값 우선
+
+  // 혹시 isNew가 없으면 newUntil로 계산(보험)
+  const v = a.newUntil;
+  if (!v) return false;
+  const t = new Date(v).getTime();
+  return t && Date.now() < t;
+}
+
+
 function renderLatest() {
   const wrap = el("latestAnnouncements");
   if (!wrap) return;
@@ -375,7 +387,11 @@ function renderLatest() {
     row.className = "row";
     row.innerHTML = `
       <div class="row-main">
-        <div class="row-title">${esc(a.title || "")}</div>
+        <div class="row-title">
+  ${esc(a.title || "")}
+  ${isAnnNew(a) ? `<span class="badge-new">NEW</span>` : ``}
+</div>
+
         <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
       </div>`;
     wrap.appendChild(row);
