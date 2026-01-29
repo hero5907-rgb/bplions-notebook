@@ -105,7 +105,10 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.25);
+  pointer-events: none;   /* 🔥 핵심 */
+  z-index: 0;
 }
+
 
 /* 로그인 카드가 오버레이 위로 올라오게 */
 .login-bg > .card.hero{
