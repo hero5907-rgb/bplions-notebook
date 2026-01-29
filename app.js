@@ -156,8 +156,11 @@ function setBrand(settings) {
 
 // ✅ (여기 바로 아래에) 추가
   if (el("districtText2")) el("districtText2").textContent = district;
-  if (el("genClubText")) el("genClubText").textContent =
-    `제${settings?.generation || CFG.generation || ""}대 ${clubName}`;
+if (el("genClubText")) {
+  const term = formatTerm(settings?.term, settings?.generation || CFG.generation);
+  el("genClubText").textContent = term ? `${term} ${clubName}` : clubName;
+}
+
 
 
   if (el("districtText")) el("districtText").textContent = district;
@@ -174,11 +177,12 @@ function setBrand(settings) {
 const slogan = (settings?.slogan ?? cfg.slogan ?? "");
 if (el("sloganText")) el("sloganText").textContent = slogan;
 
-const gen = (settings?.generation ?? cfg.generation ?? "");
 const club = (settings?.clubName ?? cfg.clubName ?? clubName);
+const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
 if (el("generationText")) {
-  el("generationText").textContent = gen ? `제${gen}대 ${club}` : club;
+  el("generationText").textContent = term ? `${term} ${club}` : club;
 }
+
 
 const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
 if (el("hallAddress")) el("hallAddress").textContent = addr ? `📍 ${addr}` : "";
@@ -190,6 +194,19 @@ const cr = (settings?.copyright ?? cfg.copyright ?? "");
 if (el("copyrightText")) el("copyrightText").textContent = cr;
 
 
+function formatTerm(termRaw, fallbackGen){
+  const s = String(termRaw ?? "").trim();
+  if (s) {
+    // 숫자만이면 제NN대
+    if (/^\d+$/.test(s)) return `제${s}대`;
+    // 이미 "제25대" 같은 형태면 그대로
+    return s;
+  }
+  // term이 비었으면 기존 generation으로 fallback
+  const g = String(fallbackGen ?? "").trim();
+  if (!g) return "";
+  return /^\d+$/.test(g) ? `제${g}대` : g;
+}
 
 
   const s = el("clubLogoSmall");
@@ -1009,3 +1026,16 @@ function closeAnnModal(){
   const m = el("annModal");
   if (m) m.hidden = true;
 }
+
+
+function formatTerm(termRaw){
+  const s = String(termRaw || "").trim();
+  if (!s) return "";
+  // "25"면 "제25대"로
+  if (/^\d+$/.test(s)) return `제${s}대`;
+  // 이미 "제25대"면 그대로
+  return s;
+}
+
+
+
