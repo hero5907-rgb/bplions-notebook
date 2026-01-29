@@ -1056,7 +1056,7 @@ async function loadEvents(yyyymm){
     const json = await apiJsonp({
       action: "events",
       phone: state.me.phone,
-      code: state.me.code,
+      code: state._authCode,   // ✅ 핵심 수정
       yyyymm: ym
     });
 
@@ -1087,4 +1087,3 @@ async function loadEvents(yyyymm){
     el("eventsList").innerHTML = "일정 불러오기 실패";
   }
 }
-
