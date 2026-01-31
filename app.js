@@ -462,6 +462,8 @@ try {
     state.navStack = ["home"];
     showScreen("home");
     window.scrollTo(0, 0);
+    history.pushState({ app: true }, "", location.href);
+
 
     toast("접속 완료");
   } catch (e) {
@@ -1065,7 +1067,8 @@ function loadUpcomingEvents(){
 
 
 
-loadUpcomingEvents();
+// loadUpcomingEvents();  // ❌ GAS 전용, PWA에서 실행 금지
+
 
 
 
