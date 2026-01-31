@@ -964,45 +964,6 @@ window.addEventListener("keydown", (e) => {
 });
 
 
-(function handleAndroidBack() {
-
-  function pushDummy() {
-    history.pushState({ __app: true }, "", location.href);
-  }
-
-  pushDummy();
-
-  window.addEventListener("popstate", () => {
-
-    // 1️⃣ 열린 모달부터 닫기
-    if (el("profileModal")?.hidden === false) {
-      closeProfile();
-      pushDummy();
-      return;
-    }
-    if (el("annModal")?.hidden === false) {
-      closeAnnModal();
-      pushDummy();
-      return;
-    }
-    if (el("imgModal")?.hidden === false) {
-      closeImgModal();
-      pushDummy();
-      return;
-    }
-
-    // 2️⃣ 화면 스택 뒤로
-    if (state.navStack.length > 1) {
-      popNav();
-      pushDummy();
-      return;
-    }
-
-    // 3️⃣ 홈 → 종료 모달
-    showExitModal();
-  });
-
-})();
 
 function openImgModal(src){
   const m = el("imgModal");
@@ -1105,4 +1066,83 @@ function loadUpcomingEvents(){
 
 
 loadUpcomingEvents();
+
+
+
+// ===== 앱 종료 모달 =====
+function showExitModal() {
+  const m = el("exitModal");
+  if (!m) return;
+  m.hidden = false;
+}
+
+function hideExitModal() {
+  const m = el("exitModal");
+  if (!m) return;
+  m.hidden = true;
+}
+
+// 버튼 바인딩 (DOM 존재 보장 후)
+document.addEventListener("DOMContentLoaded", () => {
+  el("btnExitCancel")?.addEventListener("click", hideExitModal);
+  el("btnExitOk")?.addEventListener("click", () => {
+    // 실제 종료 (안드로이드/PWA)
+    history.back();
+  });
+});
+
+
+// ===== 안드로이드 시스템 뒤로가기 → 종료 확인 모달 =====
+(function handleAndroidBack() {
+
+  function pushDummy() {
+    history.pushState({ __app: true }, "", location.href);
+  }
+
+  // 최초 1회 가짜 히스토리
+  pushDummy();
+
+  const exitModal = el("exitModal");
+  const btnExitCancel = el("btnExitCancel");
+  const btnExitOk = el("btnExitOk");
+
+  function showExitModal() {
+    if (exitModal) exitModal.hidden = false;
+  }
+
+  function hideExitModal() {
+    if (exitModal) exitModal.hidden = true;
+  }
+
+  btnExitCancel?.addEventListener("click", () => {
+    hideExitModal();
+    pushDummy(); // 앱 유지
+  });
+
+  btnExitOk?.addEventListener("click", () => {
+    history.back(); // 👉 이때만 실제 종료
+  });
+
+  window.addEventListener("popstate", () => {
+
+    // 1️⃣ 모달 열려 있으면 → 닫기
+    if (exitModal && exitModal.hidden === false) {
+      hideExitModal();
+      pushDummy();
+      return;
+    }
+
+    // 2️⃣ 화면 스택 있으면 → 뒤로
+    if (state.navStack.length > 1) {
+      popNav();
+      pushDummy();
+      return;
+    }
+
+    // 3️⃣ 홈 화면 → 종료 확인 모달
+    showExitModal();
+    pushDummy();
+  });
+
+})();
 
