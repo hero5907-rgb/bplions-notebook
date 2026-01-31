@@ -1069,132 +1069,62 @@ loadUpcomingEvents();
 
 
 
-// ===== 앱 종료 모달 =====
-function showExitModal() {
-  const m = el("exitModal");
-  if (!m) return;
-  m.hidden = false;
-}
-
-function hideExitModal() {
-  const m = el("exitModal");
-  if (!m) return;
-  m.hidden = true;
-}
-
-// 버튼 바인딩 (DOM 존재 보장 후)
-document.addEventListener("DOMContentLoaded", () => {
-  el("btnExitCancel")?.addEventListener("click", hideExitModal);
-  el("btnExitOk")?.addEventListener("click", () => {
-    // 실제 종료 (안드로이드/PWA)
-    history.back();
-  });
-});
-
-
-// ===== 안드로이드 시스템 뒤로가기 → 종료 확인 모달 =====
-(function handleAndroidBack() {
+// ===== 안드로이드 뒤로가기 (단일, 최종본) =====
+(function () {
 
   function pushDummy() {
-    history.pushState({ __app: true }, "", location.href);
+    history.pushState({ app: true }, "", location.href);
   }
 
-  // 최초 1회 가짜 히스토리
-  pushDummy();
+  pushDummy(); // 최초 1회
 
   const exitModal = el("exitModal");
-  const btnExitCancel = el("btnExitCancel");
-  const btnExitOk = el("btnExitOk");
 
-  function showExitModal() {
+  function showExit() {
     if (exitModal) exitModal.hidden = false;
   }
 
-  function hideExitModal() {
+  function hideExit() {
     if (exitModal) exitModal.hidden = true;
   }
 
-  btnExitCancel?.addEventListener("click", () => {
-    hideExitModal();
-    pushDummy(); // 앱 유지
+  el("btnExitCancel")?.addEventListener("click", () => {
+    hideExit();
+    pushDummy();
   });
 
-  btnExitOk?.addEventListener("click", () => {
-    history.back(); // 👉 이때만 실제 종료
+  el("btnExitOk")?.addEventListener("click", () => {
+    history.back(); // 여기서만 종료
   });
 
   window.addEventListener("popstate", () => {
 
-    // 1️⃣ 모달 열려 있으면 → 닫기
-    if (exitModal && exitModal.hidden === false) {
-      hideExitModal();
-      pushDummy();
-      return;
+    // 모달 우선 닫기
+    if (el("profileModal")?.hidden === false) {
+      closeProfile(); pushDummy(); return;
+    }
+    if (el("annModal")?.hidden === false) {
+      closeAnnModal(); pushDummy(); return;
+    }
+    if (el("imgModal")?.hidden === false) {
+      closeImgModal(); pushDummy(); return;
     }
 
-    // 2️⃣ 화면 스택 있으면 → 뒤로
+    // 화면 스택 뒤로
     if (state.navStack.length > 1) {
-      popNav();
-      pushDummy();
-      return;
+      popNav(); pushDummy(); return;
     }
 
-    // 3️⃣ 홈 화면 → 종료 확인 모달
-    showExitModal();
+    // 홈 → 종료 모달
+    showExit();
     pushDummy();
   });
 
 })();
 
 
-// ===== 안드로이드 뒤로가기 : 종료 확인 모달 =====
-(function handleAndroidBack() {
 
-  function pushDummy() {
-    history.pushState({ __app: true }, "", location.href);
-  }
 
-  // 최초 1회만 히스토리 쌓기
-  pushDummy();
 
-  const exitModal = el("exitModal");
 
-  function showExitModal() {
-    if (exitModal) exitModal.hidden = false;
-  }
-
-  function hideExitModal() {
-    if (exitModal) exitModal.hidden = true;
-  }
-
-  // 버튼 바인딩
-  el("btnExitCancel")?.addEventListener("click", () => {
-    hideExitModal();
-    pushDummy(); // 앱 유지
-  });
-
-  el("btnExitOk")?.addEventListener("click", () => {
-    history.back(); // ✅ 여기서만 실제 종료
-  });
-
-  window.addEventListener("popstate", () => {
-
-    // 1️⃣ 프로필/공지/이미지 모달 닫기
-    if (el("profileModal")?.hidden === false) {
-      closeProfile();
-      pushDummy();
-      return;
-    }
-    if (el("annModal")?.hidden === false) {
-      closeAnnModal();
-      pushDummy();
-      return;
-    }
-    if (el("imgModal")?.hidden === false) {
-      closeImgModal();
-      pushDummy();
-      return;
-    }
-
-    // 2️
 
