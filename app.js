@@ -964,7 +964,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 
-// ===== 안드로이드 시스템 뒤로가기 제어 (완성형) =====
+// ===== 안드로이드 시스템 뒤로가기 제어 (confirm 종료) =====
 (function handleAndroidBack() {
 
   function pushDummy() {
@@ -973,11 +973,9 @@ window.addEventListener("keydown", (e) => {
 
   pushDummy();
 
-  let lastBackAt = 0;
-
   window.addEventListener("popstate", () => {
 
-    // 1) 모달 닫기
+    // 1️⃣ 모달 닫기 우선
     if (el("profileModal")?.hidden === false) {
       closeProfile();
       pushDummy();
@@ -994,23 +992,20 @@ window.addEventListener("keydown", (e) => {
       return;
     }
 
-    // 2) 화면 뒤로
+    // 2️⃣ 화면 스택 뒤로
     if (state.navStack.length > 1) {
       popNav();
       pushDummy();
       return;
     }
 
-    // 3) 홈 → 2초내 2번 누르면 종료
-    const now = Date.now();
-    if (now - lastBackAt < 2000) {
-      history.back(); // 실제 종료
-      return;
+    // 3️⃣ 홈에서 종료 확인
+    const ok = confirm("앱을 종료하시겠습니까?");
+    if (ok) {
+      history.back(); // 실제 앱 종료
+    } else {
+      pushDummy();    // 취소 → 앱 유지
     }
-
-    lastBackAt = now;
-    toast("한 번 더 누르면 종료됩니다");
-    pushDummy();
   });
 
 })();
