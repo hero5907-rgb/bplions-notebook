@@ -296,6 +296,39 @@
 <script src="./config.js"></script>
 <script src="./app.js"></script>
 
+<div id="exitModal" hidden
+  style="
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex; align-items:center; justify-content:center;
+    z-index:999999;
+  ">
+  <div style="
+    background:#fff;
+    border-radius:18px;
+    width:280px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+  ">
+    <div style="font-weight:900;font-size:1.05rem;margin-bottom:8px;">
+      앱을 종료할까요?
+    </div>
+    <div style="color:#6b7280;font-size:.9rem;margin-bottom:16px;">
+      종료하면 홈으로 돌아갑니다
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button id="btnExitCancel"
+        style="flex:1;height:42px;border-radius:12px;border:none;background:#e5e7eb;font-weight:700;">
+        취소
+      </button>
+      <button id="btnExitOk"
+        style="flex:1;height:42px;border-radius:12px;border:none;background:#0b4ea2;color:#fff;font-weight:900;">
+        종료
+      </button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

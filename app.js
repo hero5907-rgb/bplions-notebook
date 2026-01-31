@@ -964,7 +964,6 @@ window.addEventListener("keydown", (e) => {
 });
 
 
-// ===== 안드로이드 시스템 뒤로가기 제어 (confirm 종료) =====
 (function handleAndroidBack() {
 
   function pushDummy() {
@@ -975,7 +974,7 @@ window.addEventListener("keydown", (e) => {
 
   window.addEventListener("popstate", () => {
 
-    // 1️⃣ 모달 닫기 우선
+    // 1️⃣ 열린 모달부터 닫기
     if (el("profileModal")?.hidden === false) {
       closeProfile();
       pushDummy();
@@ -999,17 +998,11 @@ window.addEventListener("keydown", (e) => {
       return;
     }
 
-    // 3️⃣ 홈에서 종료 확인
-    const ok = confirm("앱을 종료하시겠습니까?");
-    if (ok) {
-      history.back(); // 실제 앱 종료
-    } else {
-      pushDummy();    // 취소 → 앱 유지
-    }
+    // 3️⃣ 홈 → 종료 모달
+    showExitModal();
   });
 
 })();
-
 
 function openImgModal(src){
   const m = el("imgModal");
