@@ -52,31 +52,28 @@ function showScreen(name) {
   });
 
   const isLoggedIn = !!state.me;
-  // ✅ 부트(로딩) 화면에서는 탑바 버튼 전부 숨김 (뒤로/로그아웃)
+
   if (name === "boot") {
     if (btnLogout) btnLogout.hidden = true;
     if (btnBack) btnBack.hidden = true;
     return;
   }
 
-  // ✅ 로그인 화면에서는 로그아웃/뒤로 숨김
   if (name === "login") {
     if (btnLogout) btnLogout.hidden = true;
     if (btnBack) btnBack.hidden = true;
     return;
   }
 
-// ✅ 나머지 화면 규칙
-if (btnLogout) btnLogout.hidden = !isLoggedIn;
-if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
+  if (btnLogout) btnLogout.hidden = !isLoggedIn;
+  if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
 
-// ✅ home 화면에 들어올 때만 뒤로가기 트랩 생성 (핵심)
-if (name === "home") {
-  history.pushState({ app: true }, "", location.href);
+  // ⭐⭐⭐ 이게 핵심
+  if (name === "home") {
+    history.pushState({ app: true }, "", location.href);
+  }
 }
 
-
-}
 
 function pushNav(name) {
   state.navStack.push(name);
@@ -470,8 +467,6 @@ state.navStack = ["home"];
 showScreen("home");
 window.scrollTo(0, 0);
 
-// ✅ 홈 진입 시 뒤로가기 트랩 1회 생성 (이게 핵심)
-history.pushState({ app: true }, "", location.href);
 
 
   } catch (e) {
@@ -974,40 +969,6 @@ window.addEventListener("keydown", (e) => {
 });
 
 
-// ===== 안드로이드 뒤로가기 2번 종료 처리 =====
-let exitTimer = null;
-
-window.addEventListener("popstate", () => {
-  const current = state.navStack.at(-1);
-
-  // 🔹 홈 화면일 때
-  if (current === "home") {
-
-    // 첫 번째 뒤로가기
-
-    if (!exitTimer) {
-  // ✅ 진동 (안드로이드만 동작)
-  if (navigator.vibrate) navigator.vibrate(40);
-
-  toast("앱을 종료하려면 한번 더 누르세요", { force: true });
-
-  history.pushState({ app: true }, "", location.href);
-
-  exitTimer = setTimeout(() => {
-    exitTimer = null;
-  }, 2000);
-} else {
-      // 두 번째 뒤로가기 → 실제 종료 허용
-      exitTimer = null;
-      history.back(); // 브라우저 종료
-    }
-    return;
-  }
-
-  // 🔹 홈이 아닌 경우 → 그냥 앱 내부 뒤로가기
-  popNav();
-});
-
 
 
 
@@ -1112,88 +1073,65 @@ function loadUpcomingEvents(){
 
 
 
-// loadUpcomingEvents();  // ❌ GAS 전용, PWA에서 실행 금지
-
-let exitOnce = false;
-let snack = null;
-
-function showExitSnack() {
-  if (snack) snack.remove();
-
-  snack = document.createElement("div");
-  snack.textContent = "앱을 종료하려면 한 번 더 누르세요";
-
-  snack.style.cssText = `
-    position: fixed;
-    left: 16px;
-    right: 16px;
-    bottom: 20px;
-    background: #0b4ea2;
-    color: #fff;
-    padding: 14px 16px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: center;
-    z-index: 999999;
-    box-shadow: 0 8px 24px rgba(11,78,162,.45);
-  `;
-
-  document.body.appendChild(snack);
-
-  setTimeout(() => {
-    snack?.remove();
-    snack = null;
-  }, 1800);
-}
 
 
 
-// ===== 안드로이드 뒤로가기 (단일, 최종본) =====
+// ===== 안드로이드 뒤로가기 (진짜 최종 단일본) =====
 (function () {
+
+  let exitOnce = false;
 
   function pushDummy() {
     history.pushState({ app: true }, "", location.href);
   }
 
-  
-
-  
+  function vibrate(v) {
+    if (navigator.vibrate) navigator.vibrate(v);
+  }
 
   window.addEventListener("popstate", () => {
 
-  // 1️⃣ 모달 우선 닫기
-  if (el("profileModal")?.hidden === false) {
-    closeProfile(); pushDummy(); return;
-  }
-  if (el("annModal")?.hidden === false) {
-    closeAnnModal(); pushDummy(); return;
-  }
-  if (el("imgModal")?.hidden === false) {
-    closeImgModal(); pushDummy(); return;
-  }
+    // 1️⃣ 모달 우선 닫기
+    if (el("profileModal")?.hidden === false) {
+      vibrate(20);
+      closeProfile();
+      pushDummy();
+      return;
+    }
+    if (el("annModal")?.hidden === false) {
+      vibrate(20);
+      closeAnnModal();
+      pushDummy();
+      return;
+    }
+    if (el("imgModal")?.hidden === false) {
+      vibrate(20);
+      closeImgModal();
+      pushDummy();
+      return;
+    }
 
-  // 2️⃣ 서브 화면이면 → 뒤로
-  if (state.navStack.length > 1) {
-    popNav();
-    pushDummy();
-    return;
-  }
+    // 2️⃣ 서브 화면 → 내부 뒤로
+    if (state.navStack.length > 1) {
+      vibrate(15);
+      popNav();
+      pushDummy();
+      return;
+    }
 
-  // 3️⃣ 홈 + 첫 뒤로
-  if (!exitOnce) {
-    exitOnce = true;
-    showExitSnack();
-    pushDummy();
+    // 3️⃣ 홈 + 첫 뒤로
+    if (!exitOnce) {
+      exitOnce = true;
+      vibrate(40);
+      toast("앱을 종료하려면 한번 더 누르세요", { force: true });
+      pushDummy();
+      setTimeout(() => exitOnce = false, 2000);
+      return;
+    }
 
-    setTimeout(() => exitOnce = false, 2000);
-    return;
-  }
-
-  // 4️⃣ 홈 + 두 번째 뒤로
-  // 👉 아무 코드도 없음 (OS가 종료 처리)
-});
+    // 4️⃣ 홈 + 두 번째 뒤로 → 종료
+    vibrate([30, 50, 30]);
+    // 여기서 아무 것도 안 하면 OS가 앱 종료
+  });
 
 })();
-
-
