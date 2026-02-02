@@ -691,28 +691,32 @@ window.addEventListener("popstate", () => {
   // 1️⃣ 모달 열려 있으면 → 모달 닫기
   if (el("profileModal")?.hidden === false) {
     closeProfile();
-    history.pushState({ app: true }, "", location.href);
+
     return;
   }
 
   if (el("annModal")?.hidden === false) {
     closeAnnModal();
-    history.pushState({ app: true }, "", location.href);
+
     return;
   }
 
   if (el("imgModal")?.hidden === false) {
     closeImgModal();
-    history.pushState({ app: true }, "", location.href);
+  
     return;
   }
 
-  // 2️⃣ 메인보다 깊은 화면이면 → 메인으로
-  if (state.navStack.length > 1) {
-    popNav();
-    history.pushState({ app: true }, "", location.href);
-    return;
-  }
+// 2️⃣ 메인보다 깊은 화면이면 → 메인으로
+if (state.navStack.length > 1) {
+  popNav();
+
+  // 🔒 앱 안에 다시 고정 (이 1줄이 핵심)
+  history.pushState({ app: true }, "", location.href);
+
+  return;
+}
+
 
   // 3️⃣ 지금은 메인(home) 화면
   if (!homeBackTimer) {
@@ -725,7 +729,7 @@ window.addEventListener("popstate", () => {
       homeBackTimer = null;
     }, 1000);
 
-    history.pushState({ app: true }, "", location.href);
+
     return;
   }
 
