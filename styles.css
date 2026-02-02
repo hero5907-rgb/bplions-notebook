@@ -740,4 +740,14 @@ flex-direction: column;   /* 🔥 이거 추가 */
   font-weight:900;
 }
 
+/* 📅 달력 요일 색상 */
+.fc-day-sun .fc-daygrid-day-number {
+  color: #e53935; /* 빨강 */
+  font-weight: 600;
+}
+
+.fc-day-sat .fc-daygrid-day-number {
+  color: #1e88e5; /* 파랑 */
+  font-weight: 600;
+}
 
