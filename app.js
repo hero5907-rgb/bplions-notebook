@@ -66,15 +66,12 @@ el("btnExitOk")?.addEventListener("click", () => {
   hideExitModal();
   if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
 
-  // ✅ 안드로이드 PWA 종료 트릭
-  history.go(-history.length);
+  // ✅ 안드로이드 PWA 정상 종료 유도
+  window.close();
 });
 
+
 }
-
-
-
-
 
 
 
@@ -132,8 +129,6 @@ btnLogout?.addEventListener("click", () => {
   showScreen("login");
   toast("로그아웃");
 
-
- history.replaceState({ app: true }, "", location.href);
 
 });
 
@@ -501,8 +496,7 @@ state.navStack = ["home"];
 showScreen("home");
 window.scrollTo(0, 0);
 
-// ✅ 이 줄 추가 (중요)
-history.replaceState({ app: true }, "", location.href);
+
 
   } catch (e) {
   console.error("LOGIN_ERROR:", e);
@@ -643,8 +637,8 @@ document.addEventListener("touchmove", (e) => {
   state.navStack = ["login"];
   showScreen("login");
 
-  // ✅ 이 줄 추가 (맨 마지막)
-  history.replaceState({ app: true }, "", location.href);
+
+history.pushState({ app: true }, "", location.href);
 
 
 })();
