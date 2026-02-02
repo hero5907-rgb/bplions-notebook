@@ -1087,10 +1087,6 @@ function openAnnModal(a){
   el("annModalBody").textContent = a?.body || "";
   m.hidden = false;
 
-  // 🔴 추가 (모달 전용 뒤로가기 단계)
-  history.pushState({ modal: "ann" }, "", location.href);
-
-
 }
 
 function closeAnnModal(){
