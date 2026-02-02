@@ -95,17 +95,7 @@
 
         <button id="btnLogin" class="btn primary">로그인</button>
 
-        <div class="install-row">
-          <button id="btnInstallAndroid" class="btn install">안드로이드 앱 설치</button>
-          <button id="btnInstallIOS" class="btn install ghost">아이폰 설치방법</button>
-        </div>
-
-<div class="reload-wrap">
-  <button id="btnHardReload" class="reload-btn">
-    업데이트 문제 발생 시 새로고침
-  </button>
-</div>
-
+        
 
 
 
@@ -114,6 +104,26 @@
         <div id="loginError" class="error" hidden></div>
       </div>
     </div>
+
+
+<!-- 🔽 로그인 카드 밖 액션 영역 -->
+<div class="login-actions">
+  <div class="install-row">
+    <button id="btnInstallAndroid" class="btn install">
+      안드로이드 앱 설치
+    </button>
+    <button id="btnInstallIOS" class="btn install ghost">
+      아이폰 설치방법
+    </button>
+  </div>
+
+  <button id="btnHardReload" class="reload-link">
+    업데이트 문제가 있나요? 새로고침
+  </button>
+</div>
+
+
+
   </section>
 
   <!-- 이하 홈/멤버/공지/텍스트는 그대로 -->
@@ -247,8 +257,34 @@
   <div id="toast" class="toast" hidden></div>
 
 
+
+
+<div id="exitModal" hidden
+  style="position:fixed; inset:0;
+         background:rgba(0,0,0,.45);
+         display:flex; align-items:center; justify-content:center;
+         z-index:999999;">
+  <div style="background:#fff;
+              border-radius:18px;
+              width:260px;
+              padding:20px;
+              text-align:center;
+              box-shadow:0 10px 30px rgba(0,0,0,.25);">
+    <div style="font-weight:800;margin-bottom:18px;">
+      앱을 종료하시겠습니까?
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="btnExitCancel">취소</button>
+      <button id="btnExitOk">확인</button>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- ===== 프로필 확대 팝업 ===== -->
 <div id="profileModal" class="modal" hidden>
+
   <div class="modal-backdrop" onclick="closeProfile()"></div>
   <div class="modal-card">
     <img id="modalPhoto" class="modal-photo" />
@@ -304,41 +340,12 @@
 </main>
 
 <script src="./config.js"></script>
-
-
-
-
 <script src="./app.js"></script>
 
-<div id="exitModal" hidden
-  style="position:fixed; inset:0;
-         background:rgba(0,0,0,.45);
-         display:flex; align-items:center; justify-content:center;
-         z-index:999999;">
-  <div style="background:#fff;
-              border-radius:18px;
-              width:260px;
-              padding:20px;
-              text-align:center;
-              box-shadow:0 10px 30px rgba(0,0,0,.25);">
-    <div style="font-weight:800;margin-bottom:18px;">
-      앱을 종료하시겠습니까?
-    </div>
-    <div style="display:flex;gap:12px;justify-content:center;">
-      <button id="btnExitCancel">취소</button>
-      <button id="btnExitOk">확인</button>
-    </div>
-  </div>
-</div>
-
-
-</body>
-</html>
-
-
-
 
 
 
 </body>
 </html>
+
+
