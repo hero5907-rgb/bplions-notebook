@@ -464,6 +464,8 @@ state.navStack = ["home"];
 showScreen("home");
 window.scrollTo(0, 0);
 
+// ✅ 홈 진입 시 뒤로가기 트랩 1회 생성 (이게 핵심)
+history.pushState({ app: true }, "", location.href);
 
 
   } catch (e) {
