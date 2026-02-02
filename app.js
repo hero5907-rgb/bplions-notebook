@@ -459,13 +459,7 @@ try {
     if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
     else localStorage.removeItem(LS_KEY);
 
-    state.navStack = ["home"];
-    showScreen("home");
-    window.scrollTo(0, 0);
-    history.pushState({ app: true }, "", location.href);
 
-
-    toast("접속 완료");
   } catch (e) {
   console.error("LOGIN_ERROR:", e);
 
@@ -1148,5 +1142,7 @@ function showExitSnack() {
   // 4️⃣ 홈 + 두 번째 뒤로
   // 👉 아무 코드도 없음 (OS가 종료 처리)
 });
+
+})();
 
 
