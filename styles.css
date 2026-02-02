@@ -175,23 +175,8 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 }
 
 
-.install-row{
-  display:flex;
-  gap:10px;
-  margin-top:10px;
-}
-.btn.install{
-  width:100%;
-  padding:12px;
-  border-radius:14px;
-  font-weight:900;
-  font-size:14px;
-}
-.btn.install.ghost{
-  background:rgba(255,255,255,.15);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.35);
-}
+
+
 .hint{
   margin-top:10px;
   padding:10px 12px;
@@ -200,9 +185,6 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   line-height:1.35;
   background:rgba(0,0,0,.25);
   color:#fff;
-}
-@media (max-width:420px){
-  .install-row{flex-direction:column;}
 }
 
 
@@ -644,98 +626,8 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   pointer-events: none;
 }
 
-.install-row, 
-.install-row *{
-  pointer-events: auto !important;
-}
 
 
-#btnHardReload{
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999999;
-
-  background: none;
-  border: none;
-  font-size: 13px;
-  color: #555;
-  text-decoration: underline;
-
-  pointer-events: auto;
-}
-
-
-/* ===== 업데이트 문제 새로고침 버튼 ===== */
-.reload-wrap{
-  margin-top: 12px;
-  display: flex;
-  justify-content: center;
-}
-
-.reload-btn{
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  backdrop-filter: blur(6px);
-}
-
-.reload-btn:active{
-  transform: scale(0.97);
-}
-
-
-/* ===== 업데이트 문제 발생 시 새로고침 버튼 ===== */
-
-.reload-wrap{
-  margin-top: 14px;        /* ⬅️ 설치 버튼 아래 살짝 띄우기 */
-  text-align: center;
-}
-
-.reload-btn{
-  padding: 6px 12px;       /* ⬅️ 버튼 작게 */
-  font-size: 12px;         /* ⬅️ 글씨 작게 */
-  font-weight: 700;
-  border-radius: 10px;
-
-  background: rgba(0,0,0,.08);
-  color: #0b4ea2;
-  border: 1px solid rgba(11,78,162,.35);
-
-  cursor: pointer;
-}
-
-.reload-btn:active{
-  transform: scale(0.97);
-}
-
-/* ===== 로그인 하단 액션 영역 ===== */
-.login-actions{
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-/* 설치 버튼은 기존 스타일 유지 */
-.install-row{
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  justify-content: center;
-}
-
-@media (max-width:420px){
-  .install-row{
-    flex-direction: column;
-  }
-}
 
 /* ===== 새로고침: 링크 느낌 ===== */
 .reload-link{
@@ -755,4 +647,49 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   color: #fff;
 }
 
+/* ===== 로그인 하단 액션 영역 (최종 정리본) ===== */
+
+.login-actions{
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.install-row{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.btn.install{
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  font-weight: 800;
+}
+
+.btn.install.ghost{
+  background: rgba(255,255,255,0.08);
+  color: #e5ecff;
+}
+
+.reload-link{
+  background: none;
+  border: none;
+  padding: 4px;
+
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.reload-link:hover{
+  color: #fff;
+}
 
