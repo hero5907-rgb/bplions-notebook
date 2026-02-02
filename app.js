@@ -31,12 +31,39 @@ let state = {
   navStack: ["login"],
 };
 
+
+function isAnyModalOpen() {
+  return (
+    el("profileModal")?.hidden === false ||
+    el("annModal")?.hidden === false ||
+    el("imgModal")?.hidden === false
+  );
+}
+
+function closeAnyModal() {
+  if (el("profileModal")?.hidden === false) closeProfile();
+  if (el("annModal")?.hidden === false) closeAnnModal();
+  if (el("imgModal")?.hidden === false) closeImgModal();
+}
+
+
+
+
+
+
+
+
 // 🔴 [추가] 종료 확인창 열림 여부
 let exitOpen = false;
 
 function normalizePhone(p) {
   return String(p || "").replace(/[^0-9]/g, "");
 }
+
+
+
+
+
 
 
 
@@ -1149,6 +1176,15 @@ function loadUpcomingEvents(){
   history.pushState({ app: true }, "", location.href);
 
   window.addEventListener("popstate", () => {
+
+
+// [0] 팝업 떠 있으면 → 팝업부터 닫기
+    if (isAnyModalOpen()) {
+      closeAnyModal();
+      history.pushState({ app: true }, "", location.href);
+      return;
+    }
+
 
     // [3] 종료 확인창 떠 있으면 → 닫기
     if (exitOpen) {

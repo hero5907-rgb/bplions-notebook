@@ -648,3 +648,13 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 .install-row *{
   pointer-events: auto !important;
 }
+
+
+
+#btnHardReload {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999999;
+}
