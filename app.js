@@ -1069,6 +1069,38 @@ function loadUpcomingEvents(){
 
 // loadUpcomingEvents();  // ❌ GAS 전용, PWA에서 실행 금지
 
+let exitOnce = false;
+let snack = null;
+
+function showExitSnack() {
+  if (snack) snack.remove();
+
+  snack = document.createElement("div");
+  snack.textContent = "앱을 종료하려면 한 번 더 누르세요";
+
+  snack.style.cssText = `
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 20px;
+    background: #0b4ea2;
+    color: #fff;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    z-index: 999999;
+    box-shadow: 0 8px 24px rgba(11,78,162,.45);
+  `;
+
+  document.body.appendChild(snack);
+
+  setTimeout(() => {
+    snack?.remove();
+    snack = null;
+  }, 1800);
+}
 
 
 
@@ -1081,126 +1113,40 @@ function loadUpcomingEvents(){
 
   pushDummy(); // 최초 1회
 
-  const exitModal = el("exitModal");
-
-  function showExit() {
-    if (exitModal) exitModal.hidden = false;
-  }
-
-  function hideExit() {
-    if (exitModal) exitModal.hidden = true;
-  }
-
-  el("btnExitCancel")?.addEventListener("click", () => {
-    hideExit();
-    pushDummy();
-  });
-
-  el("btnExitOk")?.addEventListener("click", () => {
-    history.back(); // 여기서만 종료
-  });
+  
 
   window.addEventListener("popstate", () => {
 
-    // 모달 우선 닫기
-    if (el("profileModal")?.hidden === false) {
-      closeProfile(); pushDummy(); return;
-    }
-    if (el("annModal")?.hidden === false) {
-      closeAnnModal(); pushDummy(); return;
-    }
-    if (el("imgModal")?.hidden === false) {
-      closeImgModal(); pushDummy(); return;
-    }
-
-    // 화면 스택 뒤로
-    if (state.navStack.length > 1) {
-      popNav(); pushDummy(); return;
-    }
-
-    // 홈 → 종료 모달
-    showExit();
-    pushDummy();
-  });
-
-})();
-
-
-// =======================================
-// 📱 뒤로가기 UX (서브페이지=뒤로 / 홈=종료)
-// 🔵 브랜드 컬러 스낵바
-// =======================================
-(function () {
-  let exitOnce = false;
-  let snack = null;
-
-  // 최초 진입 시 히스토리 1개 확보
-  history.pushState({ home: true }, "", location.href);
-
-  function showSnack(msg) {
-    if (snack) snack.remove();
-
-    snack = document.createElement("div");
-    snack.textContent = msg;
-
-    snack.style.cssText = `
-      position: fixed;
-      left: 16px;
-      right: 16px;
-      bottom: 20px;
-      background: #0b4ea2; /* 🔵 브랜드 컬러 */
-      color: #fff;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 700;
-      text-align: center;
-      z-index: 999999;
-      box-shadow: 0 8px 24px rgba(11,78,162,.45);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all .25s ease;
-    `;
-
-    document.body.appendChild(snack);
-
-    requestAnimationFrame(() => {
-      snack.style.opacity = "1";
-      snack.style.transform = "translateY(0)";
-    });
-
-    setTimeout(() => {
-      snack.style.opacity = "0";
-      snack.style.transform = "translateY(10px)";
-      setTimeout(() => snack?.remove(), 250);
-      snack = null;
-    }, 1800);
+  // 1️⃣ 모달 우선 닫기
+  if (el("profileModal")?.hidden === false) {
+    closeProfile(); pushDummy(); return;
+  }
+  if (el("annModal")?.hidden === false) {
+    closeAnnModal(); pushDummy(); return;
+  }
+  if (el("imgModal")?.hidden === false) {
+    closeImgModal(); pushDummy(); return;
   }
 
-  window.addEventListener("popstate", (e) => {
-    // 🔹 서브페이지(공지, 상세 등) → 그냥 뒤로
-    if (history.length > 2) {
-      history.back();
-      return;
-    }
+  // 2️⃣ 서브 화면이면 → 뒤로
+  if (state.navStack.length > 1) {
+    popNav();
+    pushDummy();
+    return;
+  }
 
-    // 🔹 홈에서 뒤로가기 → 종료 제어
-    if (exitOnce) {
-      navigator.app?.exitApp?.(); // Android PWA 종료
-      return;
-    }
-
+  // 3️⃣ 홈 + 첫 뒤로
+  if (!exitOnce) {
     exitOnce = true;
-    showSnack("앱을 종료하려면 한 번 더 누르세요");
+    showExitSnack();
+    pushDummy();
 
-    // 홈 상태 유지
-    history.pushState({ home: true }, "", location.href);
+    setTimeout(() => exitOnce = false, 2000);
+    return;
+  }
 
-    setTimeout(() => {
-      exitOnce = false;
-    }, 2000);
-  });
-})();
-
+  // 4️⃣ 홈 + 두 번째 뒤로
+  // 👉 아무 코드도 없음 (OS가 종료 처리)
+});
 
 
