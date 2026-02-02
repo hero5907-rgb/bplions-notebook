@@ -974,6 +974,43 @@ window.addEventListener("keydown", (e) => {
 });
 
 
+// ===== 안드로이드 뒤로가기 2번 종료 처리 =====
+let exitTimer = null;
+
+window.addEventListener("popstate", () => {
+  const current = state.navStack.at(-1);
+
+  // 🔹 홈 화면일 때
+  if (current === "home") {
+
+    // 첫 번째 뒤로가기
+
+    if (!exitTimer) {
+  // ✅ 진동 (안드로이드만 동작)
+  if (navigator.vibrate) navigator.vibrate(40);
+
+  toast("앱을 종료하려면 한번 더 누르세요", { force: true });
+
+  history.pushState({ app: true }, "", location.href);
+
+  exitTimer = setTimeout(() => {
+    exitTimer = null;
+  }, 2000);
+} else {
+      // 두 번째 뒤로가기 → 실제 종료 허용
+      exitTimer = null;
+      history.back(); // 브라우저 종료
+    }
+    return;
+  }
+
+  // 🔹 홈이 아닌 경우 → 그냥 앱 내부 뒤로가기
+  popNav();
+});
+
+
+
+
 
 function openImgModal(src){
   const m = el("imgModal");
