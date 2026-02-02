@@ -691,32 +691,35 @@ let lastBackAt = 0;
 
 window.addEventListener("popstate", () => {
 
-  // 1️⃣ 다른 모달(프로필/공지/이미지/종료팝업) 열려 있으면 닫기
-  if (isAnyModalOpen()) {
-    closeAnyModal();
-    history.pushState({ app: true }, "", location.href);
+  // 1️⃣ 팝업이 열려 있으면 → 팝업만 닫고 끝
+  if (el("profileModal")?.hidden === false) {
+    closeProfile();
+    return;
+  }
+  if (el("annModal")?.hidden === false) {
+    closeAnnModal();
+    return;
+  }
+  if (el("imgModal")?.hidden === false) {
+    closeImgModal();
     return;
   }
 
+  // 2️⃣ 일반 화면에서 home이 아니면 → 한 단계 뒤로
   const current = state.navStack[state.navStack.length - 1];
-
-  // 2️⃣ home이 아닌 화면이면 → 한 단계 뒤로
   if (current !== "home") {
     popNav();
-    history.pushState({ app: true }, "", location.href);
     return;
   }
 
-  // 3️⃣ home 화면에서 뒤로가기 → 종료 팝업
-if (!exitOpen) {
-  openExitConfirm();
-  history.pushState({ exit: true }, "", location.href);
-  return;
-}
+  // 3️⃣ home에서 첫 뒤로가기 → 종료 확인 팝업
+  if (!exitOpen) {
+    openExitConfirm();
+    return;
+  }
 
-// 4️⃣ 팝업 떠 있는 상태에서 다시 뒤로가기 → 종료
-window.close();
-
+  // 4️⃣ 종료 확인 팝업 열린 상태에서 뒤로가기 → 종료
+  window.close();
 });
 
 
