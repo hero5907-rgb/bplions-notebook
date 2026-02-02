@@ -675,11 +675,12 @@ function bindSearch() {
 
 
 // 🔙 안드로이드 뒤로가기 제어 (init 끝에서 단 1번)
-history.pushState({ app: true }, "", location.href);
+
+
+let lastBackAt = 0;
 
 window.addEventListener("popstate", () => {
 
-  // 1️⃣ 모달 / 종료확인창 우선 닫기
   if (isAnyModalOpen()) {
     closeAnyModal();
     history.pushState({ app: true }, "", location.href);
@@ -688,14 +689,24 @@ window.addEventListener("popstate", () => {
 
   const current = state.navStack[state.navStack.length - 1];
 
-  // 2️⃣ 메인화면 아니면 이전 화면
+  if (current === "login") {
+    const now = Date.now();
+    if (now - lastBackAt < 2000) {
+      window.close();
+      return;
+    }
+    lastBackAt = now;
+    toast("한 번 더 누르면 앱이 종료됩니다", { force: true });
+    history.pushState({ app: true }, "", location.href);
+    return;
+  }
+
   if (current !== "home") {
     popNav();
     history.pushState({ app: true }, "", location.href);
     return;
   }
 
-  // 3️⃣ 메인화면 → 두 번 눌러 종료
   const now = Date.now();
   if (now - lastBackAt < 2000) {
     window.close();
@@ -706,7 +717,6 @@ window.addEventListener("popstate", () => {
   toast("한 번 더 누르면 앱이 종료됩니다", { force: true });
   history.pushState({ app: true }, "", location.href);
 });
-
 
 
   }
