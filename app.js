@@ -1,4 +1,6 @@
 
+let homeBackTimer = null;
+
 
 function isAnyModalOpen(){
   return (
@@ -116,6 +118,14 @@ function showScreen(name) {
 
   if (btnLogout) btnLogout.hidden = !isLoggedIn;
   if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
+
+// ✅ home에 들어오면 종료 대기 상태 초기화
+if (name === "home" && homeBackTimer) {
+  clearTimeout(homeBackTimer);
+  homeBackTimer = null;
+}
+
+
 }
 
 
@@ -148,6 +158,8 @@ btnLogout?.addEventListener("click", () => {
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
   toast("로그아웃");
+
+
 
 
 });
@@ -676,7 +688,7 @@ history.pushState({ app: true }, "", location.href);
 
 window.addEventListener("popstate", () => {
 
-  // 1️⃣ 프로필 / 공지 / 이미지 모달 먼저 닫기
+  // 1️⃣ 모달 열려 있으면 → 모달 닫기
   if (el("profileModal")?.hidden === false) {
     closeProfile();
     history.pushState({ app: true }, "", location.href);
@@ -695,16 +707,33 @@ window.addEventListener("popstate", () => {
     return;
   }
 
-  // 2️⃣ 화면 스택이 남아 있으면 → 이전 화면
+  // 2️⃣ 메인보다 깊은 화면이면 → 메인으로
   if (state.navStack.length > 1) {
     popNav();
     history.pushState({ app: true }, "", location.href);
     return;
   }
 
-  // 3️⃣ home / login 에서 뒤로가기 → 종료
+  // 3️⃣ 지금은 메인(home) 화면
+  if (!homeBackTimer) {
+    toast("뒤로 한번 더 누르면 종료됩니다", {
+      duration: 1000,
+      force: true
+    });
+
+    homeBackTimer = setTimeout(() => {
+      homeBackTimer = null;
+    }, 1000);
+
+    history.pushState({ app: true }, "", location.href);
+    return;
+  }
+
+  // 4️⃣ 1초 안에 다시 누르면 → 종료
   window.close();
 });
+
+
 
 
 // ===== Pull-to-refresh 방지 (특히 iOS Safari/PWA) =====
