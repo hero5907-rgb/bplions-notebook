@@ -31,30 +31,33 @@ let state = {
   navStack: ["login"],
 };
 
+// 🔴 [추가] 종료 확인창 열림 여부
+let exitOpen = false;
+
 function normalizePhone(p) {
   return String(p || "").replace(/[^0-9]/g, "");
 }
 
 function toast(msg, opts) {
-  if (toast._lock && !(opts && opts.force)) return;
-  const t = el("toast");
-  if (!t) return;
-  t.textContent = msg;
-  t.hidden = false;
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => (t.hidden = true), 1500);
+  ...
 }
 
-
-function showExitMsg() {
+// ===== 종료 확인창 제어 =====
+function openExitConfirm() {
   const m = el("exitModal");
-  if (m) m.hidden = false;
+  if (!m) return;
+  exitOpen = true;
+  m.hidden = false;
 }
 
-function hideExitMsg() {
+function closeExitConfirm() {
   const m = el("exitModal");
-  if (m) m.hidden = true;
+  if (!m) return;
+  exitOpen = false;
+  m.hidden = true;
 }
+
+
 
 
 
@@ -617,12 +620,15 @@ document.addEventListener("touchmove", (e) => {
     }
   }
 
-  // 1) 기본은 로그인 화면
   state.navStack = ["login"];
   showScreen("login");
 
-
+  el("btnExitCancel")?.addEventListener("click", closeExitConfirm);
+  el("btnExitOk")?.addEventListener("click", () => {
+    window.close();
+  });
 })();
+
 
 
 // ===== PWA Service Worker 등록 + 업데이트 토스트 =====
@@ -1085,63 +1091,32 @@ function loadUpcomingEvents(){
     .getUpcomingEvents();
 }
 
-
-// ===== 안드로이드 뒤로가기 : popstate 단일 고정 =====
+// ===== 안드로이드 뒤로가기 : 종료 확인창 방식 =====
 (function () {
 
-  let exitOnce = false;
-  let exitTimer = null;
-
-  function showExit() {
-    showExitMsg();
-    exitOnce = true;
-    clearTimeout(exitTimer);
-    exitTimer = setTimeout(() => {
-      exitOnce = false;
-      hideExitMsg();
-    }, 2000);
-  }
-
-  // 최초 1회 히스토리 고정
   history.pushState({ app: true }, "", location.href);
 
-  window.addEventListener("popstate", (e) => {
-    e.preventDefault();
+  window.addEventListener("popstate", () => {
 
-    // 1️⃣ 모달 닫기
-    if (el("profileModal")?.hidden === false) {
-      closeProfile();
-      history.pushState({ app: true }, "", location.href);
-      return;
-    }
-    if (el("annModal")?.hidden === false) {
-      closeAnnModal();
-      history.pushState({ app: true }, "", location.href);
-      return;
-    }
-    if (el("imgModal")?.hidden === false) {
-      closeImgModal();
+    // [3] 종료 확인창 떠 있으면 → 닫기
+    if (exitOpen) {
+      closeExitConfirm();
       history.pushState({ app: true }, "", location.href);
       return;
     }
 
-    // 2️⃣ 내부 화면 → 홈
-    if (state.navStack.length > 1) {
+    const current = state.navStack[state.navStack.length - 1];
+
+    // [1] 메인화면이 아니면 → 이전 화면
+    if (current !== "home") {
       popNav();
       history.pushState({ app: true }, "", location.href);
       return;
     }
 
-    // 3️⃣ 홈 첫 뒤로 → 종료 메시지
-    if (!exitOnce) {
-      showExit();
-      history.pushState({ app: true }, "", location.href);
-      return;
-    }
-
-    // 4️⃣ 홈 두 번째 뒤로 → 종료
-    hideExitMsg();
-    window.close();
+    // [2] 메인화면이면 → 종료 확인창
+    openExitConfirm();
+    history.pushState({ app: true }, "", location.href);
   });
 
 })();
