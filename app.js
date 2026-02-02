@@ -670,7 +670,7 @@ function bindSearch() {
       localStorage.removeItem(LS_KEY);
     }
 
-
+}
 
 
 
@@ -1182,7 +1182,7 @@ function loadUpcomingEvents(){
 
 
 
-
+})(); // 🔚 init 끝 (이게 반드시 있어야 함)
 
 
 
