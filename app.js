@@ -455,9 +455,15 @@ try {
     renderLatest();
     renderAnnouncements();
 
-    // ✅ 로그인 유지 저장은 "성공했을 때만"
-    if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
-    else localStorage.removeItem(LS_KEY);
+
+if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
+else localStorage.removeItem(LS_KEY);
+
+// ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
+state.navStack = ["home"];
+showScreen("home");
+window.scrollTo(0, 0);
+
 
 
   } catch (e) {
