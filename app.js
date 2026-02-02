@@ -45,6 +45,36 @@ function toast(msg, opts) {
   toast._t = setTimeout(() => (t.hidden = true), 1500);
 }
 
+
+// ===== 종료 안내 중앙 박스 =====
+function showExitModal() {
+  const m = el("exitModal");
+  if (m) m.hidden = false;
+}
+
+function hideExitModal() {
+  const m = el("exitModal");
+  if (m) m.hidden = true;
+}
+
+function bindExitModal() {
+  el("btnExitCancel")?.addEventListener("click", () => {
+    hideExitModal();
+  });
+
+  el("btnExitOk")?.addEventListener("click", () => {
+    hideExitModal();
+    if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+    history.back(); // 두 번째 뒤로 = 앱 종료
+  });
+}
+
+
+
+
+
+
+
 function showScreen(name) {
   Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
@@ -571,6 +601,8 @@ document.addEventListener("touchmove", (e) => {
   setBrand(null);   // ✅ 로그인 전에도 config 값으로 로고/클럽명/지구명 세팅
   bindNav();
   bindSearch();
+  bindExitModal(); // ← 이 줄
+
 
   el("btnLogin")?.addEventListener("click", handleLogin);
   ["inputPhone", "inputCode"].forEach((id) => {
@@ -1119,19 +1151,25 @@ function loadUpcomingEvents(){
       return;
     }
 
-    // 3️⃣ 홈 + 첫 뒤로
-    if (!exitOnce) {
-      exitOnce = true;
-      vibrate(40);
-      toast("앱을 종료하려면 한번 더 누르세요", { force: true });
-      pushDummy();
-      setTimeout(() => exitOnce = false, 2000);
-      return;
-    }
+  // 3️⃣ 홈 + 첫 뒤로
+if (!exitOnce) {
+  exitOnce = true;
+  vibrate(40);
+  showExitModal();   // 🔵 중앙 파란 박스
+  pushDummy();
 
-    // 4️⃣ 홈 + 두 번째 뒤로 → 종료
-    vibrate([30, 50, 30]);
-    // 여기서 아무 것도 안 하면 OS가 앱 종료
+  setTimeout(() => {
+    exitOnce = false;
+    hideExitModal();
+  }, 2000);
+
+  return;
+}
+
+// 4️⃣ 홈 + 두 번째 뒤로 → 종료
+hideExitModal();
+vibrate([30, 50, 30]);
+
   });
 
 })();
