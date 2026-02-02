@@ -76,6 +76,8 @@ if (name === "home") {
 }
 
 
+}
+
 function pushNav(name) {
   state.navStack.push(name);
   showScreen(name);
