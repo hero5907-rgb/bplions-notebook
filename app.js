@@ -1086,61 +1086,73 @@ function loadUpcomingEvents(){
 }
 
 
-
-
-
-
-// ===== 안드로이드 뒤로가기 (최종 단일본) =====
+// ===== 안드로이드 뒤로가기 : 단일 제어 (최종 안정판) =====
 (function () {
 
-  let exitOnce = false;
+  let exitTimer = null;
+  let exitReady = false;
 
-  // history 고정 (1회)
-  history.pushState({ app: true }, "", location.href);
+  function showExit() {
+    showExitMsg();
+    exitReady = true;
 
-  window.addEventListener("popstate", () => {
+    clearTimeout(exitTimer);
+    exitTimer = setTimeout(() => {
+      exitReady = false;
+      hideExitMsg();
+    }, 2000);
+  }
 
-    // 1️⃣ 모달 먼저 닫기
+  function handleBack() {
+
+    // 1️⃣ 열린 모달부터 닫기
     if (el("profileModal")?.hidden === false) {
       closeProfile();
-      history.pushState({ app: true }, "", location.href);
       return;
     }
     if (el("annModal")?.hidden === false) {
       closeAnnModal();
-      history.pushState({ app: true }, "", location.href);
       return;
     }
     if (el("imgModal")?.hidden === false) {
       closeImgModal();
-      history.pushState({ app: true }, "", location.href);
       return;
     }
 
-    // 2️⃣ 내부 화면 → 뒤로
+    // 2️⃣ 화면 스택 뒤로
     if (state.navStack.length > 1) {
       popNav();
-      history.pushState({ app: true }, "", location.href);
       return;
     }
 
-    // 3️⃣ 메인화면 + 첫 뒤로 → 메시지
-    if (!exitOnce) {
-      exitOnce = true;
-      showExitMsg();
-
-      setTimeout(() => {
-        exitOnce = false;
-        hideExitMsg();
-      }, 2000);
-
-      history.pushState({ app: true }, "", location.href);
+    // 3️⃣ 홈 화면
+    if (!exitReady) {
+      showExit();
       return;
     }
 
-    // 4️⃣ 메인화면 + 두 번째 뒤로 → 종료
+    // 4️⃣ 홈 + 두 번째 뒤로 → 종료
     hideExitMsg();
-    window.close();
+    navigator.app?.exitApp?.() || window.close();
+  }
+
+  // 안드로이드 WebView / PWA 대응
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" || e.key === "Escape") {
+      e.preventDefault();
+      handleBack();
+    }
   });
 
+  // 안드로이드 실제 backbutton (Cordova/WebView)
+  document.addEventListener("backbutton", (e) => {
+    e.preventDefault();
+    handleBack();
+  }, false);
+
 })();
+
+
+
+
+
