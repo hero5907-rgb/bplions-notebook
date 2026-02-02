@@ -1,6 +1,15 @@
 
 let homeBackTimer = null;
 
+function api(action, params = {}, cb){
+  apiJsonp({ action, phone: state._authPhone, code: state._authCode, ...params })
+    .then(cb)
+    .catch(e=>{
+      console.error(e);
+      toast("서버 통신 오류");
+    });
+}
+
 
 function isAnyModalOpen(){
   return (
@@ -95,22 +104,6 @@ function toast(msg, opts = {}) {
 
 
 
-function showScreen(name){
-  document.querySelectorAll(".screen").forEach(s=>{
-    s.hidden = true;
-  });
-
-  const el = document.getElementById("screen" + name);
-  if (el) el.hidden = false;
-
-  if (name === "Calendar") {
-    loadCalendar(); // ← 달력 로딩
-  }
-}
-
-
-
-
 
 
 
@@ -135,6 +128,10 @@ function showScreen(name) {
 if (name === "home" && homeBackTimer) {
   clearTimeout(homeBackTimer);
   homeBackTimer = null;
+}
+
+if (name === "Calendar") {
+  loadCalendar();
 }
 
 
@@ -540,6 +537,27 @@ else localStorage.removeItem(LS_KEY);
 
 state.navStack = ["home"];
 showScreen("home");
+
+// 🔔 로그인 후 중요 일정 팝업
+api("getLoginAlerts", {}, (alerts)=>{
+  if (!alerts || !alerts.length) return;
+
+  openModal(`
+    <h3>📢 중요 일정 안내</h3>
+    ${alerts.map(a=>`
+      <div style="margin-top:12px">
+        <b>${a.date} · ${a.title}</b>
+        <div class="muted">${a.desc || ""}</div>
+      </div>
+    `).join("")}
+    <button onclick="confirmAlerts(${JSON.stringify(alerts.map(a=>a.row))})">
+      확인
+    </button>
+  `);
+});
+
+
+
 history.pushState({ app: true }, "", location.href);
 window.scrollTo(0, 0);
 
@@ -562,26 +580,6 @@ window.scrollTo(0, 0);
   }
 }
 
-// 🔔 로그인 후 중요 일정 팝업
-api("getLoginAlerts", {}, (alerts)=>{
-  if (!alerts || !alerts.length) return;
-
-  openModal(`
-    <h3>📢 중요 일정 안내</h3>
-    ${alerts.map(a=>`
-      <div style="margin-top:12px">
-        <b>${a.date} · ${a.title}</b>
-        <div class="muted">${a.desc || ""}</div>
-      </div>
-    `).join("")}
-    <button style="margin-top:14px;width:100%;height:46px;
-      border:none;border-radius:14px;
-      background:#0b4ea2;color:#fff;font-weight:900"
-      onclick="confirmAlerts(${JSON.stringify(alerts.map(a=>a.row))})">
-      확인
-    </button>
-  `);
-});
 
 
 
