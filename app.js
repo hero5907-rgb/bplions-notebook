@@ -1126,8 +1126,81 @@ function loadUpcomingEvents(){
 })();
 
 
+// =======================================
+// 📱 뒤로가기 UX (서브페이지=뒤로 / 홈=종료)
+// 🔵 브랜드 컬러 스낵바
+// =======================================
+(function () {
+  let exitOnce = false;
+  let snack = null;
 
+  // 최초 진입 시 히스토리 1개 확보
+  history.pushState({ home: true }, "", location.href);
 
+  function showSnack(msg) {
+    if (snack) snack.remove();
+
+    snack = document.createElement("div");
+    snack.textContent = msg;
+
+    snack.style.cssText = `
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 20px;
+      background: #0b4ea2; /* 🔵 브랜드 컬러 */
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      z-index: 999999;
+      box-shadow: 0 8px 24px rgba(11,78,162,.45);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all .25s ease;
+    `;
+
+    document.body.appendChild(snack);
+
+    requestAnimationFrame(() => {
+      snack.style.opacity = "1";
+      snack.style.transform = "translateY(0)";
+    });
+
+    setTimeout(() => {
+      snack.style.opacity = "0";
+      snack.style.transform = "translateY(10px)";
+      setTimeout(() => snack?.remove(), 250);
+      snack = null;
+    }, 1800);
+  }
+
+  window.addEventListener("popstate", (e) => {
+    // 🔹 서브페이지(공지, 상세 등) → 그냥 뒤로
+    if (history.length > 2) {
+      history.back();
+      return;
+    }
+
+    // 🔹 홈에서 뒤로가기 → 종료 제어
+    if (exitOnce) {
+      navigator.app?.exitApp?.(); // Android PWA 종료
+      return;
+    }
+
+    exitOnce = true;
+    showSnack("앱을 종료하려면 한 번 더 누르세요");
+
+    // 홈 상태 유지
+    history.pushState({ home: true }, "", location.href);
+
+    setTimeout(() => {
+      exitOnce = false;
+    }, 2000);
+  });
+})();
 
 
 
