@@ -1182,32 +1182,6 @@ function loadUpcomingEvents(){
 
 
 
-let lastBackAt = 0;
-
-
-
-    const current = state.navStack[state.navStack.length - 1];
-
-    // 2️⃣ 메인화면 아니면 → 이전 화면
-    if (current !== "home") {
-      popNav();
-      history.pushState({ app: true }, "", location.href);
-      return;
-    }
-
-    // 3️⃣ 메인화면 → 두 번 눌러 종료
-    const now = Date.now();
-    if (now - lastBackAt < 2000) {
-      window.close();
-      return;
-    }
-
-    lastBackAt = now;
-    toast("한 번 더 누르면 앱이 종료됩니다", { force:true });
-    history.pushState({ app: true }, "", location.href);
-  });
-
-})();
 
 
 
