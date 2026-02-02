@@ -1244,13 +1244,17 @@ function loadUpcomingEvents(){
 let calendar;
 let allEvents = [];
 
-// 📅 서버에서 일정 받아와서 달력 표시
 function loadCalendar(){
-  api("getCalendarEvents", {}, (list)=>{
-    allEvents = Array.isArray(list) ? list : [];
-    initCalendar(allEvents);
+  const now = new Date();
+  const ym = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`;
+
+  api("events", { yyyymm: ym }, (res)=>{
+    const list = res?.events || [];
+    allEvents = list;
+    initCalendar(list);
   });
 }
+
 
 function initCalendar(events){
   const el = document.getElementById("calendar");
@@ -1270,9 +1274,23 @@ function initCalendar(events){
       right: ""
     },
 
+
+
+dayCellContent: function(arg) {
+  return { html: `<span>${arg.date.getDate()}</span>` };
+},
+
+
+
+
     dateClick(info){
       openDayEvents(info.dateStr);
     },
+
+
+
+
+
 
     events: events.map(e=>({
       title: e.title,
