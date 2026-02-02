@@ -70,13 +70,7 @@ function showScreen(name) {
 
   const isLoggedIn = !!state.me;
 
-  if (name === "boot") {
-    if (btnLogout) btnLogout.hidden = true;
-    if (btnBack) btnBack.hidden = true;
-    return;
-  }
-
-  if (name === "login") {
+  if (name === "boot" || name === "login") {
     if (btnLogout) btnLogout.hidden = true;
     if (btnBack) btnBack.hidden = true;
     return;
@@ -85,7 +79,10 @@ function showScreen(name) {
   if (btnLogout) btnLogout.hidden = !isLoggedIn;
   if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
 
-
+  // ✅ 핵심
+  if (name === "home") {
+    history.pushState({ app: true }, "", location.href);
+  }
 }
 
 
