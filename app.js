@@ -653,9 +653,10 @@ function bindSearch() {
 
   // 종료 확인창 버튼
   el("btnExitCancel")?.addEventListener("click", closeExitConfirm);
-  el("btnExitOk")?.addEventListener("click", () => {
-  window.location.href = "about:blank";
+el("btnExitOk")?.addEventListener("click", () => {
+  window.close();
 });
+
 
 
   // 자동 로그인
@@ -667,12 +668,14 @@ function bindSearch() {
       if (el("inputCode"))  el("inputCode").value  = code  || "";
       if (el("keepLogin"))  el("keepLogin").checked = true;
 
-      if (phone && code) {
-        state.navStack = ["boot"];
-        showScreen("boot");
-        setTimeout(() => handleLogin(), 50);
-        return;
-      }
+if (phone && code) {
+  state.navStack = ["boot"];
+  showScreen("boot");
+  history.pushState({ app: true }, "", location.href); // 🔴 추가
+  setTimeout(() => handleLogin(), 50);
+  return;
+}
+
     } catch {
       localStorage.removeItem(LS_KEY);
     }
@@ -705,8 +708,10 @@ window.addEventListener("popstate", () => {
     return;
   }
   if (el("annModal")?.hidden === false) {
-    closeAnnModal();
-    return;
+closeAnnModal();
+history.pushState({ app: true }, "", location.href);
+return;
+
   }
   if (el("imgModal")?.hidden === false) {
     closeImgModal();
