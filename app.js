@@ -1,3 +1,24 @@
+// 🔴 [추가] 종료 확인창 열림 여부 (맨 위!)
+let exitOpen = false;
+
+function isAnyModalOpen(){
+  return (
+    el("profileModal")?.hidden === false ||
+    el("annModal")?.hidden === false ||
+    el("imgModal")?.hidden === false ||
+    exitOpen === true
+  );
+}
+
+function closeAnyModal(){
+  if (el("profileModal")?.hidden === false) closeProfile();
+  if (el("annModal")?.hidden === false) closeAnnModal();
+  if (el("imgModal")?.hidden === false) closeImgModal();
+  if (exitOpen) closeExitConfirm();
+}
+
+
+
 
 let modalCtx = { list: [], index: -1 };
 
@@ -32,29 +53,9 @@ let state = {
 };
 
 
-function isAnyModalOpen() {
-  return (
-    el("profileModal")?.hidden === false ||
-    el("annModal")?.hidden === false ||
-    el("imgModal")?.hidden === false
-  );
-}
-
-function closeAnyModal() {
-  if (el("profileModal")?.hidden === false) closeProfile();
-  if (el("annModal")?.hidden === false) closeAnnModal();
-  if (el("imgModal")?.hidden === false) closeImgModal();
-}
 
 
 
-
-
-
-
-
-// 🔴 [추가] 종료 확인창 열림 여부
-let exitOpen = false;
 
 function normalizePhone(p) {
   return String(p || "").replace(/[^0-9]/g, "");
@@ -674,7 +675,9 @@ function bindSearch() {
   state.navStack = ["login"];
   showScreen("login");
 
-})();
+
+
+
 
 
 
@@ -705,34 +708,6 @@ document.addEventListener("touchmove", (e) => {
 
 
 
-
-// ===== PWA Service Worker 등록 + 업데이트 토스트 =====
-function showUpdateToast(onRefresh) {
-  const t = el("toast");
-  if (!t) return;
-
-  // 기존 toast()는 textContent를 쓰니까, 업데이트 토스트는 HTML로 별도 구성
-  t.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="font-weight:900;">새 버전이 있어요</div>
-      <button id="btnSwRefresh"
-        style="border:none;border-radius:12px;padding:8px 12px;font-weight:900;cursor:pointer;">
-        새로고침
-      </button>
-    </div>
-  `;
-  t.hidden = false;
-
-  const b = document.getElementById("btnSwRefresh");
-  if (b) {
-    b.onclick = () => {
-      // 버튼 누르면 “대기중(waiting) SW → 즉시 활성화” 요청
-      try { onRefresh?.(); } catch {}
-      b.disabled = true;
-      b.textContent = "적용중...";
-    };
-  }
-}
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
@@ -769,7 +744,7 @@ if ("serviceWorker" in navigator) {
       const iv = setInterval(() => {
         tries++;
         if (reg.waiting) {
-          showUpdateToast(askRefresh);
+          
           clearInterval(iv);
         }
         if (tries >= 20) clearInterval(iv); // 10초
@@ -1168,46 +1143,45 @@ function loadUpcomingEvents(){
 
 
 
+let lastBackAt = 0;
 
-
-// ===== 안드로이드 뒤로가기 : 종료 확인창 방식 =====
 (function () {
 
   history.pushState({ app: true }, "", location.href);
 
   window.addEventListener("popstate", () => {
 
+// 1️⃣ 모달 or 종료확인창 떠 있으면 → 무조건 닫기
+if (isAnyModalOpen()) {
+  closeAnyModal();
+  history.pushState({ app: true }, "", location.href);
+  return;
+}
 
-// [0] 팝업 떠 있으면 → 팝업부터 닫기
-    if (isAnyModalOpen()) {
-      closeAnyModal();
-      history.pushState({ app: true }, "", location.href);
-      return;
-    }
-
-
-    // [3] 종료 확인창 떠 있으면 → 닫기
-    if (exitOpen) {
-      closeExitConfirm();
-      history.pushState({ app: true }, "", location.href);
-      return;
-    }
 
     const current = state.navStack[state.navStack.length - 1];
 
-    // [1] 메인화면이 아니면 → 이전 화면
+    // 2️⃣ 메인화면 아니면 → 이전 화면
     if (current !== "home") {
       popNav();
       history.pushState({ app: true }, "", location.href);
       return;
     }
 
-    // [2] 메인화면이면 → 종료 확인창
-    openExitConfirm();
+    // 3️⃣ 메인화면 → 두 번 눌러 종료
+    const now = Date.now();
+    if (now - lastBackAt < 2000) {
+      window.close();
+      return;
+    }
+
+    lastBackAt = now;
+    toast("한 번 더 누르면 앱이 종료됩니다", { force:true });
     history.pushState({ app: true }, "", location.href);
   });
 
 })();
+
 
 
 
