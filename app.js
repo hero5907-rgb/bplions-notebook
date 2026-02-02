@@ -62,11 +62,14 @@ function bindExitModal() {
     hideExitModal();
   });
 
-  el("btnExitOk")?.addEventListener("click", () => {
-    hideExitModal();
-    if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-    history.back(); // 두 번째 뒤로 = 앱 종료
-  });
+el("btnExitOk")?.addEventListener("click", () => {
+  hideExitModal();
+  if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+
+  // ✅ 안드로이드 PWA 종료 트릭
+  history.go(-history.length);
+});
+
 }
 
 
@@ -1160,7 +1163,6 @@ if (!exitOnce) {
   exitOnce = true;
   vibrate(40);
   showExitModal();   
-  pushDummy();
 
   setTimeout(() => {
     exitOnce = false;
@@ -1169,6 +1171,7 @@ if (!exitOnce) {
 
   return;
 }
+
 
 // 4️⃣ 홈 + 두 번째 뒤로 → 종료
 hideExitModal();
