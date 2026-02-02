@@ -78,12 +78,8 @@ function showScreen(name) {
 
   if (btnLogout) btnLogout.hidden = !isLoggedIn;
   if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
-
-  // ✅ 핵심
-  if (name === "home") {
-    history.pushState({ app: true }, "", location.href);
-  }
 }
+
 
 
 function pushNav(name) {
@@ -1087,6 +1083,17 @@ function loadUpcomingEvents(){
     })
     .getUpcomingEvents();
 }
+
+// 🔴 PWA 초기 history 확보 (딱 1번만)
+(function ensureHistory() {
+  if (window.__APP_HISTORY_READY__) return;
+  window.__APP_HISTORY_READY__ = true;
+  history.pushState({ app: true }, "", location.href);
+})();
+
+
+
+
 
 // ===== 안드로이드 뒤로가기 : 종료 확인창 방식 =====
 (function () {
