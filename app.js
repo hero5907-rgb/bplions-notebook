@@ -46,32 +46,16 @@ function toast(msg, opts) {
 }
 
 
-// ===== 종료 안내 중앙 박스 =====
-function showExitModal() {
+function showExitMsg() {
   const m = el("exitModal");
   if (m) m.hidden = false;
 }
 
-function hideExitModal() {
+function hideExitMsg() {
   const m = el("exitModal");
   if (m) m.hidden = true;
 }
 
-function bindExitModal() {
-  el("btnExitCancel")?.addEventListener("click", () => {
-    hideExitModal();
-  });
-
-el("btnExitOk")?.addEventListener("click", () => {
-  hideExitModal();
-  if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-
-  // ✅ 안드로이드 PWA 정상 종료 유도
-  window.close();
-});
-
-
-}
 
 
 
@@ -600,7 +584,7 @@ document.addEventListener("touchmove", (e) => {
   setBrand(null);   // ✅ 로그인 전에도 config 값으로 로고/클럽명/지구명 세팅
   bindNav();
   bindSearch();
-  bindExitModal(); // ← 이 줄
+ 
 
 
   el("btnLogin")?.addEventListener("click", handleLogin);
@@ -636,9 +620,6 @@ document.addEventListener("touchmove", (e) => {
   // 1) 기본은 로그인 화면
   state.navStack = ["login"];
   showScreen("login");
-
-
-history.pushState({ app: true }, "", location.href);
 
 
 })();
@@ -1109,68 +1090,57 @@ function loadUpcomingEvents(){
 
 
 
-// ===== 안드로이드 뒤로가기 (진짜 최종 단일본) =====
+// ===== 안드로이드 뒤로가기 (최종 단일본) =====
 (function () {
 
   let exitOnce = false;
 
-  function pushDummy() {
-    history.pushState({ app: true }, "", location.href);
-  }
-
-  function vibrate(v) {
-    if (navigator.vibrate) navigator.vibrate(v);
-  }
+  // history 고정 (1회)
+  history.pushState({ app: true }, "", location.href);
 
   window.addEventListener("popstate", () => {
 
-    // 1️⃣ 모달 우선 닫기
+    // 1️⃣ 모달 먼저 닫기
     if (el("profileModal")?.hidden === false) {
-      vibrate(20);
       closeProfile();
-      pushDummy();
+      history.pushState({ app: true }, "", location.href);
       return;
     }
     if (el("annModal")?.hidden === false) {
-      vibrate(20);
       closeAnnModal();
-      pushDummy();
+      history.pushState({ app: true }, "", location.href);
       return;
     }
     if (el("imgModal")?.hidden === false) {
-      vibrate(20);
       closeImgModal();
-      pushDummy();
+      history.pushState({ app: true }, "", location.href);
       return;
     }
 
-    // 2️⃣ 서브 화면 → 내부 뒤로
+    // 2️⃣ 내부 화면 → 뒤로
     if (state.navStack.length > 1) {
-      vibrate(15);
       popNav();
-      pushDummy();
+      history.pushState({ app: true }, "", location.href);
       return;
     }
 
-  // 3️⃣ 홈 + 첫 뒤로
-if (!exitOnce) {
-  exitOnce = true;
-  vibrate(40);
-  showExitModal();   
+    // 3️⃣ 메인화면 + 첫 뒤로 → 메시지
+    if (!exitOnce) {
+      exitOnce = true;
+      showExitMsg();
 
-  setTimeout(() => {
-    exitOnce = false;
-    hideExitModal();
-  }, 2000);
+      setTimeout(() => {
+        exitOnce = false;
+        hideExitMsg();
+      }, 2000);
 
-  return;
-}
+      history.pushState({ app: true }, "", location.href);
+      return;
+    }
 
-
-// 4️⃣ 홈 + 두 번째 뒤로 → 종료
-hideExitModal();
-vibrate([30, 50, 30]);
-
+    // 4️⃣ 메인화면 + 두 번째 뒤로 → 종료
+    hideExitMsg();
+    window.close();
   });
 
 })();
