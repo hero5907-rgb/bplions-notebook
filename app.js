@@ -5,10 +5,10 @@ function isAnyModalOpen(){
   return (
     el("profileModal")?.hidden === false ||
     el("annModal")?.hidden === false ||
-    el("imgModal")?.hidden === false ||
-    exitOpen === true
+    el("imgModal")?.hidden === false
   );
 }
+
 
 function closeAnyModal(){
   if (el("profileModal")?.hidden === false) closeProfile();
