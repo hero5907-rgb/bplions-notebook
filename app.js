@@ -48,6 +48,9 @@ const screens = {
   announcements: el("screenAnnouncements"),
   text: el("screenText"),
   events: el("screenEvents"),   // ✅ 추가
+  calendar: el("screenCalendar"), // 🔥 이 줄 추가
+
+
 };
 
 
@@ -617,6 +620,13 @@ else if (target === "events") {
   pushNav("events");
   loadEvents();
 }
+
+else if (target === "calendar") {
+  pushNav("calendar");
+  loadCalendar();
+}
+
+
 else if (target === "song") {
   openImgModal("./lions_song.jpg");
 }
