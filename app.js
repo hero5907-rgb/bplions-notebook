@@ -525,6 +525,10 @@ if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
 else localStorage.removeItem(LS_KEY);
 
 // ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
+
+
+exitOpen = false;   // 🔴 home 진입 시 종료 상태 초기화
+
 state.navStack = ["home"];
 showScreen("home");
 history.pushState({ app: true }, "", location.href);
@@ -649,7 +653,10 @@ function bindSearch() {
 
   // 종료 확인창 버튼
   el("btnExitCancel")?.addEventListener("click", closeExitConfirm);
-  el("btnExitOk")?.addEventListener("click", () => window.close());
+  el("btnExitOk")?.addEventListener("click", () => {
+  window.location.href = "about:blank";
+});
+
 
   // 자동 로그인
   const savedStr = localStorage.getItem(LS_KEY);
@@ -691,7 +698,8 @@ let lastBackAt = 0;
 
 window.addEventListener("popstate", () => {
 
-  // 1️⃣ 팝업이 열려 있으면 → 팝업만 닫고 끝
+  // 1️⃣ 프로필 / 공지 / 이미지 팝업이 열려 있으면 → 팝업만 닫고,
+  //    "home 도착" 상태를 강제로 만들어준다
   if (el("profileModal")?.hidden === false) {
     closeProfile();
     return;
@@ -705,8 +713,9 @@ window.addEventListener("popstate", () => {
     return;
   }
 
-  // 2️⃣ 일반 화면에서 home이 아니면 → 한 단계 뒤로
   const current = state.navStack[state.navStack.length - 1];
+
+  // 2️⃣ home이 아닌 화면이면 → 정상적으로 한 단계 뒤로
   if (current !== "home") {
     popNav();
     return;
@@ -718,7 +727,7 @@ window.addEventListener("popstate", () => {
     return;
   }
 
-  // 4️⃣ 종료 확인 팝업 열린 상태에서 뒤로가기 → 종료
+  // 4️⃣ 종료 확인 팝업에서 다시 뒤로가기 → 종료
   window.close();
 });
 
