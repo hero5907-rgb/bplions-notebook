@@ -98,10 +98,7 @@ function showScreen(name) {
   if (btnLogout) btnLogout.hidden = !isLoggedIn;
   if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
 
-  // ⭐⭐⭐ 이게 핵심
-  if (name === "home") {
-    history.pushState({ app: true }, "", location.href);
-  }
+
 }
 
 
@@ -131,6 +128,10 @@ btnLogout?.addEventListener("click", () => {
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
   toast("로그아웃");
+
+
+ history.replaceState({ app: true }, "", location.href);
+
 });
 
 
@@ -497,7 +498,8 @@ state.navStack = ["home"];
 showScreen("home");
 window.scrollTo(0, 0);
 
-
+// ✅ 이 줄 추가 (중요)
+history.replaceState({ app: true }, "", location.href);
 
   } catch (e) {
   console.error("LOGIN_ERROR:", e);
@@ -638,6 +640,8 @@ document.addEventListener("touchmove", (e) => {
   state.navStack = ["login"];
   showScreen("login");
 
+  // ✅ 이 줄 추가 (맨 마지막)
+  history.replaceState({ app: true }, "", location.href);
 
 
 })();
@@ -1155,7 +1159,7 @@ function loadUpcomingEvents(){
 if (!exitOnce) {
   exitOnce = true;
   vibrate(40);
-  showExitModal();   // 🔵 중앙 파란 박스
+  showExitModal();   
   pushDummy();
 
   setTimeout(() => {
