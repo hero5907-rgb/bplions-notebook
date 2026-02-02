@@ -670,7 +670,13 @@ function bindSearch() {
       localStorage.removeItem(LS_KEY);
     }
 
-}
+  }
+
+  // ✅ 여기서 기본 로그인 화면 결정
+  state.navStack = ["login"];
+  showScreen("login");
+
+})(); // 🔚 init 끝 (단 1번)
 
 
 
@@ -719,11 +725,8 @@ window.addEventListener("popstate", () => {
 });
 
 
-  }
+ 
 
-  // 기본은 로그인 화면
-  state.navStack = ["login"];
-  showScreen("login");
 
 
 
@@ -1192,7 +1195,6 @@ function loadUpcomingEvents(){
 
 
 
-})(); // 🔚 init 끝 (이게 반드시 있어야 함)
 
 
 
