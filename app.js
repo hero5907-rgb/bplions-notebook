@@ -708,14 +708,15 @@ window.addEventListener("popstate", () => {
   }
 
   // 3️⃣ home 화면에서 뒤로가기 → 종료 팝업
-  if (!exitOpen) {
-    openExitConfirm();
-    history.pushState({ app: true }, "", location.href);
-    return;
-  }
+if (!exitOpen) {
+  openExitConfirm();
+  history.pushState({ exit: true }, "", location.href);
+  return;
+}
 
-  // 4️⃣ 팝업 떠 있는 상태에서 다시 뒤로가기 → 종료
-  window.close();
+// 4️⃣ 팝업 떠 있는 상태에서 다시 뒤로가기 → 종료
+window.close();
+
 });
 
 
@@ -1107,6 +1108,11 @@ function openAnnModal(a){
   el("annModalMeta").textContent = [a?.date, a?.author].filter(Boolean).join(" · ");
   el("annModalBody").textContent = a?.body || "";
   m.hidden = false;
+
+  // 🔴 추가 (모달 전용 뒤로가기 단계)
+  history.pushState({ modal: "ann" }, "", location.href);
+
+
 }
 
 function closeAnnModal(){
