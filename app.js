@@ -527,8 +527,8 @@ else localStorage.removeItem(LS_KEY);
 // ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
 state.navStack = ["home"];
 showScreen("home");
+history.pushState({ app: true }, "", location.href);
 window.scrollTo(0, 0);
-
 
 
   } catch (e) {
@@ -675,6 +675,10 @@ function bindSearch() {
   // ✅ 여기서 기본 로그인 화면 결정
   state.navStack = ["login"];
   showScreen("login");
+history.pushState({ app: true }, "", location.href);
+
+
+
 
 })(); // 🔚 init 끝 (단 1번)
 
