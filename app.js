@@ -38,9 +38,34 @@ function normalizePhone(p) {
   return String(p || "").replace(/[^0-9]/g, "");
 }
 
-function toast(msg, opts) {
-  ...
+
+
+
+function toast(msg, opts = {}) {
+  const t = el("toast");
+  if (!t) return;
+
+  // 강제 표시 옵션
+  if (opts.force) {
+    toast._lock = false;
+  }
+
+  if (toast._lock) return;
+  toast._lock = true;
+
+  t.textContent = msg;
+  t.hidden = false;
+
+  const dur = Number(opts.duration || 2000);
+
+  setTimeout(() => {
+    t.hidden = true;
+    toast._lock = false;
+  }, dur);
 }
+
+
+
 
 // ===== 종료 확인창 제어 =====
 function openExitConfirm() {
@@ -555,6 +580,81 @@ function bindSearch() {
   });
 }
 
+
+
+// ⬇️⬇️⬇️ 여기부터 붙여넣기 ⬇️⬇️⬇️
+
+(function init() {
+
+  // 🔴 앱 시작 즉시 종료창 숨김
+  const exitM = el("exitModal");
+  if (exitM) exitM.hidden = true;
+  exitOpen = false;
+
+  // 기본 세팅
+  setBrand(null);
+  bindNav();
+  bindSearch();
+
+  // 로그인 버튼 / 엔터
+  el("btnLogin")?.addEventListener("click", handleLogin);
+  ["inputPhone", "inputCode"].forEach((id) => {
+    el(id)?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleLogin();
+    });
+  });
+
+  // 🔧 비상용: 캐시 + SW 제거 후 새로고침
+  el("btnHardReload")?.addEventListener("click", async () => {
+    try {
+      if ("serviceWorker" in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const r of regs) await r.unregister();
+      }
+      if (window.caches) {
+        const keys = await caches.keys();
+        for (const k of keys) await caches.delete(k);
+      }
+    } catch {}
+    location.reload();
+  });
+
+  // 종료 확인창 버튼
+  el("btnExitCancel")?.addEventListener("click", closeExitConfirm);
+  el("btnExitOk")?.addEventListener("click", () => window.close());
+
+  // 자동 로그인
+  const savedStr = localStorage.getItem(LS_KEY);
+  if (savedStr) {
+    try {
+      const { phone, code } = JSON.parse(savedStr);
+      if (el("inputPhone")) el("inputPhone").value = phone || "";
+      if (el("inputCode"))  el("inputCode").value  = code  || "";
+      if (el("keepLogin"))  el("keepLogin").checked = true;
+
+      if (phone && code) {
+        state.navStack = ["boot"];
+        showScreen("boot");
+        setTimeout(() => handleLogin(), 50);
+        return;
+      }
+    } catch {
+      localStorage.removeItem(LS_KEY);
+    }
+  }
+
+  // 기본은 로그인 화면
+  state.navStack = ["login"];
+  showScreen("login");
+
+})();
+
+
+
+
+
+
+
 // ===== Pull-to-refresh 방지 (특히 iOS Safari/PWA) =====
 let __ptrStartY = 0;
 
@@ -576,51 +676,6 @@ document.addEventListener("touchmove", (e) => {
 }, { passive: false });
 
 
-(function init() {
-  setBrand(null);   // ✅ 로그인 전에도 config 값으로 로고/클럽명/지구명 세팅
-  bindNav();
-  bindSearch();
- 
-
-
-  el("btnLogin")?.addEventListener("click", handleLogin);
-  ["inputPhone", "inputCode"].forEach((id) => {
-    el(id)?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") handleLogin();
-    });
-  });
-
-
-  // 2) 저장된 값이 있으면 입력칸 채우고 자동 로그인
-  const savedStr = localStorage.getItem(LS_KEY);
-  if (savedStr) {
-    try {
-      const { phone, code } = JSON.parse(savedStr);
-
-      if (el("inputPhone")) el("inputPhone").value = phone || "";
-      if (el("inputCode")) el("inputCode").value = code || "";
-      if (el("keepLogin")) el("keepLogin").checked = true;
-
-      if (phone && code) {
-  state.navStack = ["boot"];
-  showScreen("boot");
-  setTimeout(() => handleLogin(), 50);
-  return;
-}
-
-    } catch (e) {
-      localStorage.removeItem(LS_KEY);
-    }
-  }
-
-  state.navStack = ["login"];
-  showScreen("login");
-
-  el("btnExitCancel")?.addEventListener("click", closeExitConfirm);
-  el("btnExitOk")?.addEventListener("click", () => {
-    window.close();
-  });
-})();
 
 
 
@@ -1083,13 +1138,6 @@ function loadUpcomingEvents(){
     })
     .getUpcomingEvents();
 }
-
-// 🔴 PWA 초기 history 확보 (딱 1번만)
-(function ensureHistory() {
-  if (window.__APP_HISTORY_READY__) return;
-  window.__APP_HISTORY_READY__ = true;
-  history.pushState({ app: true }, "", location.href);
-})();
 
 
 
