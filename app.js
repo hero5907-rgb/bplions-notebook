@@ -95,6 +95,18 @@ function toast(msg, opts = {}) {
 
 
 
+function showScreen(name){
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.hidden = true;
+  });
+
+  const el = document.getElementById("screen" + name);
+  if (el) el.hidden = false;
+
+  if (name === "Calendar") {
+    loadCalendar(); // ← 달력 로딩
+  }
+}
 
 
 
@@ -549,6 +561,29 @@ window.scrollTo(0, 0);
     if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
   }
 }
+
+// 🔔 로그인 후 중요 일정 팝업
+api("getLoginAlerts", {}, (alerts)=>{
+  if (!alerts || !alerts.length) return;
+
+  openModal(`
+    <h3>📢 중요 일정 안내</h3>
+    ${alerts.map(a=>`
+      <div style="margin-top:12px">
+        <b>${a.date} · ${a.title}</b>
+        <div class="muted">${a.desc || ""}</div>
+      </div>
+    `).join("")}
+    <button style="margin-top:14px;width:100%;height:46px;
+      border:none;border-radius:14px;
+      background:#0b4ea2;color:#fff;font-weight:900"
+      onclick="confirmAlerts(${JSON.stringify(alerts.map(a=>a.row))})">
+      확인
+    </button>
+  `);
+});
+
+
 
 
 function bindNav() {
@@ -1198,8 +1233,91 @@ function loadUpcomingEvents(){
 }
 
 
+let calendar;
+let allEvents = [];
+
+// 📅 서버에서 일정 받아와서 달력 표시
+function loadCalendar(){
+  api("getCalendarEvents", {}, (list)=>{
+    allEvents = Array.isArray(list) ? list : [];
+    initCalendar(allEvents);
+  });
+}
+
+function initCalendar(events){
+  const el = document.getElementById("calendar");
+  if (!el) return;
+
+  // 이미 있으면 제거 (다시 들어올 때 대비)
+  el.innerHTML = "";
+
+  calendar = new FullCalendar.Calendar(el, {
+    locale: "ko",
+    initialView: "dayGridMonth",
+    height: "auto",
+
+    headerToolbar: {
+      left: "prev,next",
+      center: "title",
+      right: ""
+    },
+
+    dateClick(info){
+      openDayEvents(info.dateStr);
+    },
+
+    events: events.map(e=>({
+      title: e.title,
+      start: e.date,
+      extendedProps: e
+    }))
+  });
+
+  calendar.render();
+}
 
 
+function openDayEvents(date){
+  const list = allEvents.filter(e=>e.date === date);
 
+  if (!list.length){
+    openModal(`<h3>${date}</h3><p>일정이 없습니다.</p>`);
+    return;
+  }
+
+  openModal(`
+    <h3>📅 ${date}</h3>
+    ${list.map(e=>`
+      <div style="margin-top:12px;padding-bottom:12px;border-bottom:1px solid #eee">
+        <b>${e.title}</b><br/>
+        <span class="muted">
+          ${e.startTime || ""} ${e.place || ""}
+        </span>
+        <div style="margin-top:6px;white-space:pre-wrap">
+          ${e.desc || ""}
+        </div>
+      </div>
+    `).join("")}
+  `);
+}
+
+
+function openModal(html){
+  const modal = document.getElementById("modal");
+  const body  = document.getElementById("modalBody");
+  body.innerHTML = html;
+  modal.hidden = false;
+}
+
+function closeModal(){
+  const modal = document.getElementById("modal");
+  modal.hidden = true;
+}
+
+function confirmAlerts(rows){
+  api("markEventsNotified", { rows }, ()=>{
+    closeModal();
+  });
+}
 
 

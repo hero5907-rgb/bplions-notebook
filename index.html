@@ -8,6 +8,12 @@
 
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css" />
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+
+
 </head>
 <body>
   <header class="topbar">
@@ -164,7 +170,8 @@
 
 
 
-  <button class="tile" data-nav="events">
+  <button class="tile" data-nav="Calendar">
+
   <div class="tile-title">일정표</div>
   <div class="tile-desc">월별 일정 확인</div>
 </button>
@@ -227,6 +234,17 @@
       <div id="annList" class="list"></div>
     </div>
   </section>
+
+
+<!-- 📅 일정표(달력) -->
+<section id="screenCalendar" class="screen" hidden>
+  <div class="card">
+    <h3>📅 일정표</h3>
+    <div id="calendar"></div>
+  </div>
+</section>
+
+
 
 
 <section id="screenEvents" class="screen" hidden>
@@ -320,6 +338,16 @@
 <script src="./config.js"></script>
 <script src="./app.js"></script>
 
+
+
+<!-- ✅ 공용 모달 -->
+<div id="modal" class="modal" hidden>
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-card">
+    <div id="modalBody"></div>
+    <button class="modal-close" onclick="closeModal()">닫기</button>
+  </div>
+</div>
 
 
 
