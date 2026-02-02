@@ -66,9 +66,13 @@ function showScreen(name) {
     return;
   }
 
-  // ✅ 나머지 화면 규칙
-  if (btnLogout) btnLogout.hidden = !isLoggedIn;
-  if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
+// ✅ 나머지 화면 규칙
+if (btnLogout) btnLogout.hidden = !isLoggedIn;
+if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
+
+// ✅ home 화면에 들어올 때만 뒤로가기 트랩 생성 (핵심)
+if (name === "home") {
+  history.pushState({ app: true }, "", location.href);
 }
 
 
@@ -1113,7 +1117,7 @@ function showExitSnack() {
     history.pushState({ app: true }, "", location.href);
   }
 
-  pushDummy(); // 최초 1회
+  
 
   
 
