@@ -1,5 +1,4 @@
-// 🔴 [추가] 종료 확인창 열림 여부 (맨 위!)
-let exitOpen = false;
+
 
 function isAnyModalOpen(){
   return (
@@ -14,7 +13,7 @@ function closeAnyModal(){
   if (el("profileModal")?.hidden === false) closeProfile();
   if (el("annModal")?.hidden === false) closeAnnModal();
   if (el("imgModal")?.hidden === false) closeImgModal();
-  if (exitOpen) closeExitConfirm();
+
 }
 
 
@@ -95,20 +94,6 @@ function toast(msg, opts = {}) {
 
 
 
-// ===== 종료 확인창 제어 =====
-function openExitConfirm() {
-  const m = el("exitModal");
-  if (!m) return;
-  exitOpen = true;
-  m.hidden = false;
-}
-
-function closeExitConfirm() {
-  const m = el("exitModal");
-  if (!m) return;
-  exitOpen = false;
-  m.hidden = true;
-}
 
 
 
@@ -138,8 +123,10 @@ function showScreen(name) {
 function pushNav(name) {
   state.navStack.push(name);
   showScreen(name);
+  history.pushState({ app: true }, "", location.href);
   window.scrollTo(0, 0);
 }
+
 
 function popNav() {
   if (state.navStack.length > 1) state.navStack.pop();
@@ -527,8 +514,6 @@ else localStorage.removeItem(LS_KEY);
 // ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
 
 
-exitOpen = false;   // 🔴 home 진입 시 종료 상태 초기화
-
 state.navStack = ["home"];
 showScreen("home");
 history.pushState({ app: true }, "", location.href);
@@ -618,10 +603,7 @@ function bindSearch() {
 
 (function init() {
 
-  // 🔴 앱 시작 즉시 종료창 숨김
-  const exitM = el("exitModal");
-  if (exitM) exitM.hidden = true;
-  exitOpen = false;
+
 
   // 기본 세팅
   setBrand(null);
@@ -651,11 +633,6 @@ function bindSearch() {
     location.reload();
   });
 
-  // 종료 확인창 버튼
-  el("btnExitCancel")?.addEventListener("click", closeExitConfirm);
-el("btnExitOk")?.addEventListener("click", () => {
-  window.close();
-});
 
 
 
@@ -671,7 +648,6 @@ el("btnExitOk")?.addEventListener("click", () => {
 if (phone && code) {
   state.navStack = ["boot"];
   showScreen("boot");
-  history.pushState({ app: true }, "", location.href); // 🔴 추가
   setTimeout(() => handleLogin(), 50);
   return;
 }
@@ -694,56 +670,41 @@ history.pushState({ app: true }, "", location.href);
 
 
 
-// 🔙 안드로이드 뒤로가기 제어 (init 끝에서 단 1번)
 
 
-let lastBackAt = 0;
+
 
 window.addEventListener("popstate", () => {
 
-  // 1️⃣ 프로필 / 공지 / 이미지 팝업이 열려 있으면 → 팝업만 닫고,
-  //    "home 도착" 상태를 강제로 만들어준다
+  // 1️⃣ 프로필 / 공지 / 이미지 모달 먼저 닫기
   if (el("profileModal")?.hidden === false) {
     closeProfile();
+    history.pushState({ app: true }, "", location.href);
     return;
   }
-  if (el("annModal")?.hidden === false) {
-closeAnnModal();
-history.pushState({ app: true }, "", location.href);
-return;
 
+  if (el("annModal")?.hidden === false) {
+    closeAnnModal();
+    history.pushState({ app: true }, "", location.href);
+    return;
   }
+
   if (el("imgModal")?.hidden === false) {
     closeImgModal();
+    history.pushState({ app: true }, "", location.href);
     return;
   }
 
-  const current = state.navStack[state.navStack.length - 1];
-
-  // 2️⃣ home이 아닌 화면이면 → 정상적으로 한 단계 뒤로
-  if (current !== "home") {
+  // 2️⃣ 화면 스택이 남아 있으면 → 이전 화면
+  if (state.navStack.length > 1) {
     popNav();
+    history.pushState({ app: true }, "", location.href);
     return;
   }
 
-  // 3️⃣ home에서 첫 뒤로가기 → 종료 확인 팝업
-  if (!exitOpen) {
-    openExitConfirm();
-    return;
-  }
-
-  // 4️⃣ 종료 확인 팝업에서 다시 뒤로가기 → 종료
+  // 3️⃣ home / login 에서 뒤로가기 → 종료
   window.close();
 });
-
-
-
-
-
-
-
-
-
 
 
 // ===== Pull-to-refresh 방지 (특히 iOS Safari/PWA) =====
