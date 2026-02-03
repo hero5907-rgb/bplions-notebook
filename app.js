@@ -1244,17 +1244,18 @@ function loadCalendar(){
   const now = new Date();
   const ym = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`;
 
-  api("events", { yyyymm: ym }, (res)=>{
+  apiJsonp({
+    action: "events",
+    phone: state.me.phone,
+    code: state._authCode,
+    yyyymm: ym
+  }).then(res=>{
     const list = res?.events || [];
 
     allEvents = list.map(e=>({
       id: e.id,
       title: e.title,
-
-      // 🔥 핵심: FullCalendar가 읽는 필드
-      start: e.date,
-
-      // 기타 정보 보존
+      start: e.date,          // ✅ FullCalendar 필수
       date: e.date,
       startTime: e.startTime,
       place: e.place,
@@ -1262,6 +1263,9 @@ function loadCalendar(){
     }));
 
     initCalendar(allEvents);
+  }).catch(e=>{
+    console.error(e);
+    toast("달력 일정 불러오기 실패");
   });
 }
 
