@@ -751,3 +751,33 @@ flex-direction: column;   /* 🔥 이거 추가 */
 .fc-daygrid-day-number {
   font-size: 0.9rem;
 }
+
+
+
+/* 📅 달력 모바일 글씨 넘침 방지 */
+#calendar .fc-daygrid-event {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#calendar .fc-event-title,
+#calendar .fc-event-time {
+  white-space: nowrap;       /* 줄바꿈 금지 */
+  overflow: hidden;          /* 넘치면 숨김 */
+  text-overflow: ellipsis;   /* … 처리 */
+  display: block;
+  font-size: 12px;           /* 모바일 가독성 */
+}
+
+/* 📵 달력 텍스트 선택 방지 */
+#calendar {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#calendar * {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
