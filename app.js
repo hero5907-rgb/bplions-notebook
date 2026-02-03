@@ -1313,26 +1313,36 @@ function initCalendar(events){
 
   // ✅ 처음 한 번만 생성
   calendar = new FullCalendar.Calendar(el, {
-    locale: "ko",
-    initialView: "dayGridMonth",
-    height: "auto",
+  locale: "ko",
+  initialView: "dayGridMonth",
+  height: "auto",
 
-    headerToolbar: {
-      left: "prev,next",
-      center: "title",
-      right: ""
-    },
+  headerToolbar: {
+    left: "prev,next",
+    center: "title",
+    right: ""
+  },
 
-    dayCellContent(arg) {
-      return { html: String(arg.date.getDate()) };
-    },
+  dayCellContent(arg) {
+    return { html: String(arg.date.getDate()) };
+  },
 
-    dateClick(info){
-      openDayEvents(info.dateStr);
-    },
+  eventContent(arg) {
+    return {
+      html: `<span class="fc-title-only">${arg.event.title}</span>`
+    };
+  },
 
-    events
-  });
+  dateClick(info){
+    openDayEvents(info.dateStr);
+  },
+
+  eventClick(info) {
+    info.jsEvent.preventDefault();
+  },
+
+  events
+});
 
   calendar.render();
 }

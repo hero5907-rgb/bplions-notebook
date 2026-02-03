@@ -781,3 +781,12 @@ flex-direction: column;   /* 🔥 이거 추가 */
   -ms-user-select: none;
   user-select: none;
 }
+
+
+.fc-title-only {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
