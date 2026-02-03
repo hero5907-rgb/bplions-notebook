@@ -864,33 +864,57 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-/* 이름 + 직위(재무) 한 줄 정렬 */
+//* 이름 + 직위(재무) 한 줄 완전 정렬 */
 .modal-name-row{
   display: flex;
-  align-items: center;
+  align-items: center;     /* 🔥 세로 기준 통일 */
   justify-content: center;
   gap: 8px;
   margin-top: 10px;
 }
 
+.modal-name{
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.15;       /* 🔥 기준 */
+}
 
-/* 주소 + 지도 버튼 묶음 */
+.modal-name-row .badge{
+  font-size: 12px;
+  line-height: 1.15;       /* 🔥 이름과 동일 */
+  padding: 4px 10px;
+}
+
+
+
+/* 주소 + 지도 버튼 묶음 (가운데 정렬) */
 .modal-address-row{
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 6px;
+  align-items: center;          /* 🔥 핵심: 주소 첫 줄과 중앙 맞춤 */
+  justify-content: center;      /* 🔥 카드 기준 가운데 */
+  gap: 6px;
+  margin-top: 8px;
+  text-align: left;
 }
 
-/* 지도 버튼 크기/톤 */
+/* 지도 버튼 전체 크기 조정 */
 .modal-address-row .a-btn{
   flex-shrink: 0;
-  padding: 6px 10px;
-  font-size: 13px;
+
+  height: 28px;                 /* 🔥 버튼 높이 고정 */
+  padding: 0 8px;               /* 🔥 위아래 여백 제거 */
+
+  font-size: 12px;              /* 🔥 아이콘 포함 크기 감소 */
+  line-height: 1;               /* 🔥 버튼 내부 중앙 정렬 */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 직장/주소 줄바꿈 유지 */
+/* 주소 텍스트 */
 .modal-workplace{
   white-space: pre-line;
   font-size: 14px;
+  line-height: 1.35;
 }
