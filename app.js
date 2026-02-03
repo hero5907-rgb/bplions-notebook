@@ -541,7 +541,8 @@ state.navStack = ["home"];
 showScreen("home");
 
 // 🔔 로그인 후 중요 일정 팝업
-api("getLoginAlerts", {}, (alerts)=>{
+api("getPopupEvents", {}, (alerts)=>{
+
   if (!alerts || !alerts.length) return;
 
   openModal(`
