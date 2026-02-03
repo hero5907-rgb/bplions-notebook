@@ -1263,6 +1263,17 @@ function loadCalendar(){
     }));
 
     initCalendar(allEvents);
+
+
+   // ✅🔥 이 두 줄이 핵심
+    setTimeout(() => {
+      calendar.updateSize();
+    }, 0);
+
+
+
+
+
   }).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
