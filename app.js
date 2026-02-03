@@ -1246,6 +1246,10 @@ let calendarCache = {};
 
 
 function loadCalendar(yyyymm){
+
+  if (__calendarReloading) return;
+  __calendarReloading = true;
+
   const base = yyyymm
     ? new Date(yyyymm.slice(0,4), Number(yyyymm.slice(4))-1, 1)
     : new Date();
@@ -1293,12 +1297,18 @@ function loadCalendar(yyyymm){
         calendarCache[k] = list;
       })
     )
+
+
+
+
   ).then(() => {
     allEvents = keys.flatMap(k => calendarCache[k]);
     initCalendar(allEvents);
+    __calendarReloading = false;   // ← 추가
   }).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
+    __calendarReloading = false;   // ← 추가
   });
 }
 
@@ -1411,20 +1421,30 @@ function confirmAlerts(rows){
   });
 }
 
+let __calendarReloading = false;
 
 
 
-// 📅 달력 새로고침 버튼 (강제 재로딩)
+// 📅 달력 새로고침 버튼 (완전 초기화)
 el("btnCalReload")?.addEventListener("click", () => {
+  // 1) 캐시 완전 초기화
   calendarCache = {};
   allEvents = [];
 
-  const d = calendar?.getDate?.() || new Date();
+  // 2) 기존 달력 완전 제거 (이게 핵심)
+  if (calendar) {
+    calendar.destroy();
+    calendar = null;
+  }
+
+  // 3) 현재 월 기준으로 다시 로드
+  const now = new Date();
   const yyyymm =
-    d.getFullYear() +
-    String(d.getMonth() + 1).padStart(2, "0");
+    now.getFullYear() +
+    String(now.getMonth() + 1).padStart(2, "0");
 
   loadCalendar(yyyymm);
 });
+
 
 
