@@ -1264,15 +1264,30 @@ function loadCalendar(){
   .then(res => {
     const list = res?.events || [];
 
-    allEvents = list.map(e => ({
-      id: e.id,
-      title: e.title,
-      start: e.date,
+   allEvents = list.map(e => {
+  const start = e.startTime
+    ? `${e.date}T${e.startTime}`
+    : `${e.date}T00:00`;
+
+  const end = e.endTime
+    ? `${e.date}T${e.endTime}`
+    : null;
+
+  return {
+    id: e.id,
+    title: e.title,
+    start,
+    end,
+    allDay: false,
+    extendedProps: {
       date: e.date,
       startTime: e.startTime,
       place: e.place,
       desc: e.desc
-    }));
+    }
+  };
+});
+
 
     // ✅ 캐시 저장
     calendarCache[ym] = allEvents;
@@ -1324,7 +1339,8 @@ function initCalendar(events){
 
 
 function openDayEvents(date){
-  const list = allEvents.filter(e=>e.date === date);
+  const list = allEvents.filter(e => e.extendedProps?.date === date);
+
 
   if (!list.length){
     openModal(`<h3>${date}</h3><p>일정이 없습니다.</p>`);
