@@ -268,13 +268,6 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-  /* 🔥 기존 영향 완전 차단 */
-  margin: 0 !important;
-  left: auto !important;
-  right: auto !important;
-  transform: none !important;
-}
-
 .modal-photo {
   width: 240px;   /* 기본 크게 */
   height: 240px;
@@ -289,6 +282,8 @@ flex-direction: column;   /* 🔥 이거 추가 */
   /* 모바일에서 사진 터치 제스처를 우리가 처리 */
   touch-action: none;
   user-select: none;
+  margin: 0 auto;
+
 }
 
 .modal-name {
@@ -714,7 +709,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
   background: #fff;
   width: min(92vw, 420px);
   max-height: 80vh;
-  overflow-y: auto;
+  overflow-y: visible;
 
   border-radius: 18px;
   padding: 16px;
