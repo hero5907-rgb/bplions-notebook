@@ -36,6 +36,9 @@ let modalCtx = { list: [], index: -1 };
 const CFG = window.APP_CONFIG || {};
 const API_URL = String(CFG.apiUrl || "").trim();
 
+let calendarCache = {};
+
+
 const LS_KEY = "bplions_auth_v1";
 
 const el = (id) => document.getElementById(id);
@@ -1241,33 +1244,41 @@ let calendar;
 let allEvents = [];
 
 function loadCalendar(){
-console.log("📅 loadCalendar called");
-
   const now = new Date();
   const ym = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`;
 
+  // ✅ 이미 불러온 달이면 서버 안 감
+  if (calendarCache[ym]) {
+    allEvents = calendarCache[ym];
+    initCalendar(allEvents);
+    return;
+  }
+
+  // ✅ 처음 보는 달만 서버 호출
   apiJsonp({
     action: "events",
     phone: state._authPhone,
     code: state._authCode,
-  
+    yyyymm: ym
   }).then(res=>{
-     console.log("📥 RAW events response =", res);   // ← 추가
+    const list = res?.events || [];
 
-  const list = res?.events || [];
-  console.log("📦 events list =", list);           // ← 추가
+    allEvents = list.map(e => ({
+      id: e.id,
+      title: e.title,
+      start: e.date,
+      date: e.date,
+      startTime: e.startTime,
+      place: e.place,
+      desc: e.desc
+    }));
 
+    // ✅ 이 달 데이터 기억해두기
+    calendarCache[ym] = allEvents;
 
-
-allEvents = list.map(e => ({
-  id: e.id || e.ID || "",
-  title: e.title || e.TITLE || "",
-  start: e.date || e.DATE || "",
-  date: e.date || e.DATE || "",
-  startTime: e.startTime || e.START_TIME || "",
-  place: e.place || e.PLACE || "",
-  desc: e.desc || e.DESC || ""
-}));
+    initCalendar(allEvents);
+  });
+}
 
 console.log("🧪 mapped events =", allEvents);
 
@@ -1290,14 +1301,18 @@ console.log("🧪 mapped events =", allEvents);
   });
 }
 
-
 function initCalendar(events){
   const el = document.getElementById("calendar");
   if (!el) return;
 
-  // 이미 있으면 제거 (다시 들어올 때 대비)
-  el.innerHTML = "";
+  // ✅ 이미 달력이 있으면 이벤트만 교체
+  if (calendar) {
+    calendar.removeAllEvents();
+    calendar.addEventSource(events);
+    return;
+  }
 
+  // ✅ 처음 한 번만 생성
   calendar = new FullCalendar.Calendar(el, {
     locale: "ko",
     initialView: "dayGridMonth",
@@ -1309,27 +1324,15 @@ function initCalendar(events){
       right: ""
     },
 
-
-   // ✅ 🔥 여기 추가 (핵심)
     dayCellContent(arg) {
-      return { html: String(arg.date.getDate()) }; // ← 숫자만
+      return { html: String(arg.date.getDate()) };
     },
-
 
     dateClick(info){
       openDayEvents(info.dateStr);
     },
 
-
-
-
-
-
-    events: events.map(e=>({
-      title: e.title,
-      start: e.date,
-      extendedProps: e
-    }))
+    events
   });
 
   calendar.render();
