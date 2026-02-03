@@ -1241,6 +1241,8 @@ let calendar;
 let allEvents = [];
 
 function loadCalendar(){
+console.log("📅 loadCalendar called");
+
   const now = new Date();
   const ym = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`;
 
