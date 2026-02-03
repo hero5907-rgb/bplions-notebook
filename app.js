@@ -36,7 +36,7 @@ let modalCtx = { list: [], index: -1 };
 const CFG = window.APP_CONFIG || {};
 const API_URL = String(CFG.apiUrl || "").trim();
 
-let calendarCache = {};
+
 
 
 const LS_KEY = "bplions_auth_v1";
