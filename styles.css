@@ -864,27 +864,6 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-//* 이름 + 직위(재무) 한 줄 완전 정렬 */
-.modal-name-row{
-  display: flex;
-  align-items: center;     /* 🔥 세로 기준 통일 */
-  justify-content: center;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.modal-name{
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.15;       /* 🔥 기준 */
-}
-
-.modal-name-row .badge{
-  font-size: 12px;
-  line-height: 1.15;       /* 🔥 이름과 동일 */
-  padding: 4px 10px;
-}
-
 
 
 /* 주소 + 지도 버튼 묶음 (가운데 정렬) */
@@ -920,34 +899,6 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-/* ===== 프로필 팝업 정렬 최종 보정 ===== */
-
-/* 이름 + 직위(재무) 높이 정확히 맞춤 */
-.modal-name-row{
-  display: flex;
-  align-items: center;      /* 🔥 핵심 */
-  justify-content: center;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.modal-name{
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.2;         /* 🔥 기준선 */
-}
-
-.modal-name-row .badge{
-  font-size: 12px;
-  line-height: 1.2;         /* 🔥 이름과 동일 */
-  padding: 4px 10px;
-}
-
-/* 직장/직함/주소 전체 가운데 */
-#profileModal .modal-workplace{
-  text-align: center;
-  line-height: 1.4;
-}
 
 /* 지도 버튼 + 주소를 한 줄로 가운데 */
 .modal-map-actions{
@@ -972,7 +923,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 /* ===============================
-   이름 + 직위(재무) 높이 완전 통일 (최종 덮어쓰기)
+   이름 + 직위(재무) 높이 완전 고정 (최종본)
    =============================== */
 
 #profileModal .modal-name-row{
@@ -986,17 +937,19 @@ flex-direction: column;   /* 🔥 이거 추가 */
 #profileModal .modal-name{
   font-size: 20px;
   font-weight: 900;
-  line-height: 20px;          /* 🔥 px로 고정 (핵심) */
+  height: 24px;               /* 🔥 기준 높이 */
+  line-height: 24px;          /* 🔥 기준선 */
   display: flex;
   align-items: center;
 }
 
 #profileModal .badge{
   font-size: 12px;
-  height: 20px;               /* 🔥 이름과 동일 높이 */
-  padding: 0 10px;
-  line-height: 20px;          /* 🔥 텍스트 기준선 고정 */
+  height: 24px;               /* 🔥 이름과 동일 */
+  line-height: 24px;
+  padding: 0 10px;            /* 좌우만 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
+
