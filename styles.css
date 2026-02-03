@@ -918,3 +918,56 @@ flex-direction: column;   /* 🔥 이거 추가 */
   font-size: 14px;
   line-height: 1.35;
 }
+
+
+/* ===== 프로필 팝업 정렬 최종 보정 ===== */
+
+/* 이름 + 직위(재무) 높이 정확히 맞춤 */
+.modal-name-row{
+  display: flex;
+  align-items: center;      /* 🔥 핵심 */
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.modal-name{
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;         /* 🔥 기준선 */
+}
+
+.modal-name-row .badge{
+  font-size: 12px;
+  line-height: 1.2;         /* 🔥 이름과 동일 */
+  padding: 4px 10px;
+}
+
+/* 직장/직함/주소 전체 가운데 */
+#profileModal .modal-workplace{
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* 지도 버튼 + 주소를 한 줄로 가운데 */
+.modal-map-actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+}
+
+/* 지도 버튼 크기 + 높이 축소 (주소 기준선 맞춤) */
+#btnMap{
+  height: 28px;             /* 🔥 작게 */
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* 영문이름 / 추천인도 중앙 유지 */
+.modal-engname,
+.modal-recommender{
+  text-align: center;
+}
+
