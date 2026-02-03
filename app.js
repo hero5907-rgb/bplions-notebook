@@ -1017,7 +1017,18 @@ if (wEl) {
 
 
   // 폰번호(굵게는 CSS에서 처리)
-  el("modalPhone").textContent = m.phone || "";
+  // ===== 휴대폰 번호 포맷 (010-xxxx-xxxx) =====
+const phoneEl = el("modalPhone");
+if (phoneEl) {
+  const p = String(m.phone || "").replace(/[^0-9]/g, "");
+  if (p.length === 11) {
+    phoneEl.textContent =
+      `${p.slice(0,3)}-${p.slice(3,7)}-${p.slice(7)}`;
+  } else {
+    phoneEl.textContent = p;
+  }
+}
+
 
   el("modalCall").href = `tel:${m.phone || ""}`;
   el("modalSms").href  = `sms:${m.phone || ""}`;
@@ -1485,6 +1496,5 @@ el("btnCalendarRefresh")?.addEventListener("click", () => {
 
   loadCalendar(yyyymm);
 });
-
 
 

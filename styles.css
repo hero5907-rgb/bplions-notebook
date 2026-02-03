@@ -862,3 +862,35 @@ flex-direction: column;   /* 🔥 이거 추가 */
   font-weight: 700;
   color: #0b4ea2;
 }
+
+
+/* 이름 + 직위(재무) 한 줄 정렬 */
+.modal-name-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+
+/* 주소 + 지도 버튼 묶음 */
+.modal-address-row{
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* 지도 버튼 크기/톤 */
+.modal-address-row .a-btn{
+  flex-shrink: 0;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+/* 직장/주소 줄바꿈 유지 */
+.modal-workplace{
+  white-space: pre-line;
+  font-size: 14px;
+}

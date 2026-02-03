@@ -293,13 +293,17 @@
   <div class="modal-card">
     <img id="modalPhoto" class="modal-photo" />
 
-    <div class="modal-name" id="modalName"></div>
+<div class="modal-name-row">
+  <div class="modal-name" id="modalName"></div>
+  <span class="badge" id="modalPosition"></span>
+</div>
 
-    <div class="modal-position">
-      <span class="badge" id="modalPosition"></span>
-    </div>
+<!-- 주소 + 지도 버튼 -->
+<div class="modal-address-row">
+  <button id="btnMap" class="a-btn primary" type="button">📍 지도</button>
+  <div class="modal-workplace" id="modalWorkplace"></div>
+</div>
 
-<div class="modal-workplace" id="modalWorkplace"></div>
 <!-- 🔽 추가 정보 -->
 <div class="modal-engname" id="modalEngName"></div>
 
@@ -307,14 +311,6 @@
 
 <div class="modal-recommender" id="modalRecommender"></div>
 
-
-
-
-
-<div class="modal-map-actions">
-  <button id="btnMap" class="a-btn primary" type="button">📍 지도</button>
-
-</div>
 
 <div class="modal-phone" id="modalPhone"></div>
 
