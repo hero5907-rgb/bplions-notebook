@@ -172,7 +172,7 @@
 
   <button class="tile" data-nav="calendar">
 
-  <div class="tile-title">일정표</div>
+  <div class="tile-title">클럽일정표</div>
   <div class="tile-desc">월별 일정 확인</div>
 </button>
 
@@ -235,11 +235,14 @@
     </div>
   </section>
 
-
-<!-- 📅 일정표(달력) -->
 <section id="screenCalendar" class="screen" hidden>
   <div class="card">
-    <h3>📅 일정표</h3>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3>📅 클럽일정표</h3>
+      <button id="btnCalReload" class="ghost" style="height:34px;">↻ 새로고침</button>
+    </div>
+
     <div id="calendar"></div>
   </div>
 </section>
@@ -249,7 +252,7 @@
 
 <section id="screenEvents" class="screen" hidden>
   <div class="card">
-    <h3>📅 일정표</h3>
+    <h3>📅 클럽일정표</h3>
     <div id="eventsList">불러오는 중...</div>
   </div>
 </section>
