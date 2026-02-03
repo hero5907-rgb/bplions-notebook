@@ -600,11 +600,13 @@ function bindNav() {
         if (el("memberSearch")) el("memberSearch").value = "";
         renderMembers(state.members);
 
-      } else if (target === "announcements") {
-        pushNav("announcements");
-        renderAnnouncements();
+} else if (target === "announcements") {
+  pushNav("announcements");
+  renderAnnouncements();
 
-      } else if (target === "purpose") {
+  const btn = el("btnAnnRefresh");
+  if (btn) btn.onclick = reloadAnnouncements;
+}else if (target === "purpose") {
         pushNav("text");
         if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
         if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
@@ -664,7 +666,7 @@ function bindSearch() {
   bindNav();
   bindSearch();
 
-el("btnAnnRefresh")?.addEventListener("click", reloadAnnouncements);
+
 
 
 
