@@ -971,3 +971,26 @@ flex-direction: column;   /* 🔥 이거 추가 */
   text-align: center;
 }
 
+/* ===== 이름 + 직위(재무) 완전 정렬 (최종) ===== */
+.modal-name-row{
+  display: flex;
+  align-items: center;        /* 🔥 세로 기준선 통일 */
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.modal-name{
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;             /* 🔥 기준선 고정 */
+}
+
+.modal-name-row .badge{
+  font-size: 12px;
+  line-height: 1;             /* 🔥 이름과 동일 */
+  padding: 4px 10px;
+  display: inline-flex;       /* 🔥 텍스트 기준 중앙 */
+  align-items: center;
+}
+``
