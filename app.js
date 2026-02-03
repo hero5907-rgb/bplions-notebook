@@ -133,10 +133,6 @@ if (name === "home" && homeBackTimer) {
   homeBackTimer = null;
 }
 
-if (name === "Calendar") {
-  loadCalendar();
-}
-
 
 }
 
@@ -1250,8 +1246,17 @@ function loadCalendar(){
 
   api("events", { yyyymm: ym }, (res)=>{
     const list = res?.events || [];
-    allEvents = list;
-    initCalendar(list);
+
+    allEvents = list.map(e=>({
+      id: e.id,
+      title: e.title,
+      date: e.date,        // 원본 보존
+      startTime: e.startTime,
+      place: e.place,
+      desc: e.desc
+    }));
+
+    initCalendar(allEvents);
   });
 }
 
