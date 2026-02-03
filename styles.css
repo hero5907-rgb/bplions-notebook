@@ -742,3 +742,12 @@ flex-direction: column;   /* 🔥 이거 추가 */
   font-weight: 600;
 }
 
+/* 📅 달력 날짜에서 '일' 글자 제거 (데이터 유지) */
+.fc-daygrid-day-number::after {
+  content: none !important;
+}
+
+/* 혹시 locale 영향으로 '일'이 붙는 경우 대비 */
+.fc-daygrid-day-number {
+  font-size: 0.9rem;
+}
