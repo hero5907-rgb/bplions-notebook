@@ -1252,7 +1252,12 @@ console.log("📅 loadCalendar called");
     code: state._authCode,
   
   }).then(res=>{
-    const list = res?.events || [];
+     console.log("📥 RAW events response =", res);   // ← 추가
+
+  const list = res?.events || [];
+  console.log("📦 events list =", list);           // ← 추가
+
+
 
     allEvents = list.map(e=>({
       id: e.id,
