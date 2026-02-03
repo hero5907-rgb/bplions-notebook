@@ -267,35 +267,6 @@ flex-direction: column;   /* 🔥 이거 추가 */
   opacity: 0.80;
 }
 
-/* ===== 최종 모달 중앙정렬 ===== */
-.modal{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-
-  display: flex;
-  align-items: center;      /* 세로 중앙 */
-  justify-content: center;  /* 가로 중앙 */
-}
-
-.modal-backdrop{
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.45);
-}
-
-.modal-card{
-  position: relative;
-  z-index: 1;
-
-  width: min(92vw, 420px);
-  max-height: 80vh;
-  overflow-y: auto;
-
-  background: #fff;
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.2);
 
   /* 🔥 기존 영향 완전 차단 */
   margin: 0 !important;
@@ -721,25 +692,39 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 
 /* ✅ 공용 모달 스타일 */
+
 .modal{
-  position:fixed;
-  inset:0;
-  z-index:9999;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .modal-backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.45);
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
 }
+
 .modal-card{
-  position:relative;
-  background:#fff;
-  width:min(92vw,420px);
-  margin:10vh auto;
-  border-radius:18px;
-  padding:16px;
-  box-shadow:0 20px 40px rgba(0,0,0,.2);
+  position: relative;
+  background: #fff;
+  width: min(92vw, 420px);
+  max-height: 80vh;
+  overflow-y: auto;
+
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+
+  /* ✅ 핵심 2줄 */
+  margin: 0;
+  text-align: center;
 }
+
 .modal-close{
   margin-top:14px;
   width:100%;
