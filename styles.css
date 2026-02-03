@@ -921,14 +921,13 @@ flex-direction: column;   /* 🔥 이거 추가 */
 .modal-recommender{
   text-align: center;
 }
-
 /* ===============================
-   이름 + 직위(재무) 높이 완전 고정 (최종본)
+   이름 + 직위(전직회장) 높이 고정
    =============================== */
 
 #profileModal .modal-name-row{
   display: flex;
-  align-items: center;        /* 🔥 세로 기준 통일 */
+  align-items: center;
   justify-content: center;
   gap: 8px;
   margin-top: 10px;
@@ -937,17 +936,17 @@ flex-direction: column;   /* 🔥 이거 추가 */
 #profileModal .modal-name{
   font-size: 20px;
   font-weight: 900;
-  height: 24px;               /* 🔥 기준 높이 */
-  line-height: 24px;          /* 🔥 기준선 */
+  height: 24px;
+  line-height: 24px;
   display: flex;
   align-items: center;
 }
 
 #profileModal .badge{
   font-size: 12px;
-  height: 24px;               /* 🔥 이름과 동일 */
+  height: 24px;
   line-height: 24px;
-  padding: 0 10px;            /* 좌우만 */
+  padding: 0 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
