@@ -1433,17 +1433,24 @@ let __calendarReloading = false;
 // 📅 달력 새로고침 버튼 (완전 초기화)
 
 el("btnCalReload")?.addEventListener("click", () => {
-  __calendarReloading = false;   // 🔥 강제 해제
+  // 🔥 무조건 리로드 가능 상태로
+  __calendarReloading = false;
 
+  // 🔥 캐시 완전 초기화
   calendarCache = {};
   allEvents = [];
 
+  // 🔥 FullCalendar 완전 제거
   if (calendar) {
     calendar.destroy();
     calendar = null;
   }
 
-  const now = new Date();
+  // 🔥 현재 보고 있는 달 기준으로 다시 로드
+  const now = calendar
+    ? calendar.getDate()
+    : new Date();
+
   const yyyymm =
     now.getFullYear() +
     String(now.getMonth() + 1).padStart(2, "0");
