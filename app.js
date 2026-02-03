@@ -1349,8 +1349,9 @@ function initCalendar(events){
 
 
 function openDayEvents(date){
-  const list = allEvents.filter(e => e.extendedProps?.date === date);
-
+  const list = allEvents.filter(e =>
+    e.extendedProps?.date === date
+  );
 
   if (!list.length){
     openModal(`<h3>${date}</h3><p>일정이 없습니다.</p>`);
@@ -1363,15 +1364,16 @@ function openDayEvents(date){
       <div style="margin-top:12px;padding-bottom:12px;border-bottom:1px solid #eee">
         <b>${e.title}</b><br/>
         <span class="muted">
-          ${e.startTime || ""} ${e.place || ""}
+          ${e.extendedProps?.startTime || ""} ${e.extendedProps?.place || ""}
         </span>
         <div style="margin-top:6px;white-space:pre-wrap">
-          ${e.desc || ""}
+          ${e.extendedProps?.desc || ""}
         </div>
       </div>
     `).join("")}
   `);
 }
+
 
 
 function openModal(html){
