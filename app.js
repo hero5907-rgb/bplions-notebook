@@ -1412,3 +1412,19 @@ function confirmAlerts(rows){
 }
 
 
+
+
+// 📅 달력 새로고침 버튼 (강제 재로딩)
+el("btnCalReload")?.addEventListener("click", () => {
+  calendarCache = {};
+  allEvents = [];
+
+  const d = calendar?.getDate?.() || new Date();
+  const yyyymm =
+    d.getFullYear() +
+    String(d.getMonth() + 1).padStart(2, "0");
+
+  loadCalendar(yyyymm);
+});
+
+
