@@ -1246,7 +1246,7 @@ function loadCalendar(){
 
   apiJsonp({
     action: "events",
-    phone: state.me.phone,
+    phone: state._authPhone,
     code: state._authCode,
     yyyymm: ym
   }).then(res=>{
@@ -1300,6 +1300,10 @@ function initCalendar(events){
     },
 
 
+   // ✅ 🔥 여기 추가 (핵심)
+    dayCellContent(arg) {
+      return { html: String(arg.date.getDate()) }; // ← 숫자만
+    },
 
 
     dateClick(info){
