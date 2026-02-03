@@ -267,30 +267,41 @@ flex-direction: column;   /* 🔥 이거 추가 */
   opacity: 0.80;
 }
 
-/* ===== 프로필 팝업 ===== */
-.modal {
+/* ===== 최종 모달 중앙정렬 ===== */
+.modal{
   position: fixed;
   inset: 0;
   z-index: 9999;
+
+  display: flex;
+  align-items: center;      /* 세로 중앙 */
+  justify-content: center;  /* 가로 중앙 */
 }
 
-.modal-backdrop {
+.modal-backdrop{
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,.55);
+  background: rgba(0,0,0,.45);
 }
 
-.modal-card {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(92vw, 360px);
+.modal-card{
+  position: relative;
+  z-index: 1;
+
+  width: min(92vw, 420px);
+  max-height: 80vh;
+  overflow-y: auto;
+
   background: #fff;
-  border-radius: 16px;
-  padding: 18px 16px 16px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+
+  /* 🔥 기존 영향 완전 차단 */
+  margin: 0 !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
 }
 
 .modal-photo {
