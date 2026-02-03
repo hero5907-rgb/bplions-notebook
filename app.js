@@ -1286,12 +1286,6 @@ function initCalendar(events){
 
 
 
-dayCellContent: function(arg) {
-  return { html: `<span>${arg.date.getDate()}</span>` };
-},
-
-
-
 
     dateClick(info){
       openDayEvents(info.dateStr);
