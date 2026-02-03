@@ -1259,15 +1259,18 @@ console.log("📅 loadCalendar called");
 
 
 
-    allEvents = list.map(e=>({
-      id: e.id,
-      title: e.title,
-      start: e.date,          // ✅ FullCalendar 필수
-      date: e.date,
-      startTime: e.startTime,
-      place: e.place,
-      desc: e.desc
-    }));
+allEvents = list.map(e => ({
+  id: e.id || e.ID || "",
+  title: e.title || e.TITLE || "",
+  start: e.date || e.DATE || "",
+  date: e.date || e.DATE || "",
+  startTime: e.startTime || e.START_TIME || "",
+  place: e.place || e.PLACE || "",
+  desc: e.desc || e.DESC || ""
+}));
+
+console.log("🧪 mapped events =", allEvents);
+
 
     initCalendar(allEvents);
 
