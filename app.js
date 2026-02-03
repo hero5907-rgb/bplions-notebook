@@ -1243,62 +1243,63 @@ function loadUpcomingEvents(){
 let calendar;
 let allEvents = [];
 
-function loadCalendar(){
-  const now = new Date();
-  const ym = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}`;
+function loadCalendar(yyyymm){
+  const base = yyyymm
+    ? new Date(yyyymm.slice(0,4), Number(yyyymm.slice(4))-1, 1)
+    : new Date();
 
-  // ✅ 이미 불러온 달이면 서버 안 감
-  if (calendarCache[ym]) {
-    allEvents = calendarCache[ym];
+  // 전월 / 현재월 / 다음월
+  const months = [
+    new Date(base.getFullYear(), base.getMonth()-1, 1),
+    new Date(base.getFullYear(), base.getMonth(),   1),
+    new Date(base.getFullYear(), base.getMonth()+1, 1),
+  ];
+
+  const keys = months.map(d =>
+    `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}`
+  );
+
+  const need = keys.filter(k => !calendarCache[k]);
+
+  // 이미 다 캐시돼 있으면 바로 그림
+  if (!need.length) {
+    allEvents = keys.flatMap(k => calendarCache[k]);
     initCalendar(allEvents);
     return;
   }
 
-  // ✅ 처음 보는 달만 서버 호출
-  apiJsonp({
-    action: "events",
-    phone: state._authPhone,
-    code: state._authCode,
-    yyyymm: ym
-  })
-  .then(res => {
-    const list = res?.events || [];
-
-   allEvents = list.map(e => {
-  const start = e.startTime
-    ? `${e.date}T${e.startTime}`
-    : `${e.date}T00:00`;
-
-  const end = e.endTime
-    ? `${e.date}T${e.endTime}`
-    : null;
-
-  return {
-    id: e.id,
-    title: e.title,
-    start,
-    end,
-    allDay: false,
-    extendedProps: {
-      date: e.date,
-      startTime: e.startTime,
-      place: e.place,
-      desc: e.desc
-    }
-  };
-});
-
-
-    // ✅ 캐시 저장
-    calendarCache[ym] = allEvents;
-
+  Promise.all(
+    need.map(k =>
+      apiJsonp({
+        action: "events",
+        phone: state._authPhone,
+        code: state._authCode,
+        yyyymm: k
+      }).then(res => {
+        const list = (res?.events || []).map(e => ({
+          id: e.id,
+          title: e.title,
+          start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
+          end: e.endTime ? `${e.date}T${e.endTime}` : null,
+          extendedProps: {
+            date: e.date,
+            startTime: e.startTime,
+            place: e.place,
+            desc: e.desc
+          }
+        }));
+        calendarCache[k] = list;
+      })
+    )
+  ).then(() => {
+    allEvents = keys.flatMap(k => calendarCache[k]);
     initCalendar(allEvents);
-  })
-  .catch(e => {
+  }).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
   });
 }
+
 
 function initCalendar(events){
   const el = document.getElementById("calendar");
@@ -1339,6 +1340,10 @@ function initCalendar(events){
 
   eventClick(info) {
     info.jsEvent.preventDefault();
+  },
+  
+   datesSet(info){
+     loadCalendar(`${info.start.getFullYear()}${String(info.start.getMonth()+1).padStart(2,"0")}`);
   },
 
   events
