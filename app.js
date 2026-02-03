@@ -1268,11 +1268,12 @@ function loadCalendar(yyyymm){
   const need = keys.filter(k => !calendarCache[k]);
 
   // 이미 다 캐시돼 있으면 바로 그림
-  if (!need.length) {
-    allEvents = keys.flatMap(k => calendarCache[k]);
-    initCalendar(allEvents);
-    return;
-  }
+if (!need.length) {
+  allEvents = keys.flatMap(k => calendarCache[k]);
+  initCalendar(allEvents);
+  __calendarReloading = false;   // 🔥 반드시 풀어준다
+  return;
+}
 
   Promise.all(
     need.map(k =>
@@ -1361,13 +1362,16 @@ function initCalendar(events){
     },
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
-    datesSet(info){
-      const yyyymm =
-        info.start.getFullYear() +
-        String(info.start.getMonth() + 1).padStart(2, "0");
+datesSet(info){
+  if (__calendarReloading) return;  // 🔥 중복 방지
 
-      loadCalendar(yyyymm);          // 🔥 핵심
-    },
+  const yyyymm =
+    info.start.getFullYear() +
+    String(info.start.getMonth() + 1).padStart(2, "0");
+
+  loadCalendar(yyyymm);
+},
+
 
     events
   });
@@ -1426,18 +1430,18 @@ let __calendarReloading = false;
 
 
 // 📅 달력 새로고침 버튼 (완전 초기화)
+
 el("btnCalReload")?.addEventListener("click", () => {
-  // 1) 캐시 완전 초기화
+  __calendarReloading = false;   // 🔥 강제 해제
+
   calendarCache = {};
   allEvents = [];
 
-  // 2) 기존 달력 완전 제거 (이게 핵심)
   if (calendar) {
     calendar.destroy();
     calendar = null;
   }
 
-  // 3) 현재 월 기준으로 다시 로드
   const now = new Date();
   const yyyymm =
     now.getFullYear() +
