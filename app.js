@@ -1240,8 +1240,10 @@ function loadUpcomingEvents(){
 }
 
 
-let calendar;
+let calendar = null;
 let allEvents = [];
+let calendarCache = {};
+
 
 function loadCalendar(yyyymm){
   const base = yyyymm
@@ -1301,57 +1303,67 @@ function loadCalendar(yyyymm){
 }
 
 
+
+
 function initCalendar(events){
   const el = document.getElementById("calendar");
   if (!el) return;
 
-  // ✅ 이미 달력이 있으면 이벤트만 교체
+  // ✅ 이미 달력이 있으면: 이벤트만 교체 + 다시 그림
   if (calendar) {
     calendar.removeAllEvents();
     calendar.addEventSource(events);
+    calendar.render();              // 🔥 추가
     return;
   }
 
   // ✅ 처음 한 번만 생성
   calendar = new FullCalendar.Calendar(el, {
-  locale: "ko",
-  initialView: "dayGridMonth",
-  height: "auto",
+    locale: "ko",
+    initialView: "dayGridMonth",
+    height: "auto",
 
-  headerToolbar: {
-    left: "prev,next",
-    center: "title",
-    right: ""
-  },
+    headerToolbar: {
+      left: "prev,next",
+      center: "title",
+      right: ""
+    },
 
-  dayCellContent(arg) {
-    return { html: String(arg.date.getDate()) };
-  },
+    // 날짜 숫자만 표시
+    dayCellContent(arg) {
+      return { html: String(arg.date.getDate()) };
+    },
 
-  eventContent(arg) {
-    return {
-      html: `<span class="fc-title-only">${arg.event.title}</span>`
-    };
-  },
+    // 달력 칸에는 제목만
+    eventContent(arg) {
+      return {
+        html: `<span class="fc-title-only">${arg.event.title}</span>`
+      };
+    },
 
-  dateClick(info){
-    openDayEvents(info.dateStr);
-  },
+    // 날짜 클릭 → 팝업
+    dateClick(info){
+      openDayEvents(info.dateStr);
+    },
 
-  eventClick(info) {
-    info.jsEvent.preventDefault();
-  },
-  
-   datesSet(info){
-     loadCalendar(`${info.start.getFullYear()}${String(info.start.getMonth()+1).padStart(2,"0")}`);
-  },
+    eventClick(info) {
+      info.jsEvent.preventDefault();
+    },
 
-  events
-});
+    // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
+    datesSet(info){
+      const yyyymm =
+        info.start.getFullYear() +
+        String(info.start.getMonth() + 1).padStart(2, "0");
+
+      loadCalendar(yyyymm);          // 🔥 핵심
+    },
+
+    events
+  });
 
   calendar.render();
 }
-
 
 function openDayEvents(date){
   const list = allEvents.filter(e =>
