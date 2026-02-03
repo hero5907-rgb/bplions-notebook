@@ -948,6 +948,37 @@ function openProfileAt(list, index) {
   el("modalName").textContent = m.name || "";
   el("modalPosition").textContent = m.position || "";
 
+// ===== 추가: 영문이름 =====
+const engEl = el("modalEngName");
+if (engEl) {
+  engEl.textContent = m.engName || "";
+}
+
+// ===== 추가: 회원번호 / 입회일자 =====
+const infoEl = el("modalMemberInfo");
+if (infoEl) {
+  const rows = [];
+  if (m.memberNo) rows.push(`<div>회원번호: ${esc(m.memberNo)}</div>`);
+  if (m.joinDate) rows.push(`<div>입회일자: ${esc(m.joinDate)}</div>`);
+  infoEl.innerHTML = rows.join("");
+}
+
+
+// ===== 추가: 추천인 =====
+const recEl = el("modalRecommender");
+if (recEl) {
+  if (m.recommender) {
+    recEl.textContent = `추천인: ${m.recommender}`;
+    recEl.hidden = false;
+  } else {
+    recEl.hidden = true;
+  }
+}
+
+
+
+
+
     // 직장 / 직함 / 주소 (두 줄로 표시)
   const workplaceRaw = String(m.workplace || "").trim();
   const title = String(m.title || "").trim();

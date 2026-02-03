@@ -829,3 +829,36 @@ flex-direction: column;   /* 🔥 이거 추가 */
 .btn-blue:active{
   transform:scale(0.96);
 }
+
+
+
+/* ===== 회원 프로필 팝업 추가 정보 ===== */
+
+/* 영문이름 */
+.modal-engname{
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.2px;
+}
+
+/* 회원번호 / 입회일자 */
+.modal-memberinfo{
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b1220;
+}
+
+/* 회원번호 / 입회일자 줄 간격 */
+.modal-memberinfo > div{
+  margin-top: 2px;
+}
+
+/* 추천인 */
+.modal-recommender{
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0b4ea2;
+}
