@@ -1250,7 +1250,12 @@ function loadCalendar(){
     allEvents = list.map(e=>({
       id: e.id,
       title: e.title,
-      date: e.date,        // 원본 보존
+
+      // 🔥 핵심: FullCalendar가 읽는 필드
+      start: e.date,
+
+      // 기타 정보 보존
+      date: e.date,
       startTime: e.startTime,
       place: e.place,
       desc: e.desc
