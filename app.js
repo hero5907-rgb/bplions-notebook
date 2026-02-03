@@ -1260,7 +1260,8 @@ function loadCalendar(){
     phone: state._authPhone,
     code: state._authCode,
     yyyymm: ym
-  }).then(res=>{
+  })
+  .then(res => {
     const list = res?.events || [];
 
     allEvents = list.map(e => ({
@@ -1273,29 +1274,12 @@ function loadCalendar(){
       desc: e.desc
     }));
 
-    // ✅ 이 달 데이터 기억해두기
+    // ✅ 캐시 저장
     calendarCache[ym] = allEvents;
 
     initCalendar(allEvents);
-  });
-}
-
-console.log("🧪 mapped events =", allEvents);
-
-
-    initCalendar(allEvents);
-
-
-   // ✅🔥 이 두 줄이 핵심
-    setTimeout(() => {
-      calendar.updateSize();
-    }, 0);
-
-
-
-
-
-  }).catch(e=>{
+  })
+  .catch(e => {
     console.error(e);
     toast("달력 일정 불러오기 실패");
   });
