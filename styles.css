@@ -800,3 +800,32 @@ flex-direction: column;   /* 🔥 이거 추가 */
   -webkit-user-select: none;
   user-select: none;
 }
+
+
+.calendar-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.calendar-header h2{
+  margin:0;
+  font-size:18px;
+  font-weight:800;
+}
+
+.btn-blue{
+  background:#0b4ea2;
+  color:#fff;
+  border:none;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-blue:active{
+  transform:scale(0.96);
+}
