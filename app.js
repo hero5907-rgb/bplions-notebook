@@ -1248,7 +1248,7 @@ function loadCalendar(){
     action: "events",
     phone: state._authPhone,
     code: state._authCode,
-    yyyymm: ym
+  
   }).then(res=>{
     const list = res?.events || [];
 
