@@ -952,3 +952,20 @@ flex-direction: column;   /* 🔥 이거 추가 */
   justify-content: center;
 }
 
+/* 🔥 프로필 팝업 이름/직위 높이 문제 최종 해결 */
+
+#profileModal .modal-name{
+  margin-top: 0 !important;   /* ❗ 기존 10px 제거 */
+  height: 24px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+#profileModal .badge{
+  height: 24px;
+  line-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
