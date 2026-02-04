@@ -556,7 +556,11 @@ try {
       throw new Error(msg);
     }
 
-    state.me = json.me;
+    state.me = {
+  ...json.me,
+  isAdmin: json.me?.isAdmin === true || json.me?.isAdmin === "TRUE"
+};
+
 
 // ✅ 로그인 상태 표시 (CSS 제어용)
 document.body.classList.add("logged-in");
