@@ -217,23 +217,38 @@
 
   </section>
 
-  <!-- 회원 -->
-  <div class="card-header">
-  <div class="card-title" style="display:flex;align-items:center;gap:6px;">
-    회원명부
-    <button
-      id="btnMembersRefresh"
-      class="icon-btn small"
-      aria-label="회원명부 새로고침"
-      title="회원명부 새로고침"
-      type="button"
-    >
-      ↻
-    </button>
-  </div>
+<!-- 회원 -->
+<section id="screenMembers" class="screen" hidden>
+  <div class="card">
 
-  <div class="pill" id="memberCountPill">0명</div>
-</div>
+    <div class="card-header">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        회원명부
+        <button
+          id="btnMembersRefresh"
+          class="icon-btn small"
+          aria-label="회원명부 새로고침"
+          title="회원명부 새로고침"
+          type="button"
+        >
+          ↻
+        </button>
+      </div>
+
+      <div class="pill" id="memberCountPill">0명</div>
+    </div>
+
+    <input
+      id="memberSearch"
+      class="input"
+      placeholder="이름 / 직위 / 그룹 / 휴대폰 검색"
+    />
+
+    <div id="memberList" class="list mt12"></div>
+
+  </div>
+</section>
+
 
   <!-- 공지 -->
   <section id="screenAnnouncements" class="screen" hidden>
