@@ -1013,48 +1013,6 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-/* ===============================
-   🔥 관리자 버튼 최종 정리 (아이콘만)
-   =============================== */
-
-/* 관리자 버튼 안 글씨 전부 제거 */
-#btnAdmin,
-#tileAdmin,
-.admin-btn,
-.chip-btn .chip-text {
-  display: none !important;
-}
-
-/* 관리자 버튼을 아이콘 전용으로 */
-.icon-btn.admin,
-#btnAdmin.icon-btn {
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 50% !important;
-  padding: 0 !important;
-
-  background: rgba(255,255,255,0.18);
-  color: #fff;
-
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 아이콘 크기 */
-.icon-btn.admin svg,
-.icon-btn.admin .ico {
-  width: 18px !important;
-  height: 18px !important;
-}
-
-
-/* 🔒 로그인 전에는 관리자(톱니바퀴) 숨김 */
-body:not(.logged-in) #btnAdmin,
-body:not(.logged-in) #tileAdmin,
-body:not(.logged-in) .admin-only {
-  display: none !important;
-}
 
 /* ===== 상단 우측 사용자 영역 정렬 ===== */
 .topbar{
@@ -1115,7 +1073,6 @@ body:not(.logged-in) .admin-only {
   font-size: 16px;
 }
 
-/* 🔒 관리자 버튼은 기본적으로 무조건 숨김 */
-#btnAdmin {
-  display: none !important;
-}
+#btnAdmin { display: none !important; }
+
+

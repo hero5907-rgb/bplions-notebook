@@ -556,9 +556,18 @@ try {
       throw new Error(msg);
     }
 
-    state.me = {
+ const rawAdmin = json.me?.isAdmin;
+
+const isAdmin =
+  rawAdmin === true ||
+  rawAdmin === "TRUE" ||
+  rawAdmin === "true" ||
+  rawAdmin === 1 ||
+  rawAdmin === "1";
+
+state.me = {
   ...json.me,
-  isAdmin: json.me?.isAdmin === true || json.me?.isAdmin === "TRUE"
+  isAdmin: isAdmin === true
 };
 
 
