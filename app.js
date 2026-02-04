@@ -562,6 +562,13 @@ if (nameBox && state.me?.name) {
   nameBox.hidden = false;
 }
 
+// ✅ 상단 톱니바퀴(관리자 버튼) 클릭 연결
+const btnAdmin = document.getElementById("btnAdmin");
+if (btnAdmin) {
+  btnAdmin.hidden = !(state.me && state.me.isAdmin === true);
+  btnAdmin.onclick = openAdminPage;
+}
+
 
     state.settings = json.settings;
    state.members = onlyRealMembers(json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
