@@ -10,6 +10,21 @@ function api(action, params = {}, cb){
     });
 }
 
+function setAdminButton(isAdmin) {
+  const btnAdmin = document.getElementById("btnAdmin");
+  if (!btnAdmin) return;
+
+  if (isAdmin === true) {
+    btnAdmin.style.display = "flex";   // 보이기
+    btnAdmin.onclick = openAdminPage;  // 클릭 연결
+  } else {
+    btnAdmin.style.display = "none";   // 숨기기
+    btnAdmin.onclick = null;           // 클릭 제거
+  }
+}
+
+
+
 
 function isAnyModalOpen(){
   return (
@@ -159,6 +174,7 @@ btnBack?.addEventListener("click", () => popNav());
 btnLogout?.addEventListener("click", () => {
 
 
+setAdminButton(false);
 
   localStorage.removeItem(LS_KEY);
 
@@ -184,13 +200,6 @@ document.body.classList.remove("logged-in"); // ← 이 줄
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
   toast("로그아웃");
-
-  // 🔒 로그아웃 시 관리자 버튼 무조건 숨김
-  const btnAdmin = el("btnAdmin");
-  if (btnAdmin) {
-    btnAdmin.hidden = true;
-    btnAdmin.onclick = null;
-  }
 
 
 
@@ -571,6 +580,10 @@ state.me = {
 };
 
 
+setAdminButton(state.me?.isAdmin === true);
+
+
+
 // ✅ 로그인 상태 표시 (CSS 제어용)
 document.body.classList.add("logged-in");
 
@@ -583,17 +596,6 @@ if (nameBox && state.me?.name) {
   nameBox.hidden = false;
 }
 
-// ✅ 관리자 권한일 때만 톱니 표시
-const btnAdmin = el("btnAdmin");
-if (btnAdmin) {
-  if (state.me?.isAdmin === true) {
-    btnAdmin.hidden = false;
-    btnAdmin.onclick = openAdminPage;
-  } else {
-    btnAdmin.hidden = true;
-    btnAdmin.onclick = null;
-  }
-}
 
 
     state.settings = json.settings;
@@ -734,6 +736,10 @@ function bindSearch() {
 (function init() {
 
 
+setAdminButton(false);
+
+
+
 
   // 기본 세팅
   setBrand(null);
@@ -741,12 +747,6 @@ function bindSearch() {
   bindSearch();
 
 
-  // 🔒 관리자 버튼 기본 숨김 (초기화)
-  const btnAdmin = el("btnAdmin");
-  if (btnAdmin) {
-    btnAdmin.hidden = true;
-    btnAdmin.onclick = null;
-  }
 
 
 
