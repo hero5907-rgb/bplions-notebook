@@ -1011,13 +1011,26 @@ if (isStandalone()) {
   if (btnI) btnI.style.display = "none";
   if (hint) hint.hidden = true;
 }
-
 btnA?.addEventListener("click", async () => {
+
+  // 🚨 카카오톡 인앱 브라우저일 경우
+  if (isKakaoInApp()) {
+    showHint(
+      "⚠️ 카카오톡에서는 앱 설치가 제한됩니다.\n\n" +
+      "우측 상단 ⋮ 버튼 → ‘다른 브라우저로 열기’ → Chrome 선택 후\n" +
+      "다시 설치 버튼을 눌러주세요."
+    );
+    return;
+  }
+
+  // ✅ 크롬 등 정상 브라우저
   if (!deferredPrompt) {
     showHint("설치가 아직 준비되지 않았어요. 잠깐 뒤 다시 눌러주세요.");
     return;
   }
+
   deferredPrompt.prompt();
+
   const choice = await deferredPrompt.userChoice;
   deferredPrompt = null;
 
@@ -1650,4 +1663,9 @@ function reloadAnnouncements(){
     renderLatest(); // 홈 최신공지도 같이 갱신
     toast("공지사항 새로고침 완료");
   });
+}
+
+
+function isKakaoInApp() {
+  return /KAKAOTALK/i.test(navigator.userAgent);
 }
