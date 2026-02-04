@@ -553,29 +553,23 @@ api("popupEvents", {}, (res)=>{
   const alerts = res.events || [];
   if (!alerts.length) return;
 
-openModal(`
-  <h3>📢 중요 일정 안내</h3>
-  ${alerts.map(a=>`
-    <div style="margin-top:12px">
-      <b>${a.date} · ${a.title}</b>
-      <div class="muted">${a.desc || ""}</div>
-    </div>
-  `).join("")}
-`);
+  openModal(`
+    <h3>📢 중요 일정 안내</h3>
+    ${alerts.map(a=>`
+      <div style="margin-top:12px">
+        <b>${a.date} · ${a.title}</b>
+        <div class="muted">${a.desc || ""}</div>
+      </div>
+    `).join("")}
+  `);
 
+});
 
-
+// ✅ 여기부터는 handleLogin 정상 흐름
 history.pushState({ app: true }, "", location.href);
 window.scrollTo(0, 0);
 
 
-  } catch (e) {
-  console.error("LOGIN_ERROR:", e);
-
-  // ✅ 자동로그인(BOOT) 중 실패하면 로그인 화면으로 복귀
-  state.navStack = ["login"];
-  showScreen("login");
-  window.scrollTo(0, 0);
 
   if (err) {
     err.hidden = false;
