@@ -540,10 +540,18 @@ else localStorage.removeItem(LS_KEY);
 state.navStack = ["home"];
 showScreen("home");
 
-// 🔔 로그인 후 중요 일정 팝업
-api("getPopupEvents", {}, (alerts)=>{
 
-  if (!alerts || !alerts.length) return;
+console.log("🔥 popupEvents 호출됨");
+
+
+
+// 🔔 로그인 후 중요 일정 팝업
+api("popupEvents", {}, (res)=>{
+
+  if (!res || res.ok !== true) return;
+
+  const alerts = res.events || [];
+  if (!alerts.length) return;
 
   openModal(`
     <h3>📢 중요 일정 안내</h3>
@@ -553,7 +561,7 @@ api("getPopupEvents", {}, (alerts)=>{
         <div class="muted">${a.desc || ""}</div>
       </div>
     `).join("")}
-    <button onclick="confirmAlerts(${JSON.stringify(alerts.map(a=>a.row))})">
+    <button onclick='confirmAlerts(${JSON.stringify(alerts.map(a=>a.row))})'>
       확인
     </button>
   `);
