@@ -1073,6 +1073,5 @@ flex-direction: column;   /* 🔥 이거 추가 */
   font-size: 16px;
 }
 
-#btnAdmin { display: none !important; }
-
+#btnAdmin { display: none; }
 
