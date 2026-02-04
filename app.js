@@ -1555,10 +1555,13 @@ function openDayEvents(date){
 function reloadMembers() {
   toast("회원명부 새로고침");
 
-  // ✅ 기존에 이미 받아둔 회원 데이터로 다시 렌더만 한다
+  // 🔥 검색어 초기화 (이게 핵심)
+  const input = el("memberSearch");
+  if (input) input.value = "";
+
+  // 🔥 전체 회원 다시 렌더
   renderMembers(state.members);
 }
-
 
 
 
