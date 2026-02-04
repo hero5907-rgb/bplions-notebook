@@ -553,19 +553,15 @@ api("popupEvents", {}, (res)=>{
   const alerts = res.events || [];
   if (!alerts.length) return;
 
-  openModal(`
-    <h3>📢 중요 일정 안내</h3>
-    ${alerts.map(a=>`
-      <div style="margin-top:12px">
-        <b>${a.date} · ${a.title}</b>
-        <div class="muted">${a.desc || ""}</div>
-      </div>
-    `).join("")}
-    <button onclick='confirmAlerts(${JSON.stringify(alerts.map(a=>a.row))})'>
-      확인
-    </button>
-  `);
-});
+openModal(`
+  <h3>📢 중요 일정 안내</h3>
+  ${alerts.map(a=>`
+    <div style="margin-top:12px">
+      <b>${a.date} · ${a.title}</b>
+      <div class="muted">${a.desc || ""}</div>
+    </div>
+  `).join("")}
+`);
 
 
 
