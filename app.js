@@ -521,25 +521,6 @@ try {
 
     setBrand(state.settings);
 
-    // 정렬
-    state.members.sort((a, b) =>
-      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
-      (a.name || "").localeCompare(b.name || "", "ko")
-    );
-
-    renderLatest();
-    renderAnnouncements();
-
-
-if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
-else localStorage.removeItem(LS_KEY);
-
-// ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
-
-
-state.navStack = ["home"];
-showScreen("home");
-
 
 console.log("🔥 popupEvents 호출됨");
 
@@ -564,6 +545,34 @@ api("popupEvents", {}, (res)=>{
   `);
 
 });
+
+
+
+
+
+
+
+    // 정렬
+    state.members.sort((a, b) =>
+      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
+      (a.name || "").localeCompare(b.name || "", "ko")
+    );
+
+    renderLatest();
+    renderAnnouncements();
+
+
+if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
+else localStorage.removeItem(LS_KEY);
+
+// ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
+
+
+state.navStack = ["home"];
+showScreen("home");
+
+
+
 
 // ✅ 여기부터는 handleLogin 정상 흐름
 history.pushState({ app: true }, "", location.href);
