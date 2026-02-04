@@ -1001,10 +1001,7 @@ window.addEventListener("appinstalled", () => {
   if (hint) hint.hidden = true;
 });
 
-if (btnA) {
-  btnA.disabled = true;
-  btnA.style.opacity = "0.6";
-}
+
 
 if (isStandalone()) {
   if (btnA) btnA.style.display = "none";
