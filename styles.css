@@ -1115,3 +1115,7 @@ body:not(.logged-in) .admin-only {
   font-size: 16px;
 }
 
+/* 🔒 관리자 버튼은 기본적으로 무조건 숨김 */
+#btnAdmin {
+  display: none !important;
+}
