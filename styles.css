@@ -1056,3 +1056,23 @@ body:not(.logged-in) .admin-only {
   display: none !important;
 }
 
+/* ===== 상단 우측 사용자 영역 정렬 ===== */
+.topbar{
+  justify-content: space-between; /* 좌: brand / 우: user area */
+}
+
+/* 이름 + 아이콘 묶음을 오른쪽으로 */
+.login-user{
+  margin-left: auto;      /* 🔥 왼쪽 영역 밀어내기 */
+  margin-right: 6px;      /* 로그아웃 버튼과 간격 */
+}
+
+/* 관리자(톱니) 버튼 */
+#btnAdmin{
+  margin-right: 6px;      /* 로그아웃 버튼과 간격 */
+}
+
+/* 로그아웃 버튼은 맨 끝 */
+#btnLogout{
+  margin-right: 0;
+}
