@@ -158,6 +158,8 @@ function popNav() {
 btnBack?.addEventListener("click", () => popNav());
 btnLogout?.addEventListener("click", () => {
 
+
+
   localStorage.removeItem(LS_KEY);
 
   // ✅ 관리자 버튼 잔상 제거(무조건 숨김)
@@ -183,6 +185,12 @@ document.body.classList.remove("logged-in"); // ← 이 줄
   showScreen("login");
   toast("로그아웃");
 
+  // 🔒 로그아웃 시 관리자 버튼 무조건 숨김
+  const btnAdmin = el("btnAdmin");
+  if (btnAdmin) {
+    btnAdmin.hidden = true;
+    btnAdmin.onclick = null;
+  }
 
 
 
@@ -562,11 +570,16 @@ if (nameBox && state.me?.name) {
   nameBox.hidden = false;
 }
 
-// ✅ 상단 톱니바퀴(관리자 버튼) 클릭 연결
-const btnAdmin = document.getElementById("btnAdmin");
+// ✅ 관리자 권한일 때만 톱니 표시
+const btnAdmin = el("btnAdmin");
 if (btnAdmin) {
-  btnAdmin.hidden = !(state.me && state.me.isAdmin === true);
-  btnAdmin.onclick = openAdminPage;
+  if (state.me?.isAdmin === true) {
+    btnAdmin.hidden = false;
+    btnAdmin.onclick = openAdminPage;
+  } else {
+    btnAdmin.hidden = true;
+    btnAdmin.onclick = null;
+  }
 }
 
 
@@ -715,6 +728,12 @@ function bindSearch() {
   bindSearch();
 
 
+  // 🔒 관리자 버튼 기본 숨김 (초기화)
+  const btnAdmin = el("btnAdmin");
+  if (btnAdmin) {
+    btnAdmin.hidden = true;
+    btnAdmin.onclick = null;
+  }
 
 
 
