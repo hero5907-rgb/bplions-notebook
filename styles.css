@@ -982,3 +982,34 @@ flex-direction: column;   /* 🔥 이거 추가 */
   border-radius: 999px;
   white-space: nowrap;
 }
+
+
+/* 로그인 사용자 이름 */
+.login-user{
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* 관리자 아이콘 버튼 */
+.icon-btn{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
