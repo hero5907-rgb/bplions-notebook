@@ -969,3 +969,16 @@ flex-direction: column;   /* 🔥 이거 추가 */
   align-items: center;
   justify-content: center;
 }
+
+
+
+.login-user{
+  margin-left: auto;        /* brand 다음, 관리자 앞 정렬 */
+  margin-right: 10px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #fff;
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+  white-space: nowrap;
+}

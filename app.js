@@ -166,6 +166,18 @@ btnLogout?.addEventListener("click", () => {
     tileAdmin.onclick = null;
   }
 
+
+// 🔕 로그인 사용자 이름 숨김
+const nameBox = document.getElementById("loginUserName");
+if (nameBox) {
+  nameBox.hidden = true;
+  nameBox.textContent = "";
+}
+
+
+
+
+
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
   toast("로그아웃");
@@ -536,6 +548,15 @@ try {
     }
 
     state.me = json.me;
+
+// 🔔 로그인 사용자 이름 상단 표시
+const nameBox = document.getElementById("loginUserName");
+if (nameBox && state.me?.name) {
+  nameBox.textContent = `${state.me.name} 회원님`;
+  nameBox.hidden = false;
+}
+
+
     state.settings = json.settings;
    state.members = onlyRealMembers(json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
 
