@@ -476,6 +476,29 @@ async function handleLogin() {
   state._authPhone = phone;
   state._authCode  = code;
 
+
+// 🔔 로그인 버튼 클릭 직후 즉시 팝업 체크 (🔥 최속)
+api("popupEvents", {}, (res)=>{
+
+  if (!res || res.ok !== true) return;
+
+  const alerts = res.events || [];
+  if (!alerts.length) return;
+
+  openModal(`
+    <h3>📢 중요 일정 안내</h3>
+    ${alerts.map(a=>`
+      <div style="margin-top:12px">
+        <b>${a.date} · ${a.title}</b>
+        <div class="muted">${a.desc || ""}</div>
+      </div>
+    `).join("")}
+  `);
+
+});
+
+
+
   const err = el("loginError");
   if (err) err.hidden = true;
 
@@ -497,6 +520,12 @@ try {
   if (!API_URL) {
     throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
   }
+
+
+
+
+
+
 
   const json = await apiJsonp({ action: "data", phone, code });
 
@@ -522,29 +551,6 @@ try {
     setBrand(state.settings);
 
 
-console.log("🔥 popupEvents 호출됨");
-
-
-
-// 🔔 로그인 후 중요 일정 팝업
-api("popupEvents", {}, (res)=>{
-
-  if (!res || res.ok !== true) return;
-
-  const alerts = res.events || [];
-  if (!alerts.length) return;
-
-  openModal(`
-    <h3>📢 중요 일정 안내</h3>
-    ${alerts.map(a=>`
-      <div style="margin-top:12px">
-        <b>${a.date} · ${a.title}</b>
-        <div class="muted">${a.desc || ""}</div>
-      </div>
-    `).join("")}
-  `);
-
-});
 
 
 
@@ -743,6 +749,18 @@ history.pushState({ app: true }, "", location.href);
 
 
 window.addEventListener("popstate", () => {
+
+
+// 🔔 공용 모달(일정 팝업) 열려 있으면 → 닫기
+if (document.getElementById("modal")?.hidden === false) {
+  closeModal();
+  history.pushState({ app: true }, "", location.href);
+  return;
+}
+
+
+
+
 
   // 1️⃣ 모달 열려 있으면 → 모달 닫기
   if (el("profileModal")?.hidden === false) {
