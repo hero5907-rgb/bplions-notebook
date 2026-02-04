@@ -1047,3 +1047,12 @@ flex-direction: column;   /* 🔥 이거 추가 */
   width: 18px !important;
   height: 18px !important;
 }
+
+
+/* 🔒 로그인 전에는 관리자(톱니바퀴) 숨김 */
+body:not(.logged-in) #btnAdmin,
+body:not(.logged-in) #tileAdmin,
+body:not(.logged-in) .admin-only {
+  display: none !important;
+}
+

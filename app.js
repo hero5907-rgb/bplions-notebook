@@ -157,6 +157,7 @@ function popNav() {
 
 btnBack?.addEventListener("click", () => popNav());
 btnLogout?.addEventListener("click", () => {
+
   localStorage.removeItem(LS_KEY);
 
   // ✅ 관리자 버튼 잔상 제거(무조건 숨김)
@@ -175,7 +176,7 @@ if (nameBox) {
 }
 
 
-
+document.body.classList.remove("logged-in"); // ← 이 줄
 
 
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
@@ -548,6 +549,11 @@ try {
     }
 
     state.me = json.me;
+
+// ✅ 로그인 상태 표시 (CSS 제어용)
+document.body.classList.add("logged-in");
+
+
 
 // 🔔 로그인 사용자 이름 상단 표시
 const nameBox = document.getElementById("loginUserName");
