@@ -1553,17 +1553,39 @@ function openDayEvents(date){
 
 
 function reloadMembers() {
-  toast("회원명부 새로고침");
+  if (!state._authPhone || !state._authCode) {
+    toast("다시 로그인 후 시도");
+    return;
+  }
 
-  // 🔥 검색어 초기화 (이게 핵심)
-  const input = el("memberSearch");
-  if (input) input.value = "";
+  toast("회원명부 업데이트 중...");
 
-  // 🔥 전체 회원 다시 렌더
-  renderMembers(state.members);
+  api("data", {}, (json) => {
+    if (!json || json.ok !== true) {
+      toast("회원명부 불러오기 실패");
+      return;
+    }
+
+    // ✅ 최신 시트 데이터로 state 갱신
+    state.members = onlyRealMembers(json.members || [])
+      .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
+
+    // ✅ 정렬 (로그인 때와 동일)
+    state.members.sort((a, b) =>
+      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
+      (a.name || "").localeCompare(b.name || "", "ko")
+    );
+
+    // ✅ 검색어 초기화
+    const input = el("memberSearch");
+    if (input) input.value = "";
+
+    // ✅ 다시 렌더
+    renderMembers(state.members);
+
+    toast("회원명부 업데이트 완료");
+  });
 }
-
-
 
 
 
