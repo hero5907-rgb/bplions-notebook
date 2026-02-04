@@ -1075,3 +1075,33 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 #btnAdmin { display: none; }
 
+/* ===== 회원명부 새로고침(↻) 아이콘 버튼 ===== */
+#screenMembers .icon-btn.small{
+  width: 24px;
+  height: 24px;
+
+  font-size: 14px;     /* ↻ 크기 */
+  line-height: 1;
+
+  padding: 0;
+  border-radius: 50%;
+
+  background: transparent;
+  border: none;
+
+  color: #64748b;      /* muted 느낌 */
+  opacity: 0.75;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screenMembers .icon-btn.small:hover{
+  opacity: 1;
+  color: #0b4ea2;
+}
+
+#screenMembers .icon-btn.small:active{
+  transform: scale(0.92);
+}

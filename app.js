@@ -747,6 +747,11 @@ setAdminButton(false);
   bindSearch();
 
 
+// 🔄 회원명부 새로고침 버튼
+const btnMembersRefresh = el("btnMembersRefresh");
+if (btnMembersRefresh) {
+  btnMembersRefresh.onclick = reloadMembers;
+}
 
 
 
@@ -1545,6 +1550,37 @@ function openDayEvents(date){
     `).join("")}
   `);
 }
+
+
+function reloadMembers() {
+  if (!state._authPhone || !state._authCode) {
+    toast("다시 로그인 후 시도");
+    return;
+  }
+
+  toast("회원명부 불러오는 중...");
+
+  api("data", {}, (json) => {
+    if (!json || json.ok !== true) {
+      toast("불러오기 실패");
+      return;
+    }
+
+    state.members = onlyRealMembers(json.members || [])
+      .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
+
+    state.members.sort((a, b) =>
+      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
+      (a.name || "").localeCompare(b.name || "", "ko")
+    );
+
+    renderMembers(state.members);
+    toast("회원명부 업데이트 완료");
+  });
+}
+
+
+
 
 
 
