@@ -1064,12 +1064,12 @@ body:not(.logged-in) .admin-only {
 /* 이름 + 아이콘 묶음을 오른쪽으로 */
 .login-user{
   margin-left: auto;      /* 🔥 왼쪽 영역 밀어내기 */
-  margin-right: 2px;      /* 로그아웃 버튼과 간격 */
+  margin-right: 0.5px;      /* 로그아웃 버튼과 간격 */
 }
 
 /* 관리자(톱니) 버튼 */
 #btnAdmin{
-  margin-right: 2px;      /* 로그아웃 버튼과 간격 */
+  margin-right: 0.5px;      /* 로그아웃 버튼과 간격 */
 }
 
 /* 로그아웃 버튼은 맨 끝 */
