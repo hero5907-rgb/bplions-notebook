@@ -1076,3 +1076,42 @@ body:not(.logged-in) .admin-only {
 #btnLogout{
   margin-right: 0;
 }
+
+
+/* ===============================
+   Topbar 우측 버튼 - iOS 쫀쫀한 간격 최종본
+   =============================== */
+
+/* 1️⃣ topbar 전체 간격 최소화 (가장 중요) */
+.topbar{
+  gap: 2px !important;   /* 🔥 기존 10px 완전 무력화 */
+}
+
+/* 2️⃣ 로그인 사용자 이름 (황문기 L) */
+.login-user{
+  margin-left: auto;     /* 🔥 무조건 오른쪽으로 밀기 */
+  margin-right: 2px;     /* 🔥 톱니바퀴와 간격 */
+  height: 30px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+/* 3️⃣ 관리자(톱니) 버튼 */
+#btnAdmin{
+  margin-right: 2px;
+  transform: translateX(-1px);  /* 🔥 iOS식 미세 압축 */
+}
+
+/* 4️⃣ 로그아웃 버튼도 살짝 당김 */
+#btnLogout{
+  transform: translateX(-1px);
+}
+
+/* 5️⃣ 아이콘 버튼 전체 크기 살짝 축소 */
+.icon-btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
