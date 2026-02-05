@@ -1348,7 +1348,7 @@ async function loadEvents(yyyymm){
   try{
     const json = await apiJsonp({
       action: "events",
-      phone: state.me.phone,
+      phone: state._authPhone,
       code: state._authCode,   // ✅ 핵심 수정
       yyyymm: ym
     });
