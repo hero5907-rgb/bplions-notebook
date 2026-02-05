@@ -1638,16 +1638,14 @@ openModal(`
       ">
         ${e.title || ""}
       </div>
+<!-- 내용 (왼쪽 정렬) -->
+<div style="
+  margin-top:10px;
+  white-space:pre-wrap;
+  line-height:1.6;
+  text-align:left;
+">${String(e.desc || "").trim()}</div>
 
-      <!-- 내용 (왼쪽 정렬) -->
-      <div style="
-        margin-top:10px;
-        white-space:pre-wrap;
-        line-height:1.6;
-        text-align:left;
-      ">
-        ${String(e.desc || "").trim()}
-      </div>
 
     </div>
   `).join("")}
