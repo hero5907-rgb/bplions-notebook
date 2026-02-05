@@ -1588,56 +1588,65 @@ function reloadMembers() {
 
 
 // 🔔 로그인 후 일정 팝업 체크 (popup ON 전용)
+// 🔔 로그인 후 일정 팝업 체크 (popup = TRUE 이면 무조건 표시)
 function checkPopupEvents(){
-  console.log("=== checkPopupEvents CALLED ===");
-  console.log("authPhone:", state._authPhone);
-  console.log("me.phone :", state?.me?.phone);
-  console.log("authCode :", state._authCode);
 
   const phone = state._authPhone || state?.me?.phone;
   const code  = state._authCode;
 
-  if (!phone || !code) {
-    console.error("❌ AUTH MISSING → STOP");
-    alert("❌ 팝업 안뜸: 인증값 없음");
-    return;
-  }
-
-  console.log("➡ popupEvents CALL", phone, code);
+  if (!phone || !code) return;
 
   apiJsonp({
     action: "popupEvents",
     phone,
     code
-  }).then(res=>{
-    console.log("⬅ popupEvents RES", res);
+  }).then(res => {
 
-    if (!res || res.ok !== true) {
-      alert("❌ popupEvents ok 아님");
-      return;
-    }
+    if (!res || res.ok !== true) return;
 
     const list = res.events || [];
-    console.log("events:", list);
+    if (!list.length) return;
 
-    if (!list.length) {
-      alert("❌ events = 0 (서버에서 안줌)");
-      return;
-    }
+    // ✅ 팝업 ON 인 것만 (서버에서 이미 걸러졌다고 가정)
+    const rows = list.map(e => e.row);
 
-    alert("✅ 팝업 데이터 있음 (" + list.length + "건)");
+    openModal(`
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="font-size:22px;">📢</span>
+        <h3 style="margin:0;">중요 일정 안내</h3>
+      </div>
 
-const rows = list.map(e => e.row);
+      ${list.map(e => `
+        <div style="margin-bottom:14px;">
+          <div style="font-weight:600;">
+            ${e.date || ""} ${e.title || ""}
+          </div>
+          <div style="margin-top:6px;white-space:pre-wrap;line-height:1.5;">
+            ${e.desc || ""}
+          </div>
+        </div>
+      `).join("")}
 
-openModal(
-  "<h3>📅 일정 안내</h3>" +
-  list.map(e =>
-    `<div><b>${e.date}</b> ${e.title}</div>`
-  ).join("") +
-  `<div style="margin-top:12px;text-align:right">
-     <button onclick='confirmAlerts(${JSON.stringify(rows)})'>확인</button>
-   </div>`
-);
+      <div style="margin-top:16px;text-align:right;">
+        <button onclick='confirmAlerts(${JSON.stringify(rows)})'
+          style="
+            padding:6px 14px;
+            border-radius:8px;
+            border:none;
+            background:#0b4ea2;
+            color:#fff;
+            font-size:14px;
+          ">
+          닫기
+        </button>
+      </div>
+    `);
+
+  }).catch(()=>{
+    // 조용히 실패 (로그인 흐름 방해 X)
+  });
+}
+
 
 
   }).catch(err=>{
