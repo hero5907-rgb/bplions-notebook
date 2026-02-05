@@ -639,6 +639,10 @@ else localStorage.removeItem(LS_KEY);
 state.navStack = ["home"];
 showScreen("home");
 
+// 🔔 로그인 직후 일정 팝업 체크 (popup ON)
+setTimeout(() => {
+  checkPopupEvents();
+}, 500);
 
 
 
@@ -1014,7 +1018,7 @@ btnA?.addEventListener("click", async () => {
   if (isKakaoInApp()) {
     showHint(
       "⚠️ 카카오톡에서는 앱 설치가 제한됩니다.\n\n" +
-      "우측 상단 ⋮ 버튼 → ‘다른 브라우저로 열기’ → Chrome 선택 후\n" +
+      "우측 상단 또는 하단에 ⋮ 버튼 → ‘다른 브라우저로 열기’ → Chrome 선택 후\n" +
       "다시 설치 버튼을 눌러주세요."
     );
     return;
