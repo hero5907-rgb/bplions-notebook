@@ -1692,28 +1692,14 @@ function reloadMembers() {
 
 
 
-// 🔔 로그인 후 일정 팝업 체크 (popup ON 전용)
-// 🔔 로그인 후 일정 팝업 체크 (popup = TRUE 이면 무조건 표시)
 function checkPopupEvents(){
 
-  const phone = state._authPhone || state?.me?.phone;
-  const code  = state._authCode;
-
-  if (!phone || !code) return;
-
-  apiJsonp({
-    action: "popupEvents",
-    phone,
-    code
-  }).then(res => {
+  api("popupEvents", {}, (res)=>{
 
     if (!res || res.ok !== true) return;
 
     const list = res.events || [];
     if (!list.length) return;
-
-    // ✅ 팝업 ON 인 것만 (서버에서 이미 걸러졌다고 가정)
-    const rows = list.map(e => e.row);
 
 openModal(`
   <div style="text-align:center;margin-bottom:18px;">
@@ -1725,48 +1711,26 @@ openModal(`
 
   ${list.map(e => `
     <div style="margin-bottom:20px;">
-      
-      <!-- 날짜 (가운데) -->
-      <div style="
-        text-align:center;
-        font-size:14px;
-        color:#64748b;
-      ">
+      <div style="text-align:center;font-size:14px;color:#64748b;">
         ${e.date || ""}
       </div>
 
-      <!-- 제목 (가운데) -->
-      <div style="
-        text-align:center;
-        font-size:16px;
-        font-weight:600;
-        margin-top:4px;
-      ">
+      <div style="text-align:center;font-size:16px;font-weight:600;margin-top:4px;">
         ${e.title || ""}
       </div>
-<!-- 내용 (왼쪽 정렬) -->
-<div style="
-  margin-top:10px;
-  white-space:pre-wrap;
-  line-height:1.6;
-  text-align:left;
-">${String(e.desc || "").trim()}</div>
 
-
+      <div style="margin-top:10px;white-space:pre-wrap;line-height:1.6;text-align:left;">
+        ${String(e.desc || "").trim()}
+      </div>
     </div>
   `).join("")}
 `);
 
+    const rows = list.map(e => e.row);
+    api("markEventsNotified", { rows });
 
-
-
-
-  }).catch(()=>{
-    // 조용히 실패 (로그인 흐름 방해 X)
   });
 }
-
-
 
 
 
