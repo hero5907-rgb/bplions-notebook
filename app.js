@@ -1586,7 +1586,13 @@ function reloadMembers() {
 
 // 🔔 로그인 후 일정 팝업 체크 (popup ON 전용)
 function checkPopupEvents() {
-  api("popupEvents", {}, (res) => {
+  if (!state._authPhone || !state._authCode) return;
+
+  apiJsonp({
+    action: "popupEvents",
+    phone: state._authPhone,
+    code: state._authCode
+  }).then(res => {
     if (!res || res.ok !== true) return;
 
     const list = res.events || [];
@@ -1603,12 +1609,15 @@ function checkPopupEvents() {
       `).join("")}
     `);
 
-    // 다시 안 뜨게 서버에 기록
     const rows = list.map(e => e.row);
-    api("markEventsNotified", { rows });
+    apiJsonp({
+      action: "markEventsNotified",
+      phone: state._authPhone,
+      code: state._authCode,
+      rows: rows.join(",")
+    });
   });
 }
-
 
 
 
