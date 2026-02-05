@@ -1711,7 +1711,7 @@ openModal(`
         ${e.title || ""}
       </div>
 
-      <div style="margin-top:10px;white-space:pre-wrap;line-height:1.6;text-align:left;">
+<div style="margin-top:10px;white-space:pre-wrap;line-height:1.6;text-align:left;">
 ${String(e.desc || "").trim()}</div>
     </div>
   `).join("")}
