@@ -1028,12 +1028,13 @@ btnA?.addEventListener("click", async () => {
 
   deferredPrompt.prompt();
 
-  const choice = await deferredPrompt.userChoice;
-  deferredPrompt = null;
+const choice = await deferredPrompt.userChoice;
+deferredPrompt = null;
 
-  if (choice?.outcome !== "accepted") {
-    showHint("설치를 취소했어요. 필요하면 다시 눌러 설치할 수 있어요.");
-  }
+if (choice?.outcome !== "accepted") {
+  showHint("설치를 취소했어요. 필요하면 다시 눌러 설치할 수 있어요.");
+}
+
 });
 
 btnI?.addEventListener("click", () => {
