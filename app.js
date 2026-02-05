@@ -1,13 +1,30 @@
 
 let homeBackTimer = null;
 
+function getAuthSafe(){
+  // 1) state에 있으면 그걸 우선
+  let phone = normalizePhone(state?._authPhone || state?.me?.phone || "");
+  let code  = String(state?._authCode || "").trim();
+
+  // 2) 없으면 localStorage(로그인유지)에서 꺼내기
+  if ((!phone || !code)) {
+    try {
+      const savedStr = localStorage.getItem(LS_KEY);
+      if (savedStr) {
+        const saved = JSON.parse(savedStr);
+        phone = phone || normalizePhone(saved?.phone || "");
+        code  = code  || String(saved?.code || "").trim();
+      }
+    } catch {}
+  }
+
+  return { phone, code };
+}
+
 function api(action, params = {}, cb){
-  apiJsonp({
-    action,
-    phone: state._authPhone || state.me?.phone || "",
-    code: state._authCode || "",
-    ...params
-  })
+  const { phone, code } = getAuthSafe();
+
+  apiJsonp({ action, phone, code, ...params })
     .then(cb)
     .catch(e=>{
       console.error(e);
