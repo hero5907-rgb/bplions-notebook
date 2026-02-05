@@ -718,7 +718,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 .modal-close{
-  margin-top:14px;
+  margin-top:6px;     /* 🔥 14 → 6 줄여서 위로 당김 */
   width:100%;
   height:46px;
   border:none;
@@ -1104,3 +1104,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
+#modalBody{
+  max-height: calc(80vh - 90px);   /* 🔥 버튼 높이만큼 더 확보 */
+  overflow-y: auto;
+}
