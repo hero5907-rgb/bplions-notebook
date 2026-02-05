@@ -1627,12 +1627,18 @@ function checkPopupEvents(){
 
     alert("✅ 팝업 데이터 있음 (" + list.length + "건)");
 
-    openModal(
-      "<h3>📅 일정 안내</h3>" +
-      list.map(e =>
-        `<div><b>${e.date}</b> ${e.title}</div>`
-      ).join("")
-    );
+const rows = list.map(e => e.row);
+
+openModal(
+  "<h3>📅 일정 안내</h3>" +
+  list.map(e =>
+    `<div><b>${e.date}</b> ${e.title}</div>`
+  ).join("") +
+  `<div style="margin-top:12px;text-align:right">
+     <button onclick='confirmAlerts(${JSON.stringify(rows)})'>확인</button>
+   </div>`
+);
+
 
   }).catch(err=>{
     console.error("❌ popupEvents ERROR", err);
@@ -1657,10 +1663,17 @@ function closeModal(){
 }
 
 function confirmAlerts(rows){
+  if (!Array.isArray(rows) || !rows.length) {
+    console.warn("confirmAlerts: rows empty → skip");
+    closeModal();
+    return;
+  }
+
   api("markEventsNotified", { rows }, ()=>{
     closeModal();
   });
 }
+
 
 let __calendarReloading = false;
 
