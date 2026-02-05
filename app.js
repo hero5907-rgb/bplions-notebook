@@ -507,26 +507,6 @@ async function handleLogin() {
   state._authCode  = code;
 
 
-// 🔔 로그인 버튼 클릭 직후 즉시 팝업 체크 (🔥 최속)
-api("popupEvents", {}, (res)=>{
-
-  if (!res || res.ok !== true) return;
-
-  const alerts = res.events || [];
-  if (!alerts.length) return;
-
-  openModal(`
-    <h3>📢 중요 일정 안내</h3>
-    ${alerts.map(a=>`
-      <div style="margin-top:12px">
-        <b>${a.date} · ${a.title}</b>
-        <div class="muted">${a.desc || ""}</div>
-      </div>
-    `).join("")}
-  `);
-
-});
-
 
 
   const err = el("loginError");
@@ -1601,6 +1581,35 @@ function reloadMembers() {
     toast("회원명부 업데이트 완료");
   });
 }
+
+
+
+// 🔔 로그인 후 일정 팝업 체크 (popup ON 전용)
+function checkPopupEvents() {
+  api("popupEvents", {}, (res) => {
+    if (!res || res.ok !== true) return;
+
+    const list = res.events || [];
+    if (!list.length) return;
+
+    openModal(`
+      <h3>📅 일정 안내</h3>
+      ${list.map(e => `
+        <div style="margin-top:12px">
+          <b>${e.date} ${e.startTime || ""}</b><br/>
+          ${e.title}<br/>
+          <span class="muted">${e.place || ""}</span>
+        </div>
+      `).join("")}
+    `);
+
+    // 다시 안 뜨게 서버에 기록
+    const rows = list.map(e => e.row);
+    api("markEventsNotified", { rows });
+  });
+}
+
+
 
 
 
