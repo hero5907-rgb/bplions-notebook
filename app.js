@@ -619,10 +619,13 @@ else localStorage.removeItem(LS_KEY);
 state.navStack = ["home"];
 showScreen("home");
 
-// 🔔 로그인 직후 일정 팝업 체크 (popup ON)
-setTimeout(() => {
-  checkPopupEvents();
-}, 500);
+
+console.log("🚀 LOGIN OK → checkPopupEvents()");
+checkPopupEvents();
+
+
+
+
 
 
 
@@ -1586,36 +1589,54 @@ function reloadMembers() {
 
 // 🔔 로그인 후 일정 팝업 체크 (popup ON 전용)
 function checkPopupEvents(){
-  // 🔴 핵심: 로그인된 실제 값 사용
-  const phone = state?.me?.phone;
-  const code  = state?._authCode;
+  console.log("=== checkPopupEvents CALLED ===");
+  console.log("authPhone:", state._authPhone);
+  console.log("me.phone :", state?.me?.phone);
+  console.log("authCode :", state._authCode);
 
-  if (!phone || !code) return;
+  const phone = state._authPhone || state?.me?.phone;
+  const code  = state._authCode;
+
+  if (!phone || !code) {
+    console.error("❌ AUTH MISSING → STOP");
+    alert("❌ 팝업 안뜸: 인증값 없음");
+    return;
+  }
+
+  console.log("➡ popupEvents CALL", phone, code);
 
   apiJsonp({
     action: "popupEvents",
     phone,
     code
   }).then(res=>{
-    if (!res || res.ok !== true) return;
+    console.log("⬅ popupEvents RES", res);
+
+    if (!res || res.ok !== true) {
+      alert("❌ popupEvents ok 아님");
+      return;
+    }
 
     const list = res.events || [];
-    if (!list.length) return;
+    console.log("events:", list);
 
-    openModal(`
-      <h3>📅 일정 안내</h3>
-      ${list.map(e => `
-        <div style="margin-top:12px">
-          <b>${e.date} ${e.startTime || ""}</b><br/>
-          ${e.title}<br/>
-          <span class="muted">${e.place || ""}</span>
-        </div>
-      `).join("")}
-    `);
+    if (!list.length) {
+      alert("❌ events = 0 (서버에서 안줌)");
+      return;
+    }
 
-    // 다시 안 뜨게 처리 (Apps Script 함수는 google.script.run으로)
-    const rows = list.map(e => e.row);
-    google.script.run.markEventsNotified(phone, code, rows);
+    alert("✅ 팝업 데이터 있음 (" + list.length + "건)");
+
+    openModal(
+      "<h3>📅 일정 안내</h3>" +
+      list.map(e =>
+        `<div><b>${e.date}</b> ${e.title}</div>`
+      ).join("")
+    );
+
+  }).catch(err=>{
+    console.error("❌ popupEvents ERROR", err);
+    alert("❌ popupEvents 통신 에러");
   });
 }
 
