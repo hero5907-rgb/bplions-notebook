@@ -150,12 +150,7 @@ function showScreen(name) {
     homeBackTimer = null;
   }
 
-  // ✅ 홈 화면이 실제로 뜬 직후 → 팝업 즉시 체크
-  if (name === "home") {
-    setTimeout(() => {
-      checkPopupEvents();
-    }, 0);
-  }
+
 
 }
 
@@ -621,7 +616,7 @@ else localStorage.removeItem(LS_KEY);
 
 state.navStack = ["home"];
 showScreen("home");
-
+state.navStack = ["home"]
 
 
 
