@@ -1753,6 +1753,11 @@ let __calendarReloading = false;
 // 📅 달력 새로고침 버튼 (완전 초기화)
 
 el("btnCalendarRefresh")?.addEventListener("click", () => {
+
+// 🔄 달력 새로고침 시작 → 로딩 표시
+const loading = document.getElementById("calendarLoading");
+if (loading) loading.style.display = "block";
+
   // 🔥 강제로 락 해제
   __calendarReloading = false;
 
