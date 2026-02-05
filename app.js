@@ -1646,7 +1646,7 @@ openModal(`
         line-height:1.6;
         text-align:left;
       ">
-        ${e.desc || ""}
+        ${String(e.desc || "").trim()}
       </div>
 
     </div>
