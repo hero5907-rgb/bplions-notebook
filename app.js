@@ -1503,6 +1503,14 @@ function initCalendar(events){
   const el = document.getElementById("calendar");
   if (!el) return;
 
+
+
+// 🔄 달력 로딩중 표시
+const loading = document.getElementById("calendarLoading");
+if (loading) loading.style.display = "block";
+
+
+
   // ✅ 이미 달력이 있으면: 이벤트만 교체 + 다시 그림
   if (calendar) {
     calendar.removeAllEvents();
@@ -1560,6 +1568,12 @@ datesSet(info){
   });
 
   calendar.render();
+
+// ✅ 달력 로딩 완료 → 로딩 문구 숨김
+if (loading) loading.style.display = "none";
+
+
+
 }
 
 function openDayEvents(date){
