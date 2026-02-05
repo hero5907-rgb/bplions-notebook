@@ -635,10 +635,7 @@ window.scrollTo(0, 0);
 
 
 
-  if (err) {
-    err.hidden = false;
-    err.textContent = `승인되지 않았거나 정보가 틀렸습니다. (${e?.message || e})`;
-  }
+
 } finally {
 
     if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
@@ -1649,11 +1646,6 @@ function checkPopupEvents(){
 
 
 
-  }).catch(err=>{
-    console.error("❌ popupEvents ERROR", err);
-    alert("❌ popupEvents 통신 에러");
-  });
-}
 
 
 
