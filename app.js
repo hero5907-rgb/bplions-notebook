@@ -1585,14 +1585,18 @@ function reloadMembers() {
 
 
 // 🔔 로그인 후 일정 팝업 체크 (popup ON 전용)
-function checkPopupEvents() {
-  if (!state._authPhone || !state._authCode) return;
+function checkPopupEvents(){
+  // 🔴 핵심: 로그인된 실제 값 사용
+  const phone = state?.me?.phone;
+  const code  = state?._authCode;
+
+  if (!phone || !code) return;
 
   apiJsonp({
     action: "popupEvents",
-    phone: state._authPhone,
-    code: state._authCode
-  }).then(res => {
+    phone,
+    code
+  }).then(res=>{
     if (!res || res.ok !== true) return;
 
     const list = res.events || [];
@@ -1609,15 +1613,12 @@ function checkPopupEvents() {
       `).join("")}
     `);
 
+    // 다시 안 뜨게 처리 (Apps Script 함수는 google.script.run으로)
     const rows = list.map(e => e.row);
-    apiJsonp({
-      action: "markEventsNotified",
-      phone: state._authPhone,
-      code: state._authCode,
-      rows: rows.join(",")
-    });
+    google.script.run.markEventsNotified(phone, code, rows);
   });
 }
+
 
 
 
