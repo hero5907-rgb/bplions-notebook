@@ -709,13 +709,10 @@ flex-direction: column;   /* 🔥 이거 추가 */
   background: #fff;
   width: min(92vw, 420px);
   max-height: 80vh;
-  overflow-y: visible;
-
+  overflow-y: auto;   /* 🔥 이걸로 교체 */
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 20px 40px rgba(0,0,0,.2);
-
-  /* ✅ 핵심 2줄 */
   margin: 0;
   text-align: center;
 }
@@ -1104,4 +1101,10 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 #screenMembers .icon-btn.small:active{
   transform: scale(0.92);
+}
+
+
+#modalBody{
+  max-height: calc(80vh - 70px);
+  overflow-y: auto;
 }
