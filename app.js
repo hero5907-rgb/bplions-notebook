@@ -1700,6 +1700,7 @@ function openModal(html){
   const modal = document.getElementById("modal");
   const body  = document.getElementById("modalBody");
   body.innerHTML = html;
+  body.scrollTop = 0;   // ✅ 이 줄 추가
   modal.hidden = false;
 }
 
