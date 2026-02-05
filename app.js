@@ -1486,27 +1486,26 @@ if (!need.length) {
 
   Promise.all(
     need.map(k =>
-      apiJsonp({
-        action: "events",
-        phone: state._authPhone,
-        code: state._authCode,
-        yyyymm: k
-      }).then(res => {
-        const list = (res?.events || []).map(e => ({
-          id: e.id,
-          title: e.title,
-          start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
-          end: e.endTime ? `${e.date}T${e.endTime}` : null,
-          extendedProps: {
-            date: e.date,
-            startTime: e.startTime,
-            place: e.place,
-            desc: e.desc
-          }
-        }));
-        calendarCache[k] = list;
-      })
-    )
+  new Promise((resolve)=>{
+    api("events", { yyyymm: k }, resolve);
+  }).then(res => {
+
+    const list = (res?.events || []).map(e => ({
+      id: e.id,
+      title: e.title,
+      start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
+      end: e.endTime ? `${e.date}T${e.endTime}` : null,
+      extendedProps: {
+        date: e.date,
+        startTime: e.startTime,
+        place: e.place,
+        desc: e.desc
+      }
+    }));
+
+    calendarCache[k] = list;
+  })
+)
 
 
 
