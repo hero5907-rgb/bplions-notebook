@@ -1590,20 +1590,48 @@ function openDayEvents(date){
     return;
   }
 
-  openModal(`
-    <h3>📅 ${date}</h3>
-    ${list.map(e=>`
-      <div style="margin-top:12px;padding-bottom:12px;border-bottom:1px solid #eee">
-        <b>${e.title}</b><br/>
-        <span class="muted">
-          ${e.extendedProps?.startTime || ""} ${e.extendedProps?.place || ""}
-        </span>
-        <div style="margin-top:6px;white-space:pre-wrap">
-          ${e.extendedProps?.desc || ""}
-        </div>
+openModal(`
+  <!-- 날짜 제목 : 가운데 정렬 -->
+  <div style="text-align:center;margin-bottom:12px;">
+    <h3 style="margin:0;">📅 ${date}</h3>
+  </div>
+
+  ${list.map(e=>`
+    <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee">
+
+      <!-- 일정 제목 : 가운데 -->
+      <div style="
+        text-align:center;
+        font-weight:600;
+        font-size:16px;
+      ">
+        ${e.title}
       </div>
-    `).join("")}
-  `);
+
+      <!-- 시간 / 장소 : 가운데 -->
+      <div style="
+        text-align:center;
+        color:#64748b;
+        font-size:13px;
+        margin-top:4px;
+      ">
+        ${e.extendedProps?.startTime || ""} ${e.extendedProps?.place || ""}
+      </div>
+
+      <!-- 내용 : 왼쪽 정렬 (핵심 수정) -->
+      <div style="
+        margin-top:8px;
+        white-space:pre-wrap;
+        line-height:1.6;
+        text-align:left;
+      ">
+        ${e.extendedProps?.desc || ""}
+      </div>
+
+    </div>
+  `).join("")}
+`);
+
 }
 
 
