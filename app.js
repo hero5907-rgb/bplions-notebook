@@ -1609,37 +1609,53 @@ function checkPopupEvents(){
     // ✅ 팝업 ON 인 것만 (서버에서 이미 걸러졌다고 가정)
     const rows = list.map(e => e.row);
 
-    openModal(`
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <span style="font-size:22px;">📢</span>
-        <h3 style="margin:0;">중요 일정 안내</h3>
+openModal(`
+  <div style="text-align:center;margin-bottom:18px;">
+    <div style="font-size:24px;">📢</div>
+    <div style="font-size:18px;font-weight:700;margin-top:6px;">
+      중요 일정 안내
+    </div>
+  </div>
+
+  ${list.map(e => `
+    <div style="margin-bottom:20px;">
+      
+      <!-- 날짜 (가운데) -->
+      <div style="
+        text-align:center;
+        font-size:14px;
+        color:#64748b;
+      ">
+        ${e.date || ""}
       </div>
 
-      ${list.map(e => `
-        <div style="margin-bottom:14px;">
-          <div style="font-weight:600;">
-            ${e.date || ""} ${e.title || ""}
-          </div>
-          <div style="margin-top:6px;white-space:pre-wrap;line-height:1.5;">
-            ${e.desc || ""}
-          </div>
-        </div>
-      `).join("")}
-
-      <div style="margin-top:16px;text-align:right;">
-        <button onclick='confirmAlerts(${JSON.stringify(rows)})'
-          style="
-            padding:6px 14px;
-            border-radius:8px;
-            border:none;
-            background:#0b4ea2;
-            color:#fff;
-            font-size:14px;
-          ">
-          닫기
-        </button>
+      <!-- 제목 (가운데) -->
+      <div style="
+        text-align:center;
+        font-size:16px;
+        font-weight:600;
+        margin-top:4px;
+      ">
+        ${e.title || ""}
       </div>
-    `);
+
+      <!-- 내용 (왼쪽 정렬) -->
+      <div style="
+        margin-top:10px;
+        white-space:pre-wrap;
+        line-height:1.6;
+        text-align:left;
+      ">
+        ${e.desc || ""}
+      </div>
+
+    </div>
+  `).join("")}
+`);
+
+
+
+
 
   }).catch(()=>{
     // 조용히 실패 (로그인 흐름 방해 X)
