@@ -127,7 +127,6 @@ function toast(msg, opts = {}) {
 
 
 
-
 function showScreen(name) {
   Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
@@ -145,16 +144,20 @@ function showScreen(name) {
   if (btnLogout) btnLogout.hidden = !isLoggedIn;
   if (btnBack) btnBack.hidden = (state.navStack.length <= 1 || name === "home");
 
-// ✅ home에 들어오면 종료 대기 상태 초기화
-if (name === "home" && homeBackTimer) {
-  clearTimeout(homeBackTimer);
-  homeBackTimer = null;
+  // ✅ home에 들어오면 종료 대기 상태 초기화
+  if (name === "home" && homeBackTimer) {
+    clearTimeout(homeBackTimer);
+    homeBackTimer = null;
+  }
+
+  // ✅ 홈 화면이 실제로 뜬 직후 → 팝업 즉시 체크
+  if (name === "home") {
+    setTimeout(() => {
+      checkPopupEvents();
+    }, 0);
+  }
+
 }
-
-
-}
-
-
 
 function pushNav(name) {
   state.navStack.push(name);
@@ -620,8 +623,7 @@ state.navStack = ["home"];
 showScreen("home");
 
 
-console.log("🚀 LOGIN OK → checkPopupEvents()");
-checkPopupEvents();
+
 
 
 

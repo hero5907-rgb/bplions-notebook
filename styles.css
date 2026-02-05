@@ -1105,3 +1105,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
 #screenMembers .icon-btn.small:active{
   transform: scale(0.92);
 }
+/* 일정 팝업 상단 작은 닫기 버튼 제거 */
+#modal .modal-close {
+  display: none !important;
+}
