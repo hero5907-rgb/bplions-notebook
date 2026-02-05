@@ -1624,9 +1624,7 @@ openModal(`
         white-space:pre-wrap;
         line-height:1.6;
         text-align:left;
-      ">
-        ${e.extendedProps?.desc || ""}
-      </div>
+      ">${String(e.extendedProps?.desc || "").trim()}</div>
 
     </div>
   `).join("")}
