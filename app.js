@@ -555,10 +555,11 @@ try {
     throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
   }
 
-
-
-
-  
+  const __popupPromise = apiJsonp({
+    action:"popupEvents",
+    phone,
+    code
+  });
 
   const json = await apiJsonp({ action: "data", phone, code });
 
@@ -643,9 +644,41 @@ else localStorage.removeItem(LS_KEY);
 
 state.navStack = ["home"];
 showScreen("home");
-checkPopupEvents();
 
+__popupPromise.then(res=>{
+  if (!res || res.ok !== true) return;
 
+  const list = res.events || [];
+  if (!list.length) return;
+
+  openModal(`
+    <div style="text-align:center;margin-bottom:18px;">
+      <div style="font-size:24px;">📢</div>
+      <div style="font-size:18px;font-weight:700;margin-top:6px;">
+        중요 일정 안내
+      </div>
+    </div>
+
+    ${list.map(e => `
+      <div style="margin-bottom:20px;">
+        <div style="text-align:center;font-size:14px;color:#64748b;">
+          ${e.date || ""}
+        </div>
+
+        <div style="text-align:center;font-size:16px;font-weight:600;margin-top:4px;">
+          ${e.title || ""}
+        </div>
+
+        <div style="margin-top:10px;white-space:pre-wrap;line-height:1.6;text-align:left;">
+          ${String(e.desc || "").trim()}
+        </div>
+      </div>
+    `).join("")}
+  `);
+
+  const rows = list.map(e => e.row);
+  api("markEventsNotified", { rows });
+});
 
 
 
