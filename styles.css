@@ -1104,7 +1104,3 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-#modalBody{
-  max-height: calc(80vh - 70px);
-  overflow-y: auto;
-}
