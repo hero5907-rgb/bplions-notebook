@@ -616,8 +616,9 @@ else localStorage.removeItem(LS_KEY);
 
 state.navStack = ["home"];
 showScreen("home");
-state.navStack = ["home"]
 
+// 🔔 로그인 성공 즉시 → 팝업 체크 (여기가 핵심)
+checkPopupEvents();
 
 
 
