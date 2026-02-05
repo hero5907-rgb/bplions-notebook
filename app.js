@@ -2,7 +2,12 @@
 let homeBackTimer = null;
 
 function api(action, params = {}, cb){
-  apiJsonp({ action, phone: state._authPhone, code: state._authCode, ...params })
+  apiJsonp({
+    action,
+    phone: state._authPhone || state.me?.phone || "",
+    code: state._authCode || "",
+    ...params
+  })
     .then(cb)
     .catch(e=>{
       console.error(e);
