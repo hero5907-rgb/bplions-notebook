@@ -762,7 +762,13 @@ else if (target === "song") {
   openImgModal("./lions_song.jpg");
 }
 
+else if (target === "lionism") {
+  pushNav("lionism");
+}
 
+else if (target === "ceremony") {
+  pushNav("ceremony");
+}
       
     });
   });
