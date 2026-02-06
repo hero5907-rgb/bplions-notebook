@@ -1192,3 +1192,9 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
   justify-content:center;
   gap:10px;
 }
+
+
+
+.ceremony-card{
+  background:red !important;
+}
