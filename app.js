@@ -1236,7 +1236,23 @@ if (phoneEl) {
   el("modalSms").href  = `sms:${m.phone || ""}`;
 
   resetPhotoTransform();
-  el("profileModal").hidden = false;
+el("profileModal").hidden = false;
+
+// ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐
+
+// 카드 흔들림 힌트
+const card = el("profileModal")?.querySelector(".modal-card");
+if (card) {
+  card.classList.remove("swipe-hint");
+  setTimeout(()=> card.classList.add("swipe-hint"), 120);
+  setTimeout(()=> card.classList.remove("swipe-hint"), 900);
+}
+
+// 첫 1회 토스트
+if (!localStorage.getItem("memberSwipeHint")) {
+  toast("좌우로 밀면 다음 회원을 볼 수 있어요", { duration:2500 });
+  localStorage.setItem("memberSwipeHint","1");
+}
 }
 
 function closeProfile() {
