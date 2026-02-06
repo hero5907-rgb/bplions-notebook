@@ -47,9 +47,13 @@ function stopCeremony(){
     ceremonyAudio.pause();
     ceremonyAudio.currentTime = 0;
   }
+
   if (ceremonyBtn){
-    ceremonyBtn.textContent = "▶";
+    // ⭐ 버튼 전체 글자 바꾸지 말고 아이콘만 복구
+    const oldIcon = ceremonyBtn.querySelector(".ceremony-icon");
+    if (oldIcon) oldIcon.textContent = ceremonyBtn.dataset.icon || "▶";
   }
+
   ceremonyAudio = null;
   ceremonyBtn = null;
 }
