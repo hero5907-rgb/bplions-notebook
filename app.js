@@ -1252,10 +1252,14 @@ if (card) {
 // 첫 1회 토스트
 if (!localStorage.getItem("memberSwipeHint")) {
   setTimeout(()=>{
-    toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
-      duration:2500,
-      force:true
-    });
+
+  // ⭐ 강제로 toast 잠금 해제
+  toast._lock = false;
+
+  toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
+    duration:2500,
+    force:true
+  });
 
     // ⭐ 여기 안으로 이동 (핵심)
     localStorage.setItem("memberSwipeHint","1");
