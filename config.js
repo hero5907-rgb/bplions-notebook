@@ -9,7 +9,7 @@ window.APP_CONFIG = {
 
   phone: "054-262-5222",
 
-  copyright: "Developed by 황문기L",
+  copyright: "Developed by 북포항라이온스클럽 황문기L",
 
   // (선택) 기본 이미지 (설정시트에 로고/배경이 있으면 그게 우선)
   logoUrl: "./logo.png",

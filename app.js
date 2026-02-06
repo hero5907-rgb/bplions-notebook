@@ -1527,13 +1527,18 @@ if (loading) loading.style.display = "block";
 
 
 
-  // ✅ 이미 달력이 있으면: 이벤트만 교체 + 다시 그림
-  if (calendar) {
-    calendar.removeAllEvents();
-    calendar.addEventSource(events);
-    calendar.render();              // 🔥 추가
-    return;
-  }
+if (calendar) {
+  calendar.removeAllEvents();
+  calendar.addEventSource(events);
+  calendar.render();
+
+  // 🔥 추가 (이거 한줄이 핵심)
+  const loading = document.getElementById("calendarLoading");
+  if (loading) loading.style.display = "none";
+
+  return;
+}
+
 
   // ✅ 처음 한 번만 생성
   calendar = new FullCalendar.Calendar(el, {
