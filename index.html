@@ -28,7 +28,16 @@
   </div>
 
 <!-- 로그인 사용자 이름 -->
-<div id="loginUserName" class="login-user" hidden></div>
+<div id="loginUserName" class="login-user" hidden>
+  <span id="loginUserNameText"></span>
+
+  <!-- 🔥 롱터치 게이지 -->
+  <div class="hold-ring" hidden>
+    <svg viewBox="0 0 36 36">
+      <circle cx="18" cy="18" r="16"></circle>
+    </svg>
+  </div>
+</div>
 
 <!-- 관리자 버튼 (아이콘만) -->
 <button id="btnAdmin" class="icon-btn" aria-label="관리자">
