@@ -76,8 +76,6 @@ function closeAnyModal(){
 
 
 
-let modalCtx = { list: [], index: -1 };
-
 
 const CFG = window.APP_CONFIG || {};
 const API_URL = String(CFG.apiUrl || "").trim();
@@ -1287,6 +1285,14 @@ function nextMember(dir) {
 
   if (n === modalCtx.index) return;
   openProfileAt(modalCtx.list, n);
+// ⭐ swipe 사용 횟수 기록
+swipeCount++;
+localStorage.setItem("memberSwipeCount", swipeCount);
+
+// ⭐ 3번 넘기면 힌트 종료
+if (swipeCount >= 3) {
+  localStorage.setItem("memberSwipeHint","1");
+}
 }
 
 (function bindModalSwipe() {
