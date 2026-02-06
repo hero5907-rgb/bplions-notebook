@@ -1108,3 +1108,24 @@ flex-direction: column;   /* 🔥 이거 추가 */
   max-height: calc(80vh - 90px);   /* 🔥 버튼 높이만큼 더 확보 */
   overflow-y: auto;
 }
+
+
+/* ===== 그룹 badge 자동 색상 ===== */
+
+.badge.group-exec {
+  background:#e8f1ff;
+  color:#0b4ea2;
+}
+
+.badge.group-member {
+  background:#f1f5f9;
+  color:#475569;
+}
+
+.badge.group-guest {
+  background:#fef3c7;
+  color:#92400e;
+}
+
+
+

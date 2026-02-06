@@ -408,6 +408,12 @@ function onlyRealMembers(arr){
   });
 }
 
+function formatPhone(p){
+  const n = String(p||"").replace(/[^0-9]/g,"");
+  if(n.length===11) return `${n.slice(0,3)}-${n.slice(3,7)}-${n.slice(7)}`;
+  return n;
+}
+
 
 function renderMembers(list) {
   const pill = el("memberCountPill");
@@ -430,7 +436,8 @@ function renderMembers(list) {
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">
         <div class="row-title">${esc(m.name)} ${m.position ? `<span class="badge">${esc(m.position)}</span>` : ""}</div>
-        <div class="row-sub">${esc([m.workplace, m.group, m.phone].filter(Boolean).join(" / "))}</div>
+        <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone)].filter(Boolean).join(" / "))}</div>
+
         <div class="actions">
           <a class="a-btn primary" href="tel:${esc(m.phone)}">📞 통화</a>
           <a class="a-btn" href="sms:${esc(m.phone)}">💬 문자</a>
@@ -1102,8 +1109,19 @@ function openProfileAt(list, index) {
   el("modalPhoto").src = m.photoUrl || "";
 
   // 이름(굵게) + 직위(지금처럼)
-  el("modalName").textContent = m.name || "";
-  el("modalPosition").textContent = m.position || "";
+el("modalName").textContent = m.name || "";
+el("modalPosition").textContent = m.position || "";
+const g = m.group || "";
+const groupEl = el("modalGroup");
+
+groupEl.textContent = g;
+groupEl.classList.remove("group-exec","group-member","group-guest");
+
+// 🔥 그룹 이름 기준 자동 색상
+if(g.includes("집행부")) groupEl.classList.add("group-exec");
+else if(g.includes("회원")) groupEl.classList.add("group-member");
+else groupEl.classList.add("group-guest");
+
 
 // ===== 추가: 영문이름 =====
 const engEl = el("modalEngName");
