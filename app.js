@@ -731,18 +731,28 @@ __popupPromise.then(res=>{
     </div>
 
     ${list.map(e => `
-      <div style="margin-bottom:20px;">
-        <div style="text-align:center;font-size:14px;color:#64748b;">
-          ${e.date || ""}
-        </div>
+  <div style="margin-bottom:20px;">
+    <div style="text-align:center;font-size:14px;color:#64748b;">
+      ${e.date || ""}
+    </div>
 
-        <div style="text-align:center;font-size:16px;font-weight:600;margin-top:4px;">
-          ${e.title || ""}
-        </div>
-
-        <div style="margin-top:10px;white-space:pre-wrap;line-height:1.6;text-align:left;">${String(e.desc || "").trim()}</div>
-      </div>
-    `).join("")}
+    <div style="
+  text-align:center;
+  font-size:16px;
+  font-weight:600;
+  margin-top:4px;
+">
+  ${e.title || ""}
+  ${e.place ? ` / ${e.place}` : ""}
+</div>
+    <div style="
+      margin-top:10px;
+      white-space:pre-wrap;
+      line-height:1.6;
+      text-align:left;
+    ">${String(e.desc || "").trim()}</div>
+  </div>
+`).join("")}
   `);
 
   const rows = list.map(e => e.row);
