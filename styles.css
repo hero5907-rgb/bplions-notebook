@@ -1148,20 +1148,7 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
   margin-top:12px;
 }
 
-.ceremony-card{
-  background:#fff;
-  border-radius:18px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 10px 22px rgba(0,0,0,.08);
-  transition:.18s;
-  cursor:pointer;
-}
 
-.ceremony-card:active{
-  transform:scale(.96);
-  box-shadow:0 6px 14px rgba(0,0,0,.15);
-}
 
 .ceremony-icon{
   font-size:28px;
