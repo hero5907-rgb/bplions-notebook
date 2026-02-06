@@ -1231,3 +1231,38 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
   -webkit-user-select:none;
   -webkit-touch-callout:none;
 }
+
+
+
+/* ===== 롱터치 중앙 원형 애니메이션 ===== */
+
+#holdOverlay{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(6px);
+}
+
+#holdOverlay svg{
+  width:90px;
+  height:90px;
+  transform:rotate(-90deg);
+}
+
+#holdOverlay circle{
+  fill:none;
+  stroke:#0b4ea2;
+  stroke-width:4;
+
+  stroke-dasharray:100;
+  stroke-dashoffset:100;
+
+  transition:stroke-dashoffset .08s linear;
+}
+
