@@ -1248,6 +1248,7 @@ if (card) {
   setTimeout(()=> card.classList.remove("swipe-hint"), 900);
 }
 
+
 // 첫 1회 토스트
 if (!localStorage.getItem("memberSwipeHint")) {
   setTimeout(()=>{
@@ -1255,9 +1256,11 @@ if (!localStorage.getItem("memberSwipeHint")) {
       duration:2500,
       force:true
     });
-  }, 350);
 
-  localStorage.setItem("memberSwipeHint","1");
+    // ⭐ 여기 안으로 이동 (핵심)
+    localStorage.setItem("memberSwipeHint","1");
+
+  }, 350);
 }
 }
 
