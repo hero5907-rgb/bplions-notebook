@@ -884,59 +884,6 @@ setAdminButton(false);
 
 
 
-// ===== 이름 5초 롱터치 중앙 애니메이션 =====
-(()=>{
-  const box = el("loginUserName");
-  const overlay = el("holdOverlay");
-  const circle = overlay?.querySelector("circle");
-
-  if(!box || !overlay || !circle) return;
-
-  overlay.style.pointerEvents = "none";
-
-  let start = 0;
-  let raf = null;
-  const HOLD_TIME = 5000;
-
-  function reset(){
-    overlay.hidden = true;
-    cancelAnimationFrame(raf);
-  }
-
-  function loop(){
-    const p = Math.min(1,(Date.now()-start)/HOLD_TIME);
-
-    // ⭐ 안전 처리 (이 줄이 핵심 수정)
-    if(circle && circle.style){
-      circle.style.strokeDashoffset = 100 - (100*p);
-    }
-
-    if(p>=1){
-      reset();
-
-      if(confirm("앱 캐시를 초기화하시겠습니까?")){
-        localStorage.clear();
-        caches.keys().then(keys=>{
-          keys.forEach(k=>caches.delete(k));
-        });
-        alert("초기화되었습니다. 다시 로그인하세요.");
-        location.reload();
-      }
-      return;
-    }
-
-    raf = requestAnimationFrame(loop);
-  }
-
-  box.addEventListener("touchstart",()=>{
-    start = Date.now();
-    overlay.hidden = false;
-    loop();
-  });
-
-  box.addEventListener("touchend",reset);
-  box.addEventListener("touchcancel",reset);
-})();
 
 
 // 🔄 회원명부 새로고침 버튼
@@ -1997,6 +1944,66 @@ function reloadAnnouncements(){
   });
 }
 
+
+
+
+// ===== 이름 5초 롱터치 중앙 애니메이션 (안정화 버전) =====
+window.addEventListener("load", () => {
+
+  const box = el("loginUserName");
+  const overlay = el("holdOverlay");
+  const circle = overlay?.querySelector("circle");
+
+  if(!box || !overlay || !circle) {
+    console.log("롱터치 DOM 못찾음");
+    return;
+  }
+
+  overlay.style.pointerEvents = "none";
+
+  let start = 0;
+  let raf = null;
+  const HOLD_TIME = 5000;
+
+  function reset(){
+    overlay.hidden = true;
+    cancelAnimationFrame(raf);
+  }
+
+  function loop(){
+    const p = Math.min(1,(Date.now()-start)/HOLD_TIME);
+
+    if(circle && circle.style){
+      circle.style.strokeDashoffset = 100 - (100*p);
+    }
+
+    if(p>=1){
+      reset();
+
+      if(confirm("앱 캐시를 초기화하시겠습니까?")){
+        localStorage.clear();
+        caches.keys().then(keys=>{
+          keys.forEach(k=>caches.delete(k));
+        });
+        alert("초기화되었습니다. 다시 로그인하세요.");
+        location.reload();
+      }
+      return;
+    }
+
+    raf = requestAnimationFrame(loop);
+  }
+
+  box.addEventListener("touchstart",()=>{
+    start = Date.now();
+    overlay.hidden = false;
+    loop();
+  });
+
+  box.addEventListener("touchend",reset);
+  box.addEventListener("touchcancel",reset);
+
+});
 
 function isKakaoInApp() {
   return /KAKAOTALK/i.test(navigator.userAgent);
