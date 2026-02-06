@@ -882,6 +882,52 @@ setAdminButton(false);
   bindSearch();
 
 
+
+
+
+// 🔥 이름 5초 롱터치 → 앱 초기화 (전역 1회만 등록)
+(function bindUserNameReset(){
+
+  const box = document.getElementById("loginUserName");
+  if(!box) return;
+
+  let timer = null;
+
+  async function fullReset(){
+    const ok = confirm("앱 캐시를 초기화하시겠습니까?");
+    if(!ok) return;
+
+    try{
+      localStorage.clear();
+
+      if ("serviceWorker" in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for(const r of regs) await r.unregister();
+      }
+
+      if (window.caches){
+        const keys = await caches.keys();
+        for(const k of keys) await caches.delete(k);
+      }
+
+      alert("초기화되었습니다. 다시 로그인하세요.");
+      location.reload();
+    }catch(e){
+      alert("초기화 실패");
+    }
+  }
+
+  box.addEventListener("touchstart", ()=>{
+    timer = setTimeout(fullReset, 5000);
+  });
+
+  box.addEventListener("touchend", ()=> clearTimeout(timer));
+  box.addEventListener("touchcancel", ()=> clearTimeout(timer));
+
+})();
+
+
+
 // 🔄 회원명부 새로고침 버튼
 const btnMembersRefresh = el("btnMembersRefresh");
 if (btnMembersRefresh) {
