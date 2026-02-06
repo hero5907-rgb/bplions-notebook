@@ -1106,7 +1106,31 @@ function openProfileAt(list, index) {
   if (!m) return;
 
   // ✅ 멤버 데이터 주입
-  el("modalPhoto").src = m.photoUrl || "";
+  const imgEl = el("modalPhoto");
+const newSrc = m.photoUrl || "";
+
+// 🔥 연속 스킵시 이전 애니메이션 정리
+imgEl.classList.remove("fadein");
+imgEl.classList.add("fadeout");
+
+if (newSrc) {
+  const pre = new Image();
+
+  pre.onload = () => {
+    // iOS 캐시 회피
+    imgEl.src = newSrc + "?t=" + Date.now();
+
+    // 🔥 살짝 늦게 fadein (iOS 안정화)
+    requestAnimationFrame(()=>{
+      imgEl.classList.remove("fadeout");
+      imgEl.classList.add("fadein");
+    });
+  };
+
+  pre.src = newSrc;
+} else {
+  imgEl.src = "";
+}
 
   // 이름(굵게) + 직위(지금처럼)
 el("modalName").textContent = m.name || "";
