@@ -4,29 +4,39 @@ let ceremonyBtn = null;
 
 function playCeremony(src, btn){
 
-  // 이미 다른거 재생중이면 정지
+  // 카드 안 아이콘만 찾기
+  const icon = btn.querySelector(".ceremony-icon");
+  if (!icon) return;
+
+  // 다른거 재생중이면 정지
   if (ceremonyAudio){
     ceremonyAudio.pause();
     ceremonyAudio.currentTime = 0;
-    if (ceremonyBtn) ceremonyBtn.textContent = "▶";
+    if (ceremonyBtn){
+      const oldIcon = ceremonyBtn.querySelector(".ceremony-icon");
+      if (oldIcon) oldIcon.textContent = ceremonyBtn.dataset.icon || "▶";
+    }
   }
 
-  // 같은 버튼 다시 누르면 그냥 정지
+  // 같은 버튼 다시 누르면 정지
   if (ceremonyBtn === btn){
     ceremonyAudio = null;
     ceremonyBtn = null;
     return;
   }
 
+  // ⭐ 원래 아이콘 저장
+  btn.dataset.icon = icon.textContent;
+
   ceremonyAudio = new Audio(src);
   ceremonyBtn = btn;
 
-  btn.textContent = "⏹";
+  icon.textContent = "⏹";
 
   ceremonyAudio.play();
 
   ceremonyAudio.onended = ()=>{
-    btn.textContent = "▶";
+    icon.textContent = btn.dataset.icon || "▶";
     ceremonyAudio = null;
     ceremonyBtn = null;
   };
