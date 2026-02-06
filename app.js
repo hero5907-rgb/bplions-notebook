@@ -1865,3 +1865,23 @@ function reloadAnnouncements(){
 function isKakaoInApp() {
   return /KAKAOTALK/i.test(navigator.userAgent);
 }
+
+
+
+let ceremonyAudio = null;
+
+document.addEventListener("click", e=>{
+  const card = e.target.closest(".ceremony-card");
+  if(!card) return;
+
+  const src = card.dataset.audio;
+  if(!src) return;
+
+  // 기존 재생중이면 정지
+  if(ceremonyAudio){
+    ceremonyAudio.pause();
+  }
+
+  ceremonyAudio = new Audio("./audio/" + src);
+  ceremonyAudio.play().catch(()=>{});
+});
