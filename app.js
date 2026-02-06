@@ -1401,7 +1401,7 @@ if (!localStorage.getItem("memberSwipeHint")) {
 
   }, 350);
 }
-
+}
 
 function closeProfile() {
   el("profileModal").hidden = true;
