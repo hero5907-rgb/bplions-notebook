@@ -1204,3 +1204,4 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
   align-items:center;
   justify-content:center;
   gap:10px;
+}
