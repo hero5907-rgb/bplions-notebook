@@ -203,7 +203,8 @@ function toast(msg, opts = {}) {
 
 function showScreen(name) {
  
-stopCeremony();   // 🔥 화면 이동시 무조건 정지 Object.entries(screens).forEach(([k, node]) => {
+stopCeremony();   // 🔥 화면 이동시 무조건 정지
+ Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
     node.hidden = (k !== name);
   });
