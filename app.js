@@ -1963,12 +1963,14 @@ window.addEventListener("load", () => {
 
   let start = 0;
   let raf = null;
-  const HOLD_TIME = 5000;
+  const HOLD_DELAY = 5000;   // 처음 5초 대기
+const HOLD_TIME  = 5000;   // 원형 애니메이션 5초
 
   function reset(){
-    overlay.hidden = true;
-    cancelAnimationFrame(raf);
-  }
+  overlay.hidden = true;
+  start = 0;   // ⭐ 핵심 (지연 시작 취소)
+  cancelAnimationFrame(raf);
+}
 
   function loop(){
     const p = Math.min(1,(Date.now()-start)/HOLD_TIME);
@@ -1995,10 +1997,24 @@ window.addEventListener("load", () => {
   }
 
   box.addEventListener("touchstart",()=>{
-    start = Date.now();
+
+  start = Date.now();
+
+  // ⭐ 처음엔 아무것도 안보임
+  overlay.hidden = true;
+
+  setTimeout(()=>{
+
+    // 아직 손 안뗐으면 애니메이션 시작
+    if(!start) return;
+
     overlay.hidden = false;
+    start = Date.now();
     loop();
-  });
+
+  }, HOLD_DELAY);
+
+});
 
   box.addEventListener("touchend",reset);
   box.addEventListener("touchcancel",reset);
