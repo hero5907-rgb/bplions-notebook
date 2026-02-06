@@ -885,47 +885,54 @@ setAdminButton(false);
 
 
 
-// 🔥 이름 5초 롱터치 → 앱 초기화 (전역 1회만 등록)
-(function bindUserNameReset(){
+// ===== 이름 5초 롱터치 중앙 애니메이션 =====
+(()=>{
+  const box = el("loginUserName");
+  const overlay = el("holdOverlay");
+  const circle = overlay?.querySelector("circle");
 
-  const box = document.getElementById("loginUserName");
-  if(!box) return;
+  if(!box || !overlay || !circle) return;
 
-  let timer = null;
+  let start = 0;
+  let raf = null;
 
-  async function fullReset(){
-    const ok = confirm("앱 캐시를 초기화하시겠습니까?");
-    if(!ok) return;
+  const HOLD_TIME = 5000;
 
-    try{
-      localStorage.clear();
-
-      if ("serviceWorker" in navigator){
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for(const r of regs) await r.unregister();
-      }
-
-      if (window.caches){
-        const keys = await caches.keys();
-        for(const k of keys) await caches.delete(k);
-      }
-
-      alert("초기화되었습니다. 다시 로그인하세요.");
-      location.reload();
-    }catch(e){
-      alert("초기화 실패");
-    }
+  function reset(){
+    overlay.hidden = true;
+    circle.style.strokeDashoffset = 100;
+    cancelAnimationFrame(raf);
   }
 
-  box.addEventListener("touchstart", ()=>{
-    timer = setTimeout(fullReset, 5000);
+  function loop(){
+    const p = Math.min(1,(Date.now()-start)/HOLD_TIME);
+    circle.style.strokeDashoffset = 100 - (100*p);
+
+    if(p>=1){
+      reset();
+
+      if(confirm("앱 캐시를 초기화하시겠습니까?")){
+        localStorage.clear();
+        caches.keys().then(keys=>{
+          keys.forEach(k=>caches.delete(k));
+        });
+        alert("초기화되었습니다. 다시 로그인하세요.");
+        location.reload();
+      }
+      return;
+    }
+    raf = requestAnimationFrame(loop);
+  }
+
+  box.addEventListener("touchstart",()=>{
+    start = Date.now();
+    overlay.hidden = false;
+    loop();
   });
 
-  box.addEventListener("touchend", ()=> clearTimeout(timer));
-  box.addEventListener("touchcancel", ()=> clearTimeout(timer));
-
+  box.addEventListener("touchend",reset);
+  box.addEventListener("touchcancel",reset);
 })();
-
 
 
 // 🔄 회원명부 새로고침 버튼
