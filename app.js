@@ -1,4 +1,10 @@
 
+// 🍎 iOS 감지 (아이폰/아이패드)
+const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+let homeBackTimer = null;
+
+
 let homeBackTimer = null;
 
 function getAuthSafe(){
