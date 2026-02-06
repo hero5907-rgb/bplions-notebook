@@ -1,7 +1,7 @@
 // 북포항라이온스클럽 수첩 PWA Service Worker
 // ✅ 캐시 갱신이 필요할 때는 CACHE_NAME만 올리면 됩니다 (v55 -> v56 ...)
 
-const CACHE_NAME = "bplions-v9.7";
+const CACHE_NAME = "bplions-v9.8";
 
 const ASSETS = [
   "./",
