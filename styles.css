@@ -1129,3 +1129,15 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 
 
+/* 🔥 프로필 사진 전환 애니메이션 */
+.modal-photo.fadeout {
+  opacity:0;
+  transform:scale(0.96);
+  transition:opacity .18s ease, transform .18s ease;
+}
+
+.modal-photo.fadein {
+  opacity:1;
+  transform:scale(1);
+  transition:opacity .22s ease, transform .22s ease;
+}
