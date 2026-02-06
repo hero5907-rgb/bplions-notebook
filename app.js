@@ -202,7 +202,8 @@ function toast(msg, opts = {}) {
 
 
 function showScreen(name) {
-  Object.entries(screens).forEach(([k, node]) => {
+ 
+stopCeremony();   // 🔥 화면 이동시 무조건 정지 Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
     node.hidden = (k !== name);
   });
@@ -1912,20 +1913,3 @@ function isKakaoInApp() {
 
 
 
-let ceremonyAudio = null;
-
-document.addEventListener("click", e=>{
-  const card = e.target.closest(".ceremony-card");
-  if(!card) return;
-
-  const src = card.dataset.audio;
-  if(!src) return;
-
-  // 기존 재생중이면 정지
-  if(ceremonyAudio){
-    ceremonyAudio.pause();
-  }
-
-  ceremonyAudio = new Audio("./audio/" + src);
-  ceremonyAudio.play().catch(()=>{});
-});
