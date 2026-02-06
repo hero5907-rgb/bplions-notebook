@@ -1260,7 +1260,7 @@ if (!localStorage.getItem("memberSwipeHint")) {
     duration:2500,
     force:true
   });
-
+alert("토스트 실행됨?");
     // ⭐ 여기 안으로 이동 (핵심)
     localStorage.setItem("memberSwipeHint","1");
 
