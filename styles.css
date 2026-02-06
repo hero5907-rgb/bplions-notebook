@@ -1136,6 +1136,5 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 .swipe-hint {
-  animation: swipeHint .5s ease;
+  animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
 }
-
