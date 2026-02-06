@@ -1111,9 +1111,10 @@ function openProfileAt(list, index) {
   // 이름(굵게) + 직위(지금처럼)
 el("modalName").textContent = m.name || "";
 el("modalPosition").textContent = m.position || "";
-const g = m.group || "";
+
 const groupEl = el("modalGroup");
 const g = String(m.group || "").trim();
+
 
 // ✅ 값 없으면 뱃지 자체 숨김 (빈 동그라미 방지)
 if (!g) {
