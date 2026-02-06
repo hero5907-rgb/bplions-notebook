@@ -678,6 +678,52 @@ if (nameBox && state.me?.name) {
 }
 
 
+// 🔥 이름 5초 길게 누르면 앱 캐시 초기화
+(function bindNameLongPress(){
+
+  const nameBox = document.getElementById("loginUserName");
+  if (!nameBox) return;
+
+  let timer = null;
+
+  nameBox.addEventListener("touchstart", () => {
+
+    timer = setTimeout(async () => {
+
+      if (!confirm("앱의 캐시를 초기화하시겠습니까?")) return;
+
+      try{
+        // localStorage 초기화
+        localStorage.clear();
+
+        // ServiceWorker 제거
+        if ("serviceWorker" in navigator){
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (const r of regs) await r.unregister();
+        }
+
+        // CacheStorage 제거
+        if (window.caches){
+          const keys = await caches.keys();
+          for (const k of keys) await caches.delete(k);
+        }
+
+      }catch(e){
+        console.error(e);
+      }
+
+      alert("초기화되었습니다. 다시 로그인 하세요.");
+      location.reload();
+
+    }, 5000); // ⭐ 5초
+
+  }, { passive:true });
+
+  nameBox.addEventListener("touchend", ()=> clearTimeout(timer));
+  nameBox.addEventListener("touchcancel", ()=> clearTimeout(timer));
+
+})();
+
 
     state.settings = json.settings;
    state.members = onlyRealMembers(json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
