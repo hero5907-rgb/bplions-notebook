@@ -1113,14 +1113,24 @@ el("modalName").textContent = m.name || "";
 el("modalPosition").textContent = m.position || "";
 const g = m.group || "";
 const groupEl = el("modalGroup");
+const g = String(m.group || "").trim();
 
-groupEl.textContent = g;
-groupEl.classList.remove("group-exec","group-member","group-guest");
+// ✅ 값 없으면 뱃지 자체 숨김 (빈 동그라미 방지)
+if (!g) {
+  groupEl.textContent = "";
+  groupEl.classList.remove("group-exec","group-member","group-guest");
+  groupEl.hidden = true;   // 🔥 핵심
+} else {
+  groupEl.hidden = false;
+  groupEl.textContent = g;
 
-// 🔥 그룹 이름 기준 자동 색상
-if(g.includes("집행부")) groupEl.classList.add("group-exec");
-else if(g.includes("회원")) groupEl.classList.add("group-member");
-else groupEl.classList.add("group-guest");
+  groupEl.classList.remove("group-exec","group-member","group-guest");
+
+  // 🔥 그룹 이름 기준 자동 색상
+  if (g.includes("집행부")) groupEl.classList.add("group-exec");
+  else if (g.includes("회원")) groupEl.classList.add("group-member");
+  else groupEl.classList.add("group-guest");
+}
 
 
 // ===== 추가: 영문이름 =====
