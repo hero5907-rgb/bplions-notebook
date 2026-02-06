@@ -519,7 +519,7 @@ async function handleLogin() {
   const rawCode  = el("inputCode")?.value || "";
 
   // 🔔 팝업 API를 미리 시작 (data API와 병렬)
-  let __popupPromise = null;
+  
 
 
   const phone = normalizePhone(rawPhone);
