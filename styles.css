@@ -1195,3 +1195,28 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
 
 
 
+/* 🔥 롱터치 진행 원형 게이지 */
+.hold-ring{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.hold-ring svg{
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
+}
+
+.hold-ring circle{
+  fill:none;
+  stroke:#0b4ea2;
+  stroke-width:3;
+  stroke-dasharray:100;
+  stroke-dashoffset:100;
+  transition:stroke-dashoffset .1s linear;
+}
