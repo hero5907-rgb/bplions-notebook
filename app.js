@@ -1234,6 +1234,10 @@ btnI?.addEventListener("click", () => {
 
 
 function openProfileAt(list, index) {
+
+// 🔥 초기화 이후 swipeCount 다시 읽기
+swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
+
   modalCtx.list = list || [];
   modalCtx.index = index ?? -1;
 
@@ -1397,7 +1401,7 @@ if (!localStorage.getItem("memberSwipeHint")) {
 
   }, 350);
 }
-}
+
 
 function closeProfile() {
   el("profileModal").hidden = true;
