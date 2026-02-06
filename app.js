@@ -1,4 +1,9 @@
 
+
+let modalCtx = { list: [], index: -1 };
+
+let swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
+
 // 🍎 iOS 감지 (아이폰/아이패드)
 const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
@@ -1260,7 +1265,7 @@ if (!localStorage.getItem("memberSwipeHint")) {
     duration:2500,
     force:true
   });
-alert("토스트 실행됨?");
+
     // ⭐ 여기 안으로 이동 (핵심)
     localStorage.setItem("memberSwipeHint","1");
 
