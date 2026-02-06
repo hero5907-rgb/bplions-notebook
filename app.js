@@ -891,6 +891,8 @@ setAdminButton(false);
   const overlay = el("holdOverlay");
   const circle = overlay?.querySelector("circle");
 
+overlay.style.pointerEvents = "none";
+
   if(!box || !overlay || !circle) return;
 
   let start = 0;
