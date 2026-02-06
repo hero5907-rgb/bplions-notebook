@@ -884,33 +884,32 @@ setAdminButton(false);
 
 
 
-
 // ===== 이름 5초 롱터치 중앙 애니메이션 =====
 (()=>{
   const box = el("loginUserName");
   const overlay = el("holdOverlay");
   const circle = overlay?.querySelector("circle");
 
-  // ⭐ 존재 확인 먼저 (이거 순서 중요)
   if(!box || !overlay || !circle) return;
 
-  // ⭐ 로그인 버튼 클릭 막는 문제 해결
   overlay.style.pointerEvents = "none";
 
   let start = 0;
   let raf = null;
-
   const HOLD_TIME = 5000;
 
   function reset(){
     overlay.hidden = true;
-    circle.style.strokeDashoffset = 100;
     cancelAnimationFrame(raf);
   }
 
   function loop(){
     const p = Math.min(1,(Date.now()-start)/HOLD_TIME);
-    circle.style.strokeDashoffset = 100 - (100*p);
+
+    // ⭐ 안전 처리 (이 줄이 핵심 수정)
+    if(circle && circle.style){
+      circle.style.strokeDashoffset = 100 - (100*p);
+    }
 
     if(p>=1){
       reset();
@@ -925,6 +924,7 @@ setAdminButton(false);
       }
       return;
     }
+
     raf = requestAnimationFrame(loop);
   }
 
