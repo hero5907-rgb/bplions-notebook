@@ -1139,3 +1139,36 @@ flex-direction: column;   /* 🔥 이거 추가 */
 .swipe-hint {
 animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
 }
+
+
+.ceremony-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:12px;
+}
+
+.ceremony-card{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 10px 22px rgba(0,0,0,.08);
+  transition:.18s;
+  cursor:pointer;
+}
+
+.ceremony-card:active{
+  transform:scale(.96);
+  box-shadow:0 6px 14px rgba(0,0,0,.15);
+}
+
+.ceremony-icon{
+  font-size:28px;
+}
+
+.ceremony-name{
+  margin-top:8px;
+  font-weight:700;
+  font-size:15px;
+}
