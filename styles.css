@@ -1220,3 +1220,12 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
   stroke-dashoffset:100;
   transition:stroke-dashoffset .1s linear;
 }
+
+
+
+/* 🔥 이름 롱터치시 텍스트 선택 방지 */
+#loginUserName{
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+}
