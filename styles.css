@@ -1127,5 +1127,15 @@ flex-direction: column;   /* 🔥 이거 추가 */
   color:#92400e;
 }
 
+@keyframes swipeHint {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(10px); }
+  50%  { transform: translateX(-10px); }
+  75%  { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
 
+.swipe-hint {
+  animation: swipeHint .5s ease;
+}
 
