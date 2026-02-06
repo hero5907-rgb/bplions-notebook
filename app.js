@@ -1112,7 +1112,19 @@ function openProfileAt(list, index) {
   if (!m) return;
 
   // ✅ 멤버 데이터 주입
-  el("modalPhoto").src = m.photoUrl || "";
+ const imgEl = el("modalPhoto");
+const newSrc = m.photoUrl || "";
+
+if(IS_IOS){
+  // 🍎 아이폰만 repaint 강제
+  imgEl.src = "";
+  requestAnimationFrame(()=>{
+    imgEl.src = newSrc;
+  });
+}else{
+  // 🤖 안드로이드/PC 기존 빠른 방식 유지
+  imgEl.src = newSrc;
+}
 
   // 이름(굵게) + 직위(지금처럼)
 el("modalName").textContent = m.name || "";
