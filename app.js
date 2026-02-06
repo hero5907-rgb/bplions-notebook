@@ -678,70 +678,7 @@ if (nameBox && state.me?.name) {
 }
 
 
-// 🔥 이름 5초 롱터치 → 앱 초기화
-(function bindLongHoldReset(){
 
-  const box = document.getElementById("loginUserName");
-  const ringWrap = box?.querySelector(".hold-ring");
-  const circle = ringWrap?.querySelector("circle");
-
-  if (!box || !circle) return;
-
-  let timer = null;
-  let progress = 0;
-  let iv = null;
-
-  function resetRing(){
-    progress = 0;
-    circle.style.strokeDashoffset = 100;
-    ringWrap.hidden = true;
-    clearInterval(iv);
-    iv = null;
-  }
-
-  async function fullReset(){
-    const ok = confirm("앱 캐시를 초기화하시겠습니까?");
-    if(!ok){ resetRing(); return; }
-
-    try{
-      localStorage.clear();
-
-      if ("serviceWorker" in navigator){
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for(const r of regs) await r.unregister();
-      }
-
-      if (window.caches){
-        const keys = await caches.keys();
-        for(const k of keys) await caches.delete(k);
-      }
-
-      alert("초기화되었습니다. 다시 로그인하세요.");
-      location.reload();
-    }catch(e){
-      alert("초기화 실패");
-    }
-  }
-
-  box.addEventListener("touchstart", ()=>{
-    progress = 0;
-    ringWrap.hidden = false;
-
-    iv = setInterval(()=>{
-      progress += 2; // 속도조절 (작을수록 느림)
-      circle.style.strokeDashoffset = 100-progress;
-
-      if(progress >= 100){
-        clearInterval(iv);
-        fullReset();
-      }
-    },100);
-  });
-
-  box.addEventListener("touchend", resetRing);
-  box.addEventListener("touchcancel", resetRing);
-
-})();
 
 
 
