@@ -1250,7 +1250,13 @@ if (card) {
 
 // 첫 1회 토스트
 if (!localStorage.getItem("memberSwipeHint")) {
-  toast("좌우로 밀면 다음 회원을 볼 수 있어요", { duration:2500 });
+  setTimeout(()=>{
+    toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
+      duration:2500,
+      force:true
+    });
+  }, 350);
+
   localStorage.setItem("memberSwipeHint","1");
 }
 }
