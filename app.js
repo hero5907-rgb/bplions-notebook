@@ -1,4 +1,48 @@
+// 🎧 의전 오디오 컨트롤 (전역 1개만 사용)
+let ceremonyAudio = null;
+let ceremonyBtn = null;
 
+function playCeremony(src, btn){
+
+  // 이미 다른거 재생중이면 정지
+  if (ceremonyAudio){
+    ceremonyAudio.pause();
+    ceremonyAudio.currentTime = 0;
+    if (ceremonyBtn) ceremonyBtn.textContent = "▶";
+  }
+
+  // 같은 버튼 다시 누르면 그냥 정지
+  if (ceremonyBtn === btn){
+    ceremonyAudio = null;
+    ceremonyBtn = null;
+    return;
+  }
+
+  ceremonyAudio = new Audio(src);
+  ceremonyBtn = btn;
+
+  btn.textContent = "⏹";
+
+  ceremonyAudio.play();
+
+  ceremonyAudio.onended = ()=>{
+    btn.textContent = "▶";
+    ceremonyAudio = null;
+    ceremonyBtn = null;
+  };
+}
+
+function stopCeremony(){
+  if (ceremonyAudio){
+    ceremonyAudio.pause();
+    ceremonyAudio.currentTime = 0;
+  }
+  if (ceremonyBtn){
+    ceremonyBtn.textContent = "▶";
+  }
+  ceremonyAudio = null;
+  ceremonyBtn = null;
+}
 
 let modalCtx = { list: [], index: -1 };
 
