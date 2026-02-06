@@ -678,51 +678,73 @@ if (nameBox && state.me?.name) {
 }
 
 
-// 🔥 이름 5초 길게 누르면 앱 캐시 초기화
-(function bindNameLongPress(){
+// 🔥 이름 5초 롱터치 → 앱 초기화
+(function bindLongHoldReset(){
 
-  const nameBox = document.getElementById("loginUserName");
-  if (!nameBox) return;
+  const box = document.getElementById("loginUserName");
+  const ringWrap = box?.querySelector(".hold-ring");
+  const circle = ringWrap?.querySelector("circle");
+
+  if (!box || !circle) return;
 
   let timer = null;
+  let progress = 0;
+  let iv = null;
 
-  nameBox.addEventListener("touchstart", () => {
+  function resetRing(){
+    progress = 0;
+    circle.style.strokeDashoffset = 100;
+    ringWrap.hidden = true;
+    clearInterval(iv);
+    iv = null;
+  }
 
-    timer = setTimeout(async () => {
+  async function fullReset(){
+    const ok = confirm("앱 캐시를 초기화하시겠습니까?");
+    if(!ok){ resetRing(); return; }
 
-      if (!confirm("앱의 캐시를 초기화하시겠습니까?")) return;
+    try{
+      localStorage.clear();
 
-      try{
-        // localStorage 초기화
-        localStorage.clear();
-
-        // ServiceWorker 제거
-        if ("serviceWorker" in navigator){
-          const regs = await navigator.serviceWorker.getRegistrations();
-          for (const r of regs) await r.unregister();
-        }
-
-        // CacheStorage 제거
-        if (window.caches){
-          const keys = await caches.keys();
-          for (const k of keys) await caches.delete(k);
-        }
-
-      }catch(e){
-        console.error(e);
+      if ("serviceWorker" in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for(const r of regs) await r.unregister();
       }
 
-      alert("초기화되었습니다. 다시 로그인 하세요.");
+      if (window.caches){
+        const keys = await caches.keys();
+        for(const k of keys) await caches.delete(k);
+      }
+
+      alert("초기화되었습니다. 다시 로그인하세요.");
       location.reload();
+    }catch(e){
+      alert("초기화 실패");
+    }
+  }
 
-    }, 5000); // ⭐ 5초
+  box.addEventListener("touchstart", ()=>{
+    progress = 0;
+    ringWrap.hidden = false;
 
-  }, { passive:true });
+    iv = setInterval(()=>{
+      progress += 2; // 속도조절 (작을수록 느림)
+      circle.style.strokeDashoffset = 100-progress;
 
-  nameBox.addEventListener("touchend", ()=> clearTimeout(timer));
-  nameBox.addEventListener("touchcancel", ()=> clearTimeout(timer));
+      if(progress >= 100){
+        clearInterval(iv);
+        fullReset();
+      }
+    },100);
+  });
+
+  box.addEventListener("touchend", resetRing);
+  box.addEventListener("touchcancel", resetRing);
 
 })();
+
+
+
 
 
     state.settings = json.settings;
