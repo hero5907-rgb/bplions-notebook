@@ -891,9 +891,11 @@ setAdminButton(false);
   const overlay = el("holdOverlay");
   const circle = overlay?.querySelector("circle");
 
-overlay.style.pointerEvents = "none";
-
+  // ⭐ 존재 확인 먼저 (이거 순서 중요)
   if(!box || !overlay || !circle) return;
+
+  // ⭐ 로그인 버튼 클릭 막는 문제 해결
+  overlay.style.pointerEvents = "none";
 
   let start = 0;
   let raf = null;
