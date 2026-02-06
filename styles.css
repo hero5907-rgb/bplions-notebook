@@ -1130,12 +1130,12 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 @keyframes swipeHint {
   0%   { transform: translateX(0); }
-  25%  { transform: translateX(10px); }
-  50%  { transform: translateX(-10px); }
-  75%  { transform: translateX(6px); }
+  25%  { transform: translateX(6px); }   /* 10 → 6 */
+  50%  { transform: translateX(-6px); }  /* 10 → 6 */
+  75%  { transform: translateX(3px); }   /* 6 → 3 */
   100% { transform: translateX(0); }
 }
 
 .swipe-hint {
-  animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
+  animation: swipeHint .6s cubic-bezier(.22,.61,.36,1);
 }
