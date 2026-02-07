@@ -269,23 +269,20 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 
 .modal-photo {
-  width: 220px;        /* ⭐ 240 → 230 (살짝 줌아웃 느낌) */
+  width: 220px;
   height: 230px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 25%;   /* ⭐ 머리 안잘리는 평균값 */
+  object-position: center 25%;
   background: #eee;
-}
 
-  /* 줌/드래그를 JS로 제어할 거라 transform 준비 */
-  transform: translate(0px, 0px) scale(1);
+  transform: translate(0px,0px) scale(1);
   transform-origin: center center;
 
-  /* 모바일에서 사진 터치 제스처를 우리가 처리 */
-  touch-action: none;
   user-select: none;
-  margin: 0 auto;
+  -webkit-user-select:none;
 
+  margin:0 auto;
 }
 
 .modal-name {
@@ -1268,3 +1265,33 @@ animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
   transition:stroke-dashoffset .08s linear;
 }
 
+
+
+/* ===================================
+   🔒 북포항 수첩 앱느낌 잠금 (최종 안전버전)
+   =================================== */
+
+/* 전체 텍스트 선택 방지 */
+body{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* 입력칸은 허용 */
+input, textarea{
+  -webkit-user-select:text;
+  user-select:text;
+}
+
+/* 이미지 롱프레스 저장 차단 */
+img{
+  -webkit-user-drag:none;
+  -webkit-touch-callout:none;
+}
+
+/* 버튼 길게누르기 메뉴 최소화 */
+a, button, .row, .card{
+  -webkit-touch-callout:none;
+}
