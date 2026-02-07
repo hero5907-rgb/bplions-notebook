@@ -1963,8 +1963,8 @@ window.addEventListener("load", () => {
 
   let start = 0;
   let raf = null;
-  const HOLD_DELAY = 5000;   // 처음 5초 대기
-const HOLD_TIME  = 5000;   // 원형 애니메이션 5초
+  const HOLD_DELAY = 3000;   // 처음 3초 대기
+const HOLD_TIME  = 2000;   // 원형 애니메이션 2초
 
   function reset(){
   overlay.hidden = true;
