@@ -1300,3 +1300,9 @@ a, button, .row, .card{
 body.modal-open {
   overflow: hidden;
 }
+
+html, body {
+  touch-action: manipulation;
+}
+
+
