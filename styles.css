@@ -1324,3 +1324,36 @@ html, body{
   overscroll-behavior-y: contain;
 }
 
+
+/* ===================================
+   🚀 북포항 수첩 스크롤 최종 안정화 (v1.0)
+   =================================== */
+
+/* ✅ BODY가 스크롤 담당 (topbar 완전 고정) */
+html, body{
+  height:100%;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* ✅ 상단바 절대 고정 */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+/* ✅ 모달 열릴 때만 뒤 스크롤 잠금 */
+body.modal-open{
+  overflow:hidden;
+  touch-action:none;
+}
+
+/* ✅ iOS 튕김 방지 */
+.container{
+  overscroll-behavior:contain;
+}
+
+
+
+
