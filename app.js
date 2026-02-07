@@ -1024,26 +1024,6 @@ if (state.navStack.length > 1) {
 
 
 
-// ===== Pull-to-refresh 방지 (특히 iOS Safari/PWA) =====
-let __ptrStartY = 0;
-
-document.addEventListener("touchstart", (e) => {
-  if (e.touches.length !== 1) return;
-  __ptrStartY = e.touches[0].clientY;
-}, { passive: true });
-
-document.addEventListener("touchmove", (e) => {
-  if (e.touches.length !== 1) return;
-  const y = e.touches[0].clientY;
-  const scroller = document.scrollingElement || document.documentElement;
-  const top = scroller.scrollTop || 0;
-
-  // 화면 최상단에서 아래로 당길 때만 새로고침 제스처 차단
-  if (top <= 0 && y > __ptrStartY) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
 
 
 
