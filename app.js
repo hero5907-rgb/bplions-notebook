@@ -417,13 +417,27 @@ function setBrand(settings) {
 
 
 function openAdminPage() {
-  // 지금 입력한 phone/code를 저장해둔 값으로 링크 생성
+
   const phone = state._authPhone || "";
   const code  = state._authCode || "";
   if (!phone || !code) { toast("다시 로그인 후 시도"); return; }
 
   const url = `${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`;
-  window.open(url, "_blank"); // 새 탭
+
+  // 🔥 안드로이드 → 크롬 강제 실행
+  const ua = navigator.userAgent;
+
+  if (/Android/i.test(ua)) {
+    const intent =
+      "intent://" +
+      url.replace(/^https?:\/\//, "") +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    location.href = intent;
+  } else {
+    // PC / iOS 기존 방식
+    window.open(url, "_blank");
+  }
 }
 
 
