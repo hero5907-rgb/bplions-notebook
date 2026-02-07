@@ -1,3 +1,37 @@
+
+// ===============================
+// 🔒 모바일 줌 완전 차단 (전역)
+// ===============================
+(function blockZoom(){
+
+  // iOS / Android 공통
+  document.addEventListener("gesturestart", e => e.preventDefault(), { passive:false });
+  document.addEventListener("gesturechange", e => e.preventDefault(), { passive:false });
+  document.addEventListener("gestureend", e => e.preventDefault(), { passive:false });
+
+  // 두 손가락 확대 차단
+  document.addEventListener("touchmove", e => {
+    if (e.touches && e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive:false });
+
+  // 더블탭 확대 차단
+  let lastTouchEnd = 0;
+  document.addEventListener("touchend", e => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+
+})();
+
+
+
+
+
 // 🎧 의전 오디오 컨트롤 (전역 1개만 사용)
 let ceremonyAudio = null;
 let ceremonyBtn = null;

@@ -1301,8 +1301,10 @@ body.modal-open {
   overflow: hidden;
 }
 
-html, body {
-  touch-action: manipulation;
-}
 
+
+html, body {
+  touch-action: none;
+  overscroll-behavior: none;
+}
 
