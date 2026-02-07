@@ -21,14 +21,7 @@ html, body{
 
 
 
-/* 👍 iOS 느낌 얇은 스크롤바 */
-.screen::-webkit-scrollbar{
-  width:6px;
-}
-.screen::-webkit-scrollbar-thumb{
-  background:rgba(0,0,0,.18);
-  border-radius:10px;
-}
+
 
 :root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
 *{box-sizing:border-box}
