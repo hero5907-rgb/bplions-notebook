@@ -1338,3 +1338,67 @@ body.modal-open {
 }
 
 
+
+
+/* =====================================================
+   📱 북포항 관리자 UI → 앱 회원명부 스타일 통일 (모바일만)
+   ===================================================== */
+@media (pointer:coarse){
+
+  /* ===== 리스트 줄 두툼하게 ===== */
+  .row{
+    padding:14px !important;
+    border-radius:18px !important;
+    gap:12px !important;
+  }
+
+  /* ===== 사진 크기 (앱 회원명부 느낌) ===== */
+  .row img{
+    width:64px !important;
+    height:64px !important;
+    border-radius:16px !important;
+  }
+
+  /* ===== 이름 크기 ===== */
+  .name{
+    font-size:1.28rem !important;
+    font-weight:900 !important;
+    letter-spacing:-0.3px;
+  }
+
+  /* ===== 서브 텍스트 ===== */
+  .sub{
+    font-size:1.05rem !important;
+    margin-top:3px !important;
+  }
+
+  /* ===== 업로드 버튼 ===== */
+  .row button{
+    height:48px !important;
+    padding:0 14px !important;
+    border-radius:14px !important;
+    font-size:1.05rem !important;
+    min-width:90px !important;
+    white-space:nowrap;
+  }
+
+  /* ===== 카드도 앱 느낌으로 ===== */
+  .card{
+    border-radius:20px !important;
+    padding:16px !important;
+  }
+
+  /* ===== 탭 버튼 iOS 느낌 ===== */
+  .tab{
+    height:50px !important;
+    font-size:1.15rem !important;
+    border-radius:999px !important;
+  }
+
+}
+
+
+
+
+
+
