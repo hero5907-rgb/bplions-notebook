@@ -320,19 +320,21 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
   <!-- 텍스트 -->
   <section id="screenText" class="screen" hidden>
 
+  <!-- ✅ 내부 스크롤 컨테이너 추가 -->
+  <div class="text-scroll">
 
     <div class="card">
-<div class="card-header">
-  <div class="card-title" id="textTitle">제목</div>
-
-  <!-- ✅ 회칙 화면에서만 보일 버튼 -->
-  <a id="btnBylawsPdf" class="pdf-btn" href="#" target="_blank" rel="noopener" hidden>원본PDF</a>
-</div>
-
+      <div class="card-header">
+        <div class="card-title" id="textTitle">제목</div>
+        <a id="btnBylawsPdf" class="pdf-btn" href="#" target="_blank" rel="noopener" hidden>원본PDF</a>
+      </div>
 
       <div id="textBody" class="prose"></div>
     </div>
-  </section>
+
+  </div>
+
+</section>
 
 <!-- 🔵 라이오니즘 화면 -->
 <section id="screenLionism" class="screen" hidden>
