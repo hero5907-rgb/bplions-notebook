@@ -1295,3 +1295,8 @@ img{
 a, button, .row, .card{
   -webkit-touch-callout:none;
 }
+
+/* 🔒 모달 열릴 때 뒤 화면 스크롤 완전 차단 */
+body.modal-open {
+  overflow: hidden;
+}
