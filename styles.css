@@ -19,11 +19,7 @@ html, body{
   -webkit-overflow-scrolling:touch;
 }
 
-/* 회칙 화면 스크롤 영역 */
-#screenText .text-scroll{
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-}
+
 
 /* 👍 iOS 느낌 얇은 스크롤바 */
 .screen::-webkit-scrollbar{
