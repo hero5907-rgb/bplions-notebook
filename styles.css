@@ -269,11 +269,13 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 
 .modal-photo {
-  width: 240px;   /* 기본 크게 */
-  height: 240px;
-  border-radius: 50%; /* 동그라미 말고 카드형 느낌은 18px; (원하면 50%로) */
+  width: 230px;        /* ⭐ 240 → 230 (살짝 줌아웃 느낌) */
+  height: 230px;
+  border-radius: 50%;
   object-fit: cover;
+  object-position: center 27%;   /* ⭐ 머리 안잘리는 평균값 */
   background: #eee;
+}
 
   /* 줌/드래그를 JS로 제어할 거라 transform 준비 */
   transform: translate(0px, 0px) scale(1);
