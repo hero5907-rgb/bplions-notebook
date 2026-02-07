@@ -813,7 +813,7 @@ function bindNav() {
   if (btn) btn.onclick = reloadAnnouncements;
 }else if (target === "purpose") {
         pushNav("text");
-        if (el("textTitle")) el("textTitle").textContent = "클럽 목적";
+        if (el("textTitle")) el("textTitle").textContent = "클럽의 목적 및 윤리강령";
         if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
         // pdfBtn은 위에서 이미 hidden=true 처리됨
 
