@@ -14,6 +14,8 @@ html, body{
 
 .screen{
   min-height:calc(100vh - 64px);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 
@@ -1325,16 +1327,6 @@ html, body{
 }
 
 
-/* ===================================
-   🚀 북포항 수첩 스크롤 최종 안정화 (v1.0)
-   =================================== */
-
-/* ✅ BODY가 스크롤 담당 (topbar 완전 고정) */
-html, body{
-  height:100%;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-}
 
 /* ✅ 상단바 절대 고정 */
 .topbar{
