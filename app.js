@@ -1331,6 +1331,8 @@ if (phoneEl) {
   resetPhotoTransform();
 el("profileModal").hidden = false;
 
+document.body.classList.add("modal-open");
+
 // ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐
 
 // 카드 흔들림 힌트
@@ -1364,6 +1366,7 @@ if (!localStorage.getItem("memberSwipeHint")) {
 function closeProfile() {
   el("profileModal").hidden = true;
   resetPhotoTransform();
+  document.body.classList.remove("modal-open");
 }
 
 function nextMember(dir) {
