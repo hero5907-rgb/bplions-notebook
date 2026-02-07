@@ -2031,20 +2031,7 @@ box.addEventListener("click",(e)=>{
   // ⭐ CTRL + SHIFT 둘 다 눌렸을 때만 실행
   if (!(e.ctrlKey && e.shiftKey)) return;
 
-  if(confirm("개발자 모드: 캐시 초기화하시겠습니까?")){
-    localStorage.clear();
-
-    if ("caches" in window) {
-      caches.keys().then(keys=>{
-        keys.forEach(k=>caches.delete(k));
-      });
-    }
-
-    alert("개발자 초기화 완료");
-    location.reload();
-  }
-});
-
+  
 
   if(confirm("개발자 모드: 캐시 초기화하시겠습니까?")){
     localStorage.clear();
