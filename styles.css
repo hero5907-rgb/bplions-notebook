@@ -269,11 +269,11 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 
 .modal-photo {
-  width: 230px;        /* ⭐ 240 → 230 (살짝 줌아웃 느낌) */
+  width: 220px;        /* ⭐ 240 → 230 (살짝 줌아웃 느낌) */
   height: 230px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 27%;   /* ⭐ 머리 안잘리는 평균값 */
+  object-position: center 25%;   /* ⭐ 머리 안잘리는 평균값 */
   background: #eee;
 }
 
