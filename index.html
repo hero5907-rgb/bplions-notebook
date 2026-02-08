@@ -386,31 +386,39 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 <!-- ===== MY PAGE ===== -->
 <section id="screenMy" class="screen" hidden>
 
-  <div class="card">
+  <div class="card my-card">
 
-    <div class="card-header">
-      <div class="card-title">MY</div>
-    </div>
+  <div class="card-header">
+    <div class="card-title">MY</div>
+  </div>
 
-    <div style="text-align:center;padding:20px">
+  <div class="my-header">
 
-      <img id="myAvatar"
-           style="width:90px;height:90px;border-radius:50%;object-fit:cover;background:#eee" />
+    <img id="myAvatar" class="my-avatar"/>
 
-      <div id="myName"
-           style="font-weight:800;font-size:18px;margin-top:10px"></div>
-
-      <div id="mySub"
-           style="color:#64748b;font-size:14px;margin-top:4px"></div>
-
-    </div>
-
-    <div class="list">
-      <div class="row" id="btnMyMessages">📩 개별메시지</div>
-      <div class="row" id="btnMyLogout">⏻ 로그아웃</div>
-    </div>
+    <div id="myName" class="my-name"></div>
+    <div id="mySub" class="my-sub"></div>
 
   </div>
+
+  <div class="list my-list">
+    <div class="row" id="btnMyMessages">📩 개별메시지</div>
+    <div class="row" id="btnMyLogout">⏻ 로그아웃</div>
+  </div>
+
+  <div class="my-footer">
+
+    <div class="my-foot-text">
+      내용 수정이 필요할시 회관으로 문의 바랍니다.
+    </div>
+
+    <button id="btnHallCall" class="btn primary">
+      📞 회관 전화 연결
+    </button>
+
+  </div>
+
+</div>
 
 </section>
 
