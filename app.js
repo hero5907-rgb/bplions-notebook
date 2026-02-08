@@ -199,7 +199,7 @@ const screens = {
   events: el("screenEvents"),   // ✅ 추가
   calendar: el("screenCalendar"), // 🔥 이 줄 추가
 lionism: el("screenLionism"),
-  ceremony: el("screenCeremony"),
+  ceremony: el("screenCeremony")
 
 };
 
