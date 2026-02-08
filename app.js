@@ -386,7 +386,7 @@ if (el("sloganText")) el("sloganText").textContent = slogan ? `${slogan}` : "";
 
 const club = (settings?.clubName ?? cfg.clubName ?? clubName);
 const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
-if (el("generationText")) el("generationText").textContent = term ? '${term} ${club}' : club;
+if (el("generationText")) el("generationText").textContent = term ? `${term} ${club}` : club;
 
 const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
 if (el("hallAddress")) el("hallAddress").textContent = addr ? `📍 ${addr}` : "";
@@ -419,7 +419,7 @@ const phone = state._authPhone || "";
 const code  = state._authCode || "";
 if (!phone || !code) { toast("다시 로그인 후 시도"); return; }
 
-const url = `${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}';
+const url = `${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}`;
 window.open(url, "_blank"); // 새 탭
 }
 
