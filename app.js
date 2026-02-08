@@ -948,7 +948,7 @@ if (btnMembersRefresh) {
       input.type = "password";
     }
 
-
+});
 
 
 
