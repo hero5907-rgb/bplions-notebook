@@ -1243,6 +1243,18 @@ swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
   const m = modalCtx.list[modalCtx.index];
   if (!m) return;
 
+
+
+// ⭐ 내정보일 때만 "내 메시지" 버튼 보이기
+const myMsgRow = el("myMessageRow");
+
+if (state.me && normalizePhone(m.phone) === normalizePhone(state.me.phone)) {
+  if (myMsgRow) myMsgRow.hidden = false;
+} else {
+  if (myMsgRow) myMsgRow.hidden = true;
+}
+
+
   // ✅ 멤버 데이터 주입
  const imgEl = el("modalPhoto");
 const newSrc = m.photoUrl || "";
