@@ -11,10 +11,13 @@
 
   // 두 손가락 확대 차단
   document.addEventListener("touchmove", e => {
-    if (e.touches && e.touches.length > 1) {
-      e.preventDefault();
-    }
-  }, { passive:false });
+
+  if(e.target.closest("#screenLogin")) return;
+
+  if (e.touches && e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive:false });
 
   // 더블탭 확대 차단
   let lastTouchEnd = 0;
@@ -22,10 +25,14 @@
 
   // 🔥 로그인 비번버튼은 터치 막지 않음
   // 🔥 로그인 입력 UI는 더블탭 차단 제외
-if(e.target.closest(".pw-toggle") ||
-   e.target.closest(".input") ||
-   e.target.closest(".checkline") ||
-   e.target.closest("#btnLogin")) return;
+// 🔥 로그인 화면은 터치 차단 제외 (핵심 수정)
+if(
+  e.target.closest("#screenLogin") ||
+  e.target.closest(".pw-toggle") ||
+  e.target.closest(".input") ||
+  e.target.closest(".checkline") ||
+  e.target.closest("#btnLogin")
+) return;
 
   const now = Date.now();
   if (now - lastTouchEnd <= 300) {
