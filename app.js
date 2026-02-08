@@ -357,7 +357,7 @@ if (/[대기회]/.test(gRaw)) return gRaw;
 
 // 숫자면 "대" 붙이기
 const n = parseInt(gRaw, 10);
-if (!Number.isNaN(n)) return ${n}대;
+if (!Number.isNaN(n)) return '${n}대';
 
 return gRaw;
 }
@@ -372,7 +372,7 @@ if (el("districtText2")) el("districtText2").textContent = district;
 
 if (el("genClubText")) {
 const term = formatTerm(settings?.term, settings?.generation || CFG.generation);
-el("genClubText").textContent = term ? ${term} ${clubName} : clubName;
+el("genClubText").textContent = term ? `${term} ${clubName}` : clubName;
 }
 
 if (el("districtText")) el("districtText").textContent = district;
@@ -386,7 +386,7 @@ if (el("sloganText")) el("sloganText").textContent = slogan ? “${slogan}” : 
 
 const club = (settings?.clubName ?? cfg.clubName ?? clubName);
 const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
-if (el("generationText")) el("generationText").textContent = term ? ${term} ${club} : club;
+if (el("generationText")) el("generationText").textContent = term ? '${term} ${club}' : club;
 
 const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
 if (el("hallAddress")) el("hallAddress").textContent = addr ? 📍 ${addr} : "";
@@ -410,7 +410,7 @@ if (el("bootSub")) el("bootSub").textContent = "회원수첩";
 if (el("loginTitleMain")) el("loginTitleMain").textContent = clubName;
 if (el("loginTitleSub")) el("loginTitleSub").textContent = "회원수첩";
 
-if (el("docTitle")) el("docTitle").textContent = ${clubName} 수첩;
+if (el("docTitle")) el("docTitle").textContent = '${clubName} 수첩';
 }
 
 function openAdminPage() {
@@ -419,7 +419,7 @@ const phone = state._authPhone || "";
 const code  = state._authCode || "";
 if (!phone || !code) { toast("다시 로그인 후 시도"); return; }
 
-const url = ${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)};
+const url = '${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}';
 window.open(url, "_blank"); // 새 탭
 }
 
