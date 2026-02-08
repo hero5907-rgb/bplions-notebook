@@ -736,14 +736,17 @@ will-change: transform;   /* ⭐ 이거 추가 */
 }
 
 .modal-close{
-  margin-top:6px;     /* 🔥 14 → 6 줄여서 위로 당김 */
-  width:100%;
-  height:46px;
+  margin-top:6px;
+  width:48%;              /* 🔥 100% → 반으로 */
+  height:42px;
   border:none;
-  border-radius:14px;
+  border-radius:12px;
   background:#0b4ea2;
   color:#fff;
   font-weight:900;
+
+  margin-left:auto;       /* 🔥 오른쪽 붙이기 */
+  display:block;
 }
 
 /* 📅 달력 요일 색상 */
@@ -1402,7 +1405,7 @@ body.modal-open{
 /* MY 상단 프로필 영역 */
 #screenMy .card > div:first-of-type{
   text-align:center;
-  padding:24px 10px 10px;
+  padding:20px 12px 14px;
 }
 
 /* 이름 */
@@ -1430,6 +1433,25 @@ body.modal-open{
 }
 
 
+.my-bottom-actions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
 
+.my-bottom-actions .a-btn{
+  flex:1;
+  height:42px;
+  border-radius:12px;
+}
+
+
+
+
+/* 🔥 MY 화면 흔들림 완전 차단 */
+#screenMy{
+  touch-action:pan-y;
+  overscroll-behavior:contain;
+}
 
 
