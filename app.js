@@ -2,12 +2,42 @@
 // ===============================
 // 🔒 모바일 줌 완전 차단 (전역)
 // ===============================
+// ===============================
+// 🔒 모바일 줌 완전 차단 (전역 - 안정버전)
+// ===============================
 (function blockZoom(){
 
-  // iOS / Android 공통
-  document.addEventListener("gesturestart", e => e.preventDefault(), { passive:false });
-  document.addEventListener("gesturechange", e => e.preventDefault(), { passive:false });
-  document.addEventListener("gestureend", e => e.preventDefault(), { passive:false });
+  // 두 손가락 확대 차단
+  document.addEventListener("touchmove", e => {
+
+    if(e.target.closest("#screenLogin")) return;
+
+    if (e.touches && e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive:false });
+
+  // 더블탭 확대 차단
+  let lastTouchEnd = 0;
+  document.addEventListener("touchend", e => {
+
+    if(
+      e.target.closest("#screenLogin") ||
+      e.target.closest(".pw-toggle") ||
+      e.target.closest(".input") ||
+      e.target.closest(".checkline") ||
+      e.target.closest("#btnLogin")
+    ) return;
+
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+
+  }, false);
+
+})();
 
   // 두 손가락 확대 차단
   document.addEventListener("touchmove", e => {
