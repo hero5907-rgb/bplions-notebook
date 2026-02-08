@@ -2050,14 +2050,11 @@ function isKakaoInApp() {
 
 
 
-// 🔐 비번 보기/숨기기 (DOM 로드 후 실행)
-window.addEventListener("load", () => {
+// 🔐 비번 보기/숨기기 (최종 안정버전)
+const btnTogglePw = document.getElementById("btnTogglePw");
+const inputCode   = document.getElementById("inputCode");
 
-  const btnTogglePw = document.getElementById("btnTogglePw");
-  const inputCode   = document.getElementById("inputCode");
-
-  if(!btnTogglePw || !inputCode) return;
-
+if(btnTogglePw && inputCode){
   btnTogglePw.addEventListener("click", () => {
 
     if(inputCode.type === "password"){
@@ -2069,8 +2066,7 @@ window.addEventListener("load", () => {
     }
 
   });
-
-});
+}
 
 
 
