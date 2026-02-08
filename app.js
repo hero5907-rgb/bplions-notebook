@@ -1435,6 +1435,35 @@ document.body.classList.add("modal-open");
 
 // 카드 흔들림 힌트
 const card = el("profileModal")?.querySelector(".modal-card");
+
+const isMy =
+  state.me &&
+  normalizePhone(m.phone) === normalizePhone(state.me.phone);
+
+// ⭐ MY일 때 기능 제거
+if(isMy){
+
+  // 좌우 스와이프 비활성
+  modalCtx.list = [m];
+  modalCtx.index = 0;
+
+  // 흔들림 제거
+  card?.classList.remove("swipe-hint");
+
+  // 토스트 완전 차단
+  localStorage.setItem("memberSwipeHint","1");
+
+  // 통화/문자 버튼 숨김
+  const actions = el("profileModal")?.querySelector(".modal-actions");
+  if(actions) actions.style.display = "none";
+
+}else{
+
+  const actions = el("profileModal")?.querySelector(".modal-actions");
+  if(actions) actions.style.display = "";
+}
+
+
 if (card) {
   card.classList.remove("swipe-hint");
   setTimeout(()=> card.classList.add("swipe-hint"), 120);
