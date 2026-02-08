@@ -1431,9 +1431,7 @@ if(isMy){
 
   // ⭐ MY 모드 (내정보)
 
-  // 좌우 스와이프 완전 차단
-  modalCtx.list = [m];
-  modalCtx.index = 0;
+ 
 
   // 흔들림 제거
   card?.classList.remove("swipe-hint");
@@ -1497,7 +1495,7 @@ if(isMy){
   if(actions) actions.style.display = "";
 
 
-if (card) {
+if (card && !isMy) {
   card.classList.remove("swipe-hint");
   setTimeout(()=> card.classList.add("swipe-hint"), 120);
   setTimeout(()=> card.classList.remove("swipe-hint"), 900);
@@ -1505,7 +1503,7 @@ if (card) {
 
 
 // 첫 1회 토스트
-if (!localStorage.getItem("memberSwipeHint")) {
+if (!isMy && !localStorage.getItem("memberSwipeHint")) {
   setTimeout(()=>{
 
   // ⭐ 강제로 toast 잠금 해제
