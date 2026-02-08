@@ -1374,9 +1374,7 @@ body.modal-open{
   transform:translateY(-50%) scale(.9);
 }
 
-.pw-wrap{
-  margin-top:10px;
-}
+
 
 
 /* 🔥 로그인 라벨만 왼쪽정렬 강제 */
