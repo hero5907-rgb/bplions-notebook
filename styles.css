@@ -1088,7 +1088,7 @@ will-change: transform;   /* ⭐ 이거 추가 */
   font-size: 16px;
 }
 
-#btnAdmin { display: none; }
+
 
 /* ===== 회원명부 새로고침(↻) 아이콘 버튼 ===== */
 #screenMembers .icon-btn.small{
