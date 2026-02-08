@@ -1,13 +1,14 @@
 
 //===========================
-// 🔒 모바일 줌 완전 차단 (전역 - 안정버전)
+// 🔒 모바일 줌 완전 차단 (전역 - 최종 안정버전)
 // ===============================
 (function blockZoom(){
 
-  // 두 손가락 확대 차단
+  // 두손가락 확대 차단
   document.addEventListener("touchmove", e => {
 
-    if(e.target.closest("#screenLogin")) return;
+    // ⭐ 로그인 화면은 허용
+    if (e.target.closest("#screenLogin")) return;
 
     if (e.touches && e.touches.length > 1) {
       e.preventDefault();
@@ -16,23 +17,18 @@
 
   // 더블탭 확대 차단
   let lastTouchEnd = 0;
+
   document.addEventListener("touchend", e => {
 
-  // ⭐ 로그인 화면에서는 절대 차단하지 않음 (핵심)
-  if (e.target.closest("#screenLogin")) return;
-
-  const now = Date.now();
-  if (now - lastTouchEnd <= 300) {
-    e.preventDefault();
-  }
-  lastTouchEnd = now;
-
-}, false);
+    // ⭐ 로그인 화면은 허용
+    if (e.target.closest("#screenLogin")) return;
 
     const now = Date.now();
+
     if (now - lastTouchEnd <= 300) {
       e.preventDefault();
     }
+
     lastTouchEnd = now;
 
   }, false);
