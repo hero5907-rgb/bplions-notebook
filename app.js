@@ -942,9 +942,9 @@ if (btnMembersRefresh) {
 
 
   // 로그인 버튼 / 엔터
-  setTimeout(()=>{
+  window.addEventListener("DOMContentLoaded", () => {
   el("btnLogin")?.addEventListener("click", handleLogin);
-},0);
+});
 
 
 // ✅ 상단 이름 터치 → MY 페이지
