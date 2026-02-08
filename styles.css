@@ -1382,3 +1382,48 @@ body.modal-open{
   text-align:left !important;
   display:block;
 }
+
+
+
+/* ===================================
+   🔥 MY 페이지 레이아웃 안정화 (북포항앱 전용)
+=================================== */
+
+/* MY 프로필 이미지 강제 고정 */
+#myAvatar{
+  width:90px !important;
+  height:90px !important;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin:0 auto;
+}
+
+/* MY 상단 프로필 영역 */
+#screenMy .card > div:first-of-type{
+  text-align:center;
+  padding:24px 10px 10px;
+}
+
+/* 이름 */
+#myName{
+  font-size:20px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+/* 직위 / 그룹 */
+#mySub{
+  font-size:14px;
+  color:#64748b;
+  margin-top:4px;
+}
+
+/* MY 메뉴 카드 느낌 업그레이드 */
+#screenMy .row{
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid #e5eaf3;
+  font-weight:700;
+  justify-content:center;
+}
