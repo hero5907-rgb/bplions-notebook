@@ -18,13 +18,16 @@
   let lastTouchEnd = 0;
   document.addEventListener("touchend", e => {
 
-    if(
-      e.target.closest("#screenLogin") ||
-      e.target.closest(".pw-toggle") ||
-      e.target.closest(".input") ||
-      e.target.closest(".checkline") ||
-      e.target.closest("#btnLogin")
-    ) return;
+  // ⭐ 로그인 화면에서는 절대 차단하지 않음 (핵심)
+  if (e.target.closest("#screenLogin")) return;
+
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault();
+  }
+  lastTouchEnd = now;
+
+}, false);
 
     const now = Date.now();
     if (now - lastTouchEnd <= 300) {
