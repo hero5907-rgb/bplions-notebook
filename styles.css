@@ -1391,12 +1391,12 @@ body.modal-open{
 
 /* MY 프로필 이미지 강제 고정 */
 #myAvatar{
-  width:90px !important;
-  height:90px !important;
-  border-radius:50%;
+  width:160px !important;
+  height:160px !important;
+  border-radius:18px;
   object-fit:cover;
   display:block;
-  margin:0 auto;
+  margin:6px auto 0;
 }
 
 /* MY 상단 프로필 영역 */
@@ -1409,13 +1409,14 @@ body.modal-open{
 #myName{
   font-size:20px;
   font-weight:900;
-  margin-top:12px;
+  margin-top:14px;
 }
 
 /* 직위 / 그룹 */
 #mySub{
-  font-size:14px;
-  color:#64748b;
+  font-size:15px;
+  font-weight:700;
+  color:#475569;
   margin-top:4px;
 }
 
@@ -1427,3 +1428,15 @@ body.modal-open{
   font-weight:700;
   justify-content:center;
 }
+
+
+/* ===== MY 전화버튼 축소 ===== */
+#screenMy .btn.primary{
+  width:70%;
+  height:40px;
+  font-size:14px;
+  border-radius:14px;
+  margin:14px auto 0;
+  display:block;
+}
+
