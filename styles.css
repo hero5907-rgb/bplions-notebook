@@ -1430,13 +1430,6 @@ body.modal-open{
 }
 
 
-/* ===== MY 전화버튼 축소 ===== */
-#screenMy .btn.primary{
-  width:70%;
-  height:40px;
-  font-size:14px;
-  border-radius:14px;
-  margin:14px auto 0;
-  display:block;
-}
+
+
 
