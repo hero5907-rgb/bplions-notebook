@@ -1350,6 +1350,8 @@ body.modal-open{
 /* ===== 비번 보기 버튼 ===== */
 .pw-wrap{
   position:relative;
+  display:block;   /* ⭐ 이거 추가 */
+  width:100%;      /* ⭐ 이거 추가 */
 }
 
 .pw-wrap .input{
