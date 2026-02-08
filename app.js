@@ -389,10 +389,10 @@ const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?
 if (el("generationText")) el("generationText").textContent = term ? '${term} ${club}' : club;
 
 const addr = (settings?.address ?? settings?.hallAddress ?? cfg.address ?? cfg.hallAddress ?? "");
-if (el("hallAddress")) el("hallAddress").textContent = addr ? 📍 ${addr} : "";
+if (el("hallAddress")) el("hallAddress").textContent = addr ? `📍 ${addr}` : "";
 
 const phone = (settings?.phone ?? settings?.hallPhone ?? cfg.phone ?? cfg.hallPhone ?? "");
-if (el("hallPhone")) el("hallPhone").textContent = phone ? ☎ ${phone} : "";
+if (el("hallPhone")) el("hallPhone").textContent = phone ? `☎ ${phone}` : "";
 
 const cr = (settings?.copyright ?? cfg.copyright ?? "");
 if (el("copyrightText")) el("copyrightText").textContent = cr;
