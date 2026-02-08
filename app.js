@@ -199,6 +199,7 @@ const screens = {
   calendar: el("screenCalendar"), // 🔥 이 줄 추가
 lionism: el("screenLionism"),
   ceremony: el("screenCeremony"),
+my: el("screenMy"),
 
 };
 
@@ -457,6 +458,22 @@ function setBrand(settings) {
   if (el("docTitle")) el("docTitle").textContent = `${clubName} 수첩`;
 }
 
+// ===== MY PAGE 렌더 =====
+function renderMyPage(){
+  const me = state.me || {};
+
+  if (el("myName"))
+    el("myName").textContent = `${me.name || ""} L`;
+
+  if (el("mySub"))
+    el("mySub").textContent =
+      [me.position, me.group].filter(Boolean).join(" · ");
+
+  const img = el("myAvatar");
+  if (img){
+    img.src = me.photoUrl || "";
+  }
+}
 
 
 function openAdminPage() {
@@ -939,6 +956,25 @@ if (btnMembersRefresh) {
 
   // 로그인 버튼 / 엔터
   el("btnLogin")?.addEventListener("click", handleLogin);
+
+
+// ✅ 상단 이름 터치 → MY 페이지
+el("loginUserName")?.addEventListener("click", ()=>{
+  if(!state.me) return;
+  renderMyPage();
+  pushNav("my");
+});
+
+// ✅ MY 로그아웃 버튼
+el("btnMyLogout")?.addEventListener("click", ()=>{
+  btnLogout?.click();
+});
+
+// ✅ 개별메시지 (지금은 자리만)
+el("btnMyMessages")?.addEventListener("click", ()=>{
+  toast("준비중입니다");
+});
+
 
 // 🔐 접속코드 보기/숨기기 (⭐ 여기 추가)
   el("btnTogglePw")?.addEventListener("click", () => {
