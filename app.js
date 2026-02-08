@@ -199,7 +199,6 @@ const screens = {
   calendar: el("screenCalendar"), // 🔥 이 줄 추가
 lionism: el("screenLionism"),
   ceremony: el("screenCeremony"),
-my: el("screenMy"),
 
 };
 
@@ -458,22 +457,7 @@ function setBrand(settings) {
   if (el("docTitle")) el("docTitle").textContent = `${clubName} 수첩`;
 }
 
-// ===== MY PAGE 렌더 =====
-function renderMyPage(){
-  const me = state.me || {};
 
-  if (el("myName"))
-    el("myName").textContent = `${me.name || ""} L`;
-
-  if (el("mySub"))
-    el("mySub").textContent =
-      [me.position, me.group].filter(Boolean).join(" · ");
-
-  const img = el("myAvatar");
-  if (img){
-    img.src = me.photoUrl || "";
-  }
-}
 
 
 function openAdminPage() {
