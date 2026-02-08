@@ -1374,3 +1374,6 @@ body.modal-open{
   transform:translateY(-50%) scale(.9);
 }
 
+.pw-wrap{
+  margin-top:10px;
+}
