@@ -1427,21 +1427,69 @@ const isMy =
 // ⭐ MY일 때 기능 제거
 if(isMy){
 
-  // 좌우 스와이프 비활성
+  // ⭐ MY 모드 (내정보)
+
+  // 좌우 스와이프 완전 차단
   modalCtx.list = [m];
   modalCtx.index = 0;
 
   // 흔들림 제거
   card?.classList.remove("swipe-hint");
 
-  // 토스트 완전 차단
+  // 토스트 영구 차단
   localStorage.setItem("memberSwipeHint","1");
 
-  // 통화/문자 버튼 숨김
-  const actions = el("profileModal")?.querySelector(".modal-actions");
-  if(actions) actions.style.display = "none";
+  // ===== 통화/문자 버튼 숨김 =====
+  const callBtn = el("modalCall");
+  const smsBtn  = el("modalSms");
+
+  if(callBtn) callBtn.style.display = "none";
+  if(smsBtn)  smsBtn.style.display = "none";
+
+  // ===== 안내문구 + 회관버튼 =====
+  const phoneEl = el("modalPhone");
+
+  const hallPhone =
+    state.settings?.phone ||
+    state.settings?.hallPhone ||
+    "";
+
+  if(phoneEl){
+
+    phoneEl.innerHTML = `
+      <div style="
+        margin-top:14px;
+        font-size:13px;
+        color:#64748b;
+        text-align:center;
+      ">
+        내용 수정이 필요한 경우 회관으로 문의하시기 바랍니다.
+      </div>
+
+      <div style="
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        margin-top:8px;
+      ">
+        <a class="a-btn small primary"
+           href="tel:${hallPhone}">
+           ☎ 회관연결
+        </a>
+      </div>
+    `;
+  }
 
 }else{
+
+  // ⭐ 일반 회원 상세페이지 (원래대로)
+  const callBtn = el("modalCall");
+  const smsBtn  = el("modalSms");
+
+  if(callBtn) callBtn.style.display = "";
+  if(smsBtn)  smsBtn.style.display = "";
+
+}
 
   const actions = el("profileModal")?.querySelector(".modal-actions");
   if(actions) actions.style.display = "";
