@@ -963,8 +963,15 @@ if (btnMembersRefresh) {
 // ✅ 상단 이름 터치 → MY 페이지
 el("loginUserName")?.addEventListener("click", ()=>{
   if(!state.me) return;
-  renderMyPage();
-  pushNav("my");
+
+  // ⭐ 내정보 바로 프로필모달로
+  const meIndex = state.members.findIndex(
+    m => normalizePhone(m.phone) === normalizePhone(state.me.phone)
+  );
+
+  if(meIndex >= 0){
+    openProfileAt(state.members, meIndex);
+  }
 });
 
 // ✅ MY 로그아웃 버튼
