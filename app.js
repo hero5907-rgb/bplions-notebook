@@ -935,6 +935,24 @@ if (btnMembersRefresh) {
 
   // 로그인 버튼 / 엔터
   el("btnLogin")?.addEventListener("click", handleLogin);
+
+// 🔐 접속코드 보기/숨기기 (⭐ 여기 추가)
+  el("btnTogglePw")?.addEventListener("click", () => {
+
+    const input = el("inputCode");
+    if (!input) return;
+
+    if (input.type === "password") {
+      input.type = "text";
+    } else {
+      input.type = "password";
+    }
+
+
+
+
+
+
   ["inputPhone", "inputCode"].forEach((id) => {
     el(id)?.addEventListener("keydown", (e) => {
       if (e.key === "Enter") handleLogin();
