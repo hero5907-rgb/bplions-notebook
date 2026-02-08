@@ -23,7 +23,9 @@ if(
   e.target.closest(".pw-toggle") ||  
   e.target.closest(".input") ||  
   e.target.closest(".checkline") ||  
-  e.target.closest("#btnLogin")  
+  e.target.closest("#btnLogin") ||
+e.target.closest("button")
+  
 ) return;  
 
 const now = Date.now();  
