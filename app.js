@@ -2050,23 +2050,5 @@ function isKakaoInApp() {
 
 
 
-// 🔐 비번 보기/숨기기 (최종 안정버전)
-const btnTogglePw = document.getElementById("btnTogglePw");
-const inputCode   = document.getElementById("inputCode");
-
-if(btnTogglePw && inputCode){
-  btnTogglePw.addEventListener("click", () => {
-
-    if(inputCode.type === "password"){
-      inputCode.type = "text";
-      btnTogglePw.textContent = "🙈";
-    }else{
-      inputCode.type = "password";
-      btnTogglePw.textContent = "👁";
-    }
-
-  });
-}
-
 
 
