@@ -19,12 +19,17 @@
   // 더블탭 확대 차단
   let lastTouchEnd = 0;
   document.addEventListener("touchend", e => {
-    const now = Date.now();
-    if (now - lastTouchEnd <= 300) {
-      e.preventDefault();
-    }
-    lastTouchEnd = now;
-  }, false);
+
+  // 🔥 로그인 비번버튼은 터치 막지 않음
+  if(e.target.closest("#btnTogglePw")) return;
+
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault();
+  }
+  lastTouchEnd = now;
+
+}, false);
 
 })();
 
