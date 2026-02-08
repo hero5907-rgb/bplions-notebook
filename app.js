@@ -1496,7 +1496,6 @@ if(isMy){
 
   const actions = el("profileModal")?.querySelector(".modal-actions");
   if(actions) actions.style.display = "";
-}
 
 
 if (card) {
