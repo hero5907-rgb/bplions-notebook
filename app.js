@@ -472,7 +472,7 @@ return true;
 
 function formatPhone(p){
 const n = String(p||"").replace(/[^0-9]/g,"");
-if(n.length===11) return ${n.slice(0,3)}-${n.slice(3,7)}-${n.slice(7)};
+if(n.length===11) return `${n.slice(0,3)}-${n.slice(3,7)}-${n.slice(7)}`;
 return n;
 }
 
