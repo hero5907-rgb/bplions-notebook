@@ -357,7 +357,7 @@ if (/[대기회]/.test(gRaw)) return gRaw;
 
 // 숫자면 "대" 붙이기
 const n = parseInt(gRaw, 10);
-if (!Number.isNaN(n)) return '${n}대';
+if (!Number.isNaN(n)) return `${n}대`;
 
 return gRaw;
 }
@@ -382,7 +382,7 @@ if (el("coverSub")) el("coverSub").textContent = district;
 if (el("districtHomeText")) el("districtHomeText").textContent = district;
 
 const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
-if (el("sloganText")) el("sloganText").textContent = slogan ? “${slogan}” : "";
+if (el("sloganText")) el("sloganText").textContent = slogan ? `${slogan}` : "";
 
 const club = (settings?.clubName ?? cfg.clubName ?? clubName);
 const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
@@ -410,7 +410,7 @@ if (el("bootSub")) el("bootSub").textContent = "회원수첩";
 if (el("loginTitleMain")) el("loginTitleMain").textContent = clubName;
 if (el("loginTitleSub")) el("loginTitleSub").textContent = "회원수첩";
 
-if (el("docTitle")) el("docTitle").textContent = '${clubName} 수첩';
+if (el("docTitle")) el("docTitle").textContent = `${clubName} 수첩`;
 }
 
 function openAdminPage() {
@@ -419,7 +419,7 @@ const phone = state._authPhone || "";
 const code  = state._authCode || "";
 if (!phone || !code) { toast("다시 로그인 후 시도"); return; }
 
-const url = '${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}';
+const url = `${API_URL}?page=admin&phone=${encodeURIComponent(phone)}&code=${encodeURIComponent(code)}';
 window.open(url, "_blank"); // 새 탭
 }
 
@@ -1237,7 +1237,7 @@ if (phoneEl) {
 const p = String(m.phone || "").replace(/[^0-9]/g, "");
 if (p.length === 11) {
 phoneEl.textContent =
-${p.slice(0,3)}-${p.slice(3,7)}-${p.slice(7)};
+`${p.slice(0,3)}-${p.slice(3,7)}-${p.slice(7)}`;
 } else {
 phoneEl.textContent = p;
 }
