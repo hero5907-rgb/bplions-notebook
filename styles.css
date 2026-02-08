@@ -1377,3 +1377,10 @@ body.modal-open{
 .pw-wrap{
   margin-top:10px;
 }
+
+
+/* 🔥 로그인 라벨만 왼쪽정렬 강제 */
+#screenLogin .form .label{
+  text-align:left !important;
+  display:block;
+}
