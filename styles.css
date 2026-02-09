@@ -1455,3 +1455,41 @@ body.modal-open{
 }
 
 
+/* ===================================
+   🔥 MY PAGE 전용 액션바 (profileModal)
+=================================== */
+
+/* myActionBar 기본 레이아웃 */
+#myActionBar{
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 버튼 공통 */
+#myActionBar .btn{
+  flex: 1;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 0;          /* 기존 .btn margin-top 제거 */
+}
+
+/* 내 정보 수정 */
+#myActionBar .btn.primary{
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue2) 100%);
+  color: #fff;
+}
+
+/* 로그아웃 */
+#myActionBar .btn:not(.primary){
+  background: #f1f5f9;
+  color: #0b1220;
+  border: 1px solid #e5eaf3;
+}
+
+/* 회원용 액션과 시각적 분리 */
+#myActionBar{
+  padding-top: 8px;
+  border-top: 1px dashed #e5eaf3

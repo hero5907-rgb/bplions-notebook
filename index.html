@@ -387,6 +387,9 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 <!-- ===== 프로필 확대 팝업 ===== -->
+
+
+
 <div id="profileModal" class="modal" hidden>
 
   <div class="modal-backdrop" onclick="closeProfile()"></div>
@@ -423,10 +426,12 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
     </div>
 
 
-<!-- ⭐ 내정보 전용 (내 프로필일 때만 보임) -->
-<div class="modal-actions" id="myMessageRow" hidden>
-  
+<!-- ⭐ MY PAGE 전용 액션바 (내 이름 클릭 시) -->
+<div id="myActionBar" class="modal-actions my-actions" hidden>
+  <button id="btnMyEdit" class="btn primary">내 정보 수정</button>
+  <button id="btnMyLogout" class="btn">로그아웃</button>
 </div>
+
 
 
     <button class="modal-close" onclick="closeProfile()">닫기</button>

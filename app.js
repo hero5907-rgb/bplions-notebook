@@ -946,19 +946,19 @@ if (btnMembersRefresh) {
 });
 
 
-// ✅ 상단 이름 터치 → MY 페이지
 el("loginUserName")?.addEventListener("click", ()=>{
   if(!state.me) return;
 
-  // ⭐ 내정보 바로 프로필모달로
   const meIndex = state.members.findIndex(
     m => normalizePhone(m.phone) === normalizePhone(state.me.phone)
   );
 
   if(meIndex >= 0){
-    openProfileAt(state.members, meIndex);
+    // ⭐ 마이페이지 모드
+    openProfileAt(state.members, meIndex, { mode: "me" });
   }
 });
+
 
 // ✅ MY 로그아웃 버튼
 el("btnMyLogout")?.addEventListener("click", ()=>{
@@ -1263,7 +1263,9 @@ btnI?.addEventListener("click", () => {
 });
 
 
-function openProfileAt(list, index) {
+function openProfileAt(list, index, opts = {}) {
+  const mode = opts.mode || "member"; // "member" | "me"
+
 
 // 🔥 초기화 이후 swipeCount 다시 읽기
 swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
@@ -1276,14 +1278,6 @@ swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
 
 
 
-// ⭐ 내정보일 때만 "내 메시지" 버튼 보이기
-const myMsgRow = el("myMessageRow");
-
-if (state.me && normalizePhone(m.phone) === normalizePhone(state.me.phone)) {
-  if (myMsgRow) myMsgRow.hidden = false;
-} else {
-  if (myMsgRow) myMsgRow.hidden = true;
-}
 
 
   // ✅ 멤버 데이터 주입
@@ -1417,109 +1411,73 @@ el("profileModal").hidden = false;
 
 document.body.classList.add("modal-open");
 
-// ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐
 
-// 카드 흔들림 힌트
-const card = el("profileModal")?.querySelector(".modal-card");
 
-const isMy =
-  state.me &&
-  normalizePhone(m.phone) === normalizePhone(state.me.phone);
+// ===============================
+// ⭐ 마이페이지 / 회원상세 분기
+// ===============================
+const actions = el("profileModal")?.querySelector(".modal-actions");
+const myBar   = el("myActionBar");
 
-// ⭐ MY일 때 기능 제거
-if(isMy){
+if (mode === "me") {
 
-  // ⭐ MY 모드 (내정보)
+  // 🔹 마이페이지: 스와이프 비활성
+  modalCtx.list = [];
+  modalCtx.index = -1;
 
- 
+  // 🔹 통화 / 문자 숨김
+  if (el("modalCall")) el("modalCall").style.display = "none";
+  if (el("modalSms"))  el("modalSms").style.display  = "none";
 
-  // 흔들림 제거
-  card?.classList.remove("swipe-hint");
+  // 🔹 회원용 액션 숨김
+  if (actions) actions.style.display = "none";
 
-  // 토스트 영구 차단
-  localStorage.setItem("memberSwipeHint","1");
+  // 🔹 MY 버튼바 표시
+  if (myBar) myBar.hidden = false;
 
-  // ===== 통화/문자 버튼 숨김 =====
-  const callBtn = el("modalCall");
-  const smsBtn  = el("modalSms");
+} else {
 
-  if(callBtn) callBtn.style.display = "none";
-  if(smsBtn)  smsBtn.style.display = "none";
+  // 🔸 회원 상세: 기존 그대로
+  if (el("modalCall")) el("modalCall").style.display = "";
+  if (el("modalSms"))  el("modalSms").style.display  = "";
+  if (actions) actions.style.display = "";
+  if (myBar) myBar.hidden = true;
+}
 
-  // ===== 안내문구 + 회관버튼 =====
-  const phoneEl = el("modalPhone");
 
-  const hallPhone =
-    state.settings?.phone ||
-    state.settings?.hallPhone ||
-    "";
+// ⭐⭐⭐ 스와이프 힌트 (회원 상세에서만) ⭐⭐⭐
+if (mode === "member") {
 
-  if(phoneEl){
+  const card = el("profileModal")?.querySelector(".modal-card");
 
-    phoneEl.innerHTML = `
-      <div style="
-        margin-top:14px;
-        font-size:13px;
-        color:#64748b;
-        text-align:center;
-      ">
-        내용 수정이 필요한 경우 회관으로 문의하시기 바랍니다.
-      </div>
+  if (card && !localStorage.getItem("memberSwipeHint")) {
+    card.classList.remove("swipe-hint");
+    setTimeout(()=> card.classList.add("swipe-hint"), 120);
+    setTimeout(()=> card.classList.remove("swipe-hint"), 900);
 
-      <div style="
-        display:flex;
-        gap:8px;
-        justify-content:center;
-        margin-top:8px;
-      ">
-        <a class="a-btn small primary"
-           href="tel:${hallPhone}">
-           ☎ 회관연결
-        </a>
-      </div>
-    `;
+    setTimeout(()=>{
+      toast._lock = false;
+      toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
+        duration: 2500,
+        force: true
+      });
+      localStorage.setItem("memberSwipeHint","1");
+    }, 350);
   }
-
-}else{
-
-  // ⭐ 일반 회원 상세페이지 (원래대로)
-  const callBtn = el("modalCall");
-  const smsBtn  = el("modalSms");
-
-  if(callBtn) callBtn.style.display = "";
-  if(smsBtn)  smsBtn.style.display = "";
-
-}
-
-  const actions = el("profileModal")?.querySelector(".modal-actions");
-  if(actions) actions.style.display = "";
-
-
-if (card && !isMy) {
-  card.classList.remove("swipe-hint");
-  setTimeout(()=> card.classList.add("swipe-hint"), 120);
-  setTimeout(()=> card.classList.remove("swipe-hint"), 900);
 }
 
 
-// 첫 1회 토스트
-if (!isMy && !localStorage.getItem("memberSwipeHint")) {
-  setTimeout(()=>{
 
-  // ⭐ 강제로 toast 잠금 해제
-  toast._lock = false;
 
-  toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
-    duration:2500,
-    force:true
-  });
 
-    // ⭐ 여기 안으로 이동 (핵심)
-    localStorage.setItem("memberSwipeHint","1");
 
-  }, 350);
+
 }
-}
+
+
+
+
+
 
 function closeProfile() {
   el("profileModal").hidden = true;
