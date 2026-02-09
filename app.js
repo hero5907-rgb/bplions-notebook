@@ -2061,7 +2061,8 @@ function reloadAnnouncements(){
 // ===== 이름 5초 롱터치 중앙 애니메이션 (안정화 버전) =====
 window.addEventListener("load", () => {
 
-  const box = el("loginUserName");
+  const box = el("clubLogoSmall");   // 🔥 여기만 변경
+
   const overlay = el("holdOverlay");
   const circle = overlay?.querySelector("circle");
 
