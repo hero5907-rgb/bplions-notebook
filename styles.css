@@ -1495,17 +1495,32 @@ body.modal-open{
   border-top: 1px dashed #e5eaf3
 
 
+/* ===================================
+   공용 규칙: 닫기 버튼은 기본 중앙 정렬
+   (MY 페이지 제외)
+=================================== */
 
-/* ===============================
-   회원 상세 팝업 닫기 버튼 가운데 정렬
-   (마이페이지 제외)
-=============================== */
-#profileModal .modal-actions {
-  display: flex;
-  justify-content: center;   /* 가운데 정렬 */
-  gap: 10px;
+/* 모든 모달 닫기 버튼 기본값 */
+.modal .modal-close{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 60%;
 }
 
-#profileModal .modal-actions .btn-close {
-  width: 140px;              /* 보기 좋게 */
+
+
+
+/* ===================================
+   예외: MY 페이지는 기존 레이아웃 유지
+=================================== */
+
+#screenMy .modal-close,
+#profileModal #myActionBar .modal-close{
+  width: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
+
+
+
