@@ -1318,9 +1318,10 @@ body.modal-open {
 
 
 html, body {
-  touch-action: none;
+  touch-action: manipulation;   /* 🔥 클릭은 살리고 확대만 차단 */
   overscroll-behavior: none;
 }
+
 
 
 
