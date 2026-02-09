@@ -1493,3 +1493,19 @@ body.modal-open{
 #myActionBar{
   padding-top: 8px;
   border-top: 1px dashed #e5eaf3
+
+
+
+/* ===============================
+   회원 상세 팝업 닫기 버튼 가운데 정렬
+   (마이페이지 제외)
+=============================== */
+#profileModal .modal-actions {
+  display: flex;
+  justify-content: center;   /* 가운데 정렬 */
+  gap: 10px;
+}
+
+#profileModal .modal-actions .btn-close {
+  width: 140px;              /* 보기 좋게 */
+}
