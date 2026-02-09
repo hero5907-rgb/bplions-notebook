@@ -745,7 +745,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
   color:#fff;
   font-weight:900;
 
-  margin-left:auto;       /* 🔥 오른쪽 붙이기 */
+
   display:block;
 }
 
