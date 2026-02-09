@@ -1517,31 +1517,33 @@ function closeProfile() {
 
 
 // ===============================
-// 👋 카드 흔들림 (iOS 완전 보장 버전)
+// 👋 카드 흔들림 (iOS Safari 완전 해결)
 // ===============================
 function shakeCard(dir){
   const card = el("profileModal")?.querySelector(".modal-card");
   if (!card) return;
 
-  // 🔥 기존 CSS animation / transform 완전 무시
+  // 기존 애니메이션 제거
   if (card.getAnimations) {
     card.getAnimations().forEach(a => a.cancel());
   }
 
-  const dx = dir > 0 ? -12 : 12;
+  const dx = dir > 0 ? -14 : 14;
 
   card.animate(
     [
-      { transform: "translateX(0)" },
+      { transform: "translateX(0px)" },
       { transform: `translateX(${dx}px)` },
-      { transform: "translateX(0)" }
+      { transform: "translateX(0px)" }
     ],
     {
       duration: 220,
-      easing: "ease-out"
+      easing: "ease-out",
+      composite: "add"   // 🔥🔥🔥 이게 핵심
     }
   );
 }
+
 
 
 
