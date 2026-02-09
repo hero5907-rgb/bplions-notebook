@@ -1358,10 +1358,4 @@ html, body {
 }
 
 
-#loginUserName{
-  pointer-events: auto !important;
-  cursor: pointer;
-  z-index: 20;
-}
-
 
