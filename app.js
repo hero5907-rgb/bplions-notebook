@@ -29,6 +29,43 @@
 })();
 
 
+function hardResetApp() {
+  if (!confirm("앱을 초기화하고 로그인 화면으로 이동합니다.\n계속할까요?")) return;
+
+  // 🔹 로그인 정보 제거
+  localStorage.removeItem(LS_KEY);
+
+  // 🔹 상태 초기화
+  state = {
+    me: null,
+    settings: null,
+    members: [],
+    announcements: [],
+    navStack: ["login"],
+  };
+
+  // 🔹 관리자 버튼 제거
+  setAdminButton(false);
+  const tileAdmin = el("tileAdmin");
+  if (tileAdmin) {
+    tileAdmin.hidden = true;
+    tileAdmin.onclick = null;
+  }
+
+  // 🔹 로그인 사용자 이름 숨김
+  const nameBox = el("loginUserName");
+  if (nameBox) {
+    nameBox.hidden = true;
+    nameBox.textContent = "";
+  }
+
+  document.body.classList.remove("logged-in");
+
+  // 🔹 화면 전환
+  showScreen("login");
+
+  toast("앱이 초기화되었습니다", { force: true });
+}
 
 
 
@@ -917,6 +954,16 @@ setAdminButton(false);
 
 
 
+const logo = el("clubLogoSmall");
+if (logo) {
+  logo.addEventListener("contextmenu", (e) => {
+    // ✅ Ctrl + 우클릭만 허용
+    if (e.ctrlKey) {
+      e.preventDefault(); // 기본 우클릭 메뉴 차단
+      hardResetApp();
+    }
+  });
+}
 
 
 
