@@ -259,14 +259,21 @@ function toast(msg, opts = {}) {
 
 
 function showScreen(name) {
- 
-stopCeremony();   // 🔥 화면 이동시 무조건 정지
- Object.entries(screens).forEach(([k, node]) => {
+
+  stopCeremony();   // 🔥 화면 이동시 무조건 정지
+
+  Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
     node.hidden = (k !== name);
   });
 
   const isLoggedIn = !!state.me;
+
+  // 🔒 로그인 사용자 이름 표시 상태 고정 (⭐ 반드시 return 위!)
+  const nameBox = el("loginUserName");
+  if (nameBox) {
+    nameBox.hidden = !state.me;
+  }
 
   if (name === "boot" || name === "login") {
     if (btnLogout) btnLogout.hidden = true;
@@ -282,14 +289,9 @@ stopCeremony();   // 🔥 화면 이동시 무조건 정지
     clearTimeout(homeBackTimer);
     homeBackTimer = null;
   }
-
-  // 🔒 로그인 사용자 이름 표시 상태 고정 (⭐ 이 줄이 핵심)
-  const nameBox = el("loginUserName");
-  if (nameBox) {
-    nameBox.hidden = !state.me;
-  }
-
 }
+
+
 
 function pushNav(name) {
   state.navStack.push(name);
