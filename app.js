@@ -1515,23 +1515,33 @@ function closeProfile() {
   document.body.classList.remove("modal-open");
 }
 
+
+// ===============================
+// 👋 카드 흔들림 (항상 재실행 보장)
+// ===============================
+function shakeCard(dir){
+  const card = el("profileModal")?.querySelector(".modal-card");
+  if (!card) return;
+
+  // 🔥 animation 리셋 (두 번째부터 안 도는 문제 해결)
+  card.style.animation = "none";
+  card.offsetHeight; // reflow
+
+  card.style.animation =
+    dir > 0
+      ? "shakeLeft 0.22s ease"
+      : "shakeRight 0.22s ease";
+
+  // 다음 실행 대비 정리
+  setTimeout(() => {
+    card.style.animation = "";
+  }, 250);
+}
+
+
+
 function nextMember(dir) {
   if (!modalCtx.list.length) return;
-
-  // ===============================
-  // 👋 스와이프 미세 떨림 (항상 실행)
-  // ===============================
-  const card = el("profileModal")?.querySelector(".modal-card");
-  if (card) {
-    card.classList.remove("shake-left", "shake-right");
-    void card.offsetWidth; // ⭐ reflow 강제 (핵심)
-
-    card.classList.add(dir > 0 ? "shake-left" : "shake-right");
-
-    setTimeout(() => {
-      card.classList.remove("shake-left", "shake-right");
-    }, 220);
-  }
 
   // ===============================
   // 실제 이동 계산
@@ -1540,20 +1550,22 @@ function nextMember(dir) {
   if (n < 0) n = 0;
   if (n >= modalCtx.list.length) n = modalCtx.list.length - 1;
 
-  // ❗ 이동 불가면 여기서 종료 (떨림은 이미 실행됨)
-  if (n === modalCtx.index) return;
+  // 이동 불가면 → 현재 카드만 흔들고 종료
+  if (n === modalCtx.index) {
+    shakeCard(dir);
+    return;
+  }
 
+  // 🔥 카드 먼저 교체
   openProfileAt(modalCtx.list, n);
 
-  // ===============================
-  // 힌트 카운트 관리
-  // ===============================
+  // 🔥 교체된 카드에 흔들림 적용 (핵심)
+  requestAnimationFrame(() => {
+    shakeCard(dir);
+  });
+
   swipeCount++;
   localStorage.setItem("memberSwipeCount", swipeCount);
-
-  if (swipeCount >= 3) {
-    localStorage.setItem("memberSwipeHint", "1");
-  }
 }
 
 
