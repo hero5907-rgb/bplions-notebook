@@ -1517,13 +1517,18 @@ function closeProfile() {
 
 
 // ===============================
-// 👋 카드 흔들림 (항상 재실행 보장)
+// 👋 카드 흔들림 (swipe-hint 충돌 완전 차단)
 // ===============================
 function shakeCard(dir){
   const card = el("profileModal")?.querySelector(".modal-card");
   if (!card) return;
 
-  // 🔥 animation 리셋 (두 번째부터 안 도는 문제 해결)
+  // 🔥 기존 실행 중인 모든 animation 강제 종료 (핵심)
+  if (card.getAnimations) {
+    card.getAnimations().forEach(a => a.cancel());
+  }
+
+  // 🔥 애니메이션 리셋
   card.style.animation = "none";
   card.offsetHeight; // reflow
 
@@ -1531,11 +1536,6 @@ function shakeCard(dir){
     dir > 0
       ? "shakeLeft 0.22s ease"
       : "shakeRight 0.22s ease";
-
-  // 다음 실행 대비 정리
-  setTimeout(() => {
-    card.style.animation = "";
-  }, 250);
 }
 
 
