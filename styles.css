@@ -1356,3 +1356,12 @@ html, body {
 #profileModal.mypage .modal-photo{
   margin-top: 12px;
 }
+
+
+#loginUserName{
+  pointer-events: auto !important;
+  cursor: pointer;
+  z-index: 20;
+}
+
+
