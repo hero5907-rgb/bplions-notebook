@@ -718,6 +718,36 @@ document.body.classList.add("logged-in");
 const nameBox = document.getElementById("loginUserName");
 const nameText = document.getElementById("loginUserNameText");
 
+
+// ===============================
+// 🔧 Ctrl + 우클릭 → 앱 초기화
+// ===============================
+nameBox?.addEventListener("contextmenu", (e) => {
+
+  // Ctrl 키 안 눌렸으면 그냥 무시
+  if (!e.ctrlKey) return;
+
+  // 기본 우클릭 메뉴 차단
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (!confirm("앱 캐시를 초기화하시겠습니까?")) return;
+
+  // 🔥 초기화 실행
+  localStorage.clear();
+
+  if (window.caches) {
+    caches.keys().then(keys => {
+      keys.forEach(k => caches.delete(k));
+    });
+  }
+
+  alert("초기화되었습니다. 다시 로그인하세요.");
+  location.reload();
+});
+
+
+
 if (nameBox && nameText && state.me?.name) {
   nameText.textContent = `${state.me.name} L`;
   nameBox.hidden = false;
