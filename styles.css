@@ -745,7 +745,8 @@ flex-direction: column;   /* 🔥 이거 추가 */
   color:#fff;
   font-weight:900;
 
-  margin: 0 auto;
+    margin: 14px auto 0;   /* 🔥 여기 */
+
 
   display:block;
 }
