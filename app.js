@@ -2184,4 +2184,47 @@ const HOLD_TIME  = 2000;   // 원형 애니메이션 2초
 
 function isKakaoInApp() {
   return /KAKAOTALK/i.test(navigator.userAgent);
+
 }
+
+
+
+// ===== Ctrl + 마우스 오른쪽 클릭 → 캐시 초기화 (PC 전용) =====
+window.addEventListener("load", () => {
+
+  const box = el("loginUserName");
+  if (!box) return;
+
+  box.addEventListener("contextmenu", (e) => {
+
+    // Ctrl + 우클릭만 허용
+    if (!e.ctrlKey) return;
+
+    // 기본 우클릭 메뉴 + 클릭 이벤트 차단
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (confirm("앱 캐시를 초기화하시겠습니까?")) {
+
+      localStorage.clear();
+
+      if (window.caches) {
+        caches.keys().then(keys => {
+          keys.forEach(k => caches.delete(k));
+        });
+      }
+
+      alert("초기화되었습니다. 다시 로그인하세요.");
+      location.reload();
+    }
+  });
+
+});
+
+
+
+
+
+
+
+
