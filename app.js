@@ -283,7 +283,11 @@ stopCeremony();   // 🔥 화면 이동시 무조건 정지
     homeBackTimer = null;
   }
 
-
+  // 🔒 로그인 사용자 이름 표시 상태 고정 (⭐ 이 줄이 핵심)
+  const nameBox = el("loginUserName");
+  if (nameBox) {
+    nameBox.hidden = !state.me;
+  }
 
 }
 
