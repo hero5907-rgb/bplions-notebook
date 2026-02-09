@@ -318,11 +318,16 @@ setAdminButton(false);
 
 
 // 🔕 로그인 사용자 이름 숨김
-const nameBox = document.getElementById("loginUserName");
 if (nameBox) {
   nameBox.hidden = true;
-  nameBox.textContent = "";
 }
+
+// 텍스트는 따로 초기화 (자식 span 기준)
+const nameText = document.getElementById("loginUserNameText");
+if (nameText) {
+  nameText.textContent = "";
+}
+
 
 
 document.body.classList.remove("logged-in"); // ← 이 줄
