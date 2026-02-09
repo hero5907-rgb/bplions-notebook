@@ -259,21 +259,14 @@ function toast(msg, opts = {}) {
 
 
 function showScreen(name) {
-
-  stopCeremony();   // 🔥 화면 이동시 무조건 정지
-
-  Object.entries(screens).forEach(([k, node]) => {
+ 
+stopCeremony();   // 🔥 화면 이동시 무조건 정지
+ Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
     node.hidden = (k !== name);
   });
 
   const isLoggedIn = !!state.me;
-
-  // 🔒 로그인 사용자 이름 표시 상태 고정 (⭐ 반드시 return 위!)
-  const nameBox = el("loginUserName");
-  if (nameBox) {
-    nameBox.hidden = !state.me;
-  }
 
   if (name === "boot" || name === "login") {
     if (btnLogout) btnLogout.hidden = true;
@@ -289,9 +282,10 @@ function showScreen(name) {
     clearTimeout(homeBackTimer);
     homeBackTimer = null;
   }
+
+
+
 }
-
-
 
 function pushNav(name) {
   state.navStack.push(name);
@@ -724,36 +718,6 @@ document.body.classList.add("logged-in");
 const nameBox = document.getElementById("loginUserName");
 const nameText = document.getElementById("loginUserNameText");
 
-
-// ===============================
-// 🔧 Ctrl + 우클릭 → 앱 초기화
-// ===============================
-nameBox?.addEventListener("contextmenu", (e) => {
-
-  // Ctrl 키 안 눌렸으면 그냥 무시
-  if (!e.ctrlKey) return;
-
-  // 기본 우클릭 메뉴 차단
-  e.preventDefault();
-  e.stopPropagation();
-
-  if (!confirm("앱 캐시를 초기화하시겠습니까?")) return;
-
-  // 🔥 초기화 실행
-  localStorage.clear();
-
-  if (window.caches) {
-    caches.keys().then(keys => {
-      keys.forEach(k => caches.delete(k));
-    });
-  }
-
-  alert("초기화되었습니다. 다시 로그인하세요.");
-  location.reload();
-});
-
-
-
 if (nameBox && nameText && state.me?.name) {
   nameText.textContent = `${state.me.name} L`;
   nameBox.hidden = false;
@@ -982,19 +946,19 @@ if (btnMembersRefresh) {
 });
 
 
+// ✅ 상단 이름 터치 → MY 페이지
 el("loginUserName")?.addEventListener("click", ()=>{
   if(!state.me) return;
 
+  // ⭐ 내정보 바로 프로필모달로
   const meIndex = state.members.findIndex(
     m => normalizePhone(m.phone) === normalizePhone(state.me.phone)
   );
 
   if(meIndex >= 0){
-    // ⭐ 마이페이지 모드
-    openProfileAt(state.members, meIndex, { mode: "me" });
+    openProfileAt(state.members, meIndex);
   }
 });
-
 
 // ✅ MY 로그아웃 버튼
 el("btnMyLogout")?.addEventListener("click", ()=>{
@@ -1299,9 +1263,7 @@ btnI?.addEventListener("click", () => {
 });
 
 
-function openProfileAt(list, index, opts = {}) {
-  const mode = opts.mode || "member"; // "member" | "me"
-
+function openProfileAt(list, index) {
 
 // 🔥 초기화 이후 swipeCount 다시 읽기
 swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
@@ -1314,6 +1276,14 @@ swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
 
 
 
+// ⭐ 내정보일 때만 "내 메시지" 버튼 보이기
+const myMsgRow = el("myMessageRow");
+
+if (state.me && normalizePhone(m.phone) === normalizePhone(state.me.phone)) {
+  if (myMsgRow) myMsgRow.hidden = false;
+} else {
+  if (myMsgRow) myMsgRow.hidden = true;
+}
 
 
   // ✅ 멤버 데이터 주입
@@ -1447,73 +1417,109 @@ el("profileModal").hidden = false;
 
 document.body.classList.add("modal-open");
 
+// ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐
 
+// 카드 흔들림 힌트
+const card = el("profileModal")?.querySelector(".modal-card");
 
-// ===============================
-// ⭐ 마이페이지 / 회원상세 분기
-// ===============================
-const actions = el("profileModal")?.querySelector(".modal-actions");
-const myBar   = el("myActionBar");
+const isMy =
+  state.me &&
+  normalizePhone(m.phone) === normalizePhone(state.me.phone);
 
-if (mode === "me") {
+// ⭐ MY일 때 기능 제거
+if(isMy){
 
-  // 🔹 마이페이지: 스와이프 비활성
-  modalCtx.list = [];
-  modalCtx.index = -1;
+  // ⭐ MY 모드 (내정보)
 
-  // 🔹 통화 / 문자 숨김
-  if (el("modalCall")) el("modalCall").style.display = "none";
-  if (el("modalSms"))  el("modalSms").style.display  = "none";
+ 
 
-  // 🔹 회원용 액션 숨김
-  if (actions) actions.style.display = "none";
+  // 흔들림 제거
+  card?.classList.remove("swipe-hint");
 
-  // 🔹 MY 버튼바 표시
-  if (myBar) myBar.hidden = false;
+  // 토스트 영구 차단
+  localStorage.setItem("memberSwipeHint","1");
 
-} else {
+  // ===== 통화/문자 버튼 숨김 =====
+  const callBtn = el("modalCall");
+  const smsBtn  = el("modalSms");
 
-  // 🔸 회원 상세: 기존 그대로
-  if (el("modalCall")) el("modalCall").style.display = "";
-  if (el("modalSms"))  el("modalSms").style.display  = "";
-  if (actions) actions.style.display = "";
-  if (myBar) myBar.hidden = true;
-}
+  if(callBtn) callBtn.style.display = "none";
+  if(smsBtn)  smsBtn.style.display = "none";
 
+  // ===== 안내문구 + 회관버튼 =====
+  const phoneEl = el("modalPhone");
 
-// ⭐⭐⭐ 스와이프 힌트 (회원 상세에서만) ⭐⭐⭐
-if (mode === "member") {
+  const hallPhone =
+    state.settings?.phone ||
+    state.settings?.hallPhone ||
+    "";
 
-  const card = el("profileModal")?.querySelector(".modal-card");
+  if(phoneEl){
 
-  if (card && !localStorage.getItem("memberSwipeHint")) {
-    card.classList.remove("swipe-hint");
-    setTimeout(()=> card.classList.add("swipe-hint"), 120);
-    setTimeout(()=> card.classList.remove("swipe-hint"), 900);
+    phoneEl.innerHTML = `
+      <div style="
+        margin-top:14px;
+        font-size:13px;
+        color:#64748b;
+        text-align:center;
+      ">
+        내용 수정이 필요한 경우 회관으로 문의하시기 바랍니다.
+      </div>
 
-    setTimeout(()=>{
-      toast._lock = false;
-      toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
-        duration: 2500,
-        force: true
-      });
-      localStorage.setItem("memberSwipeHint","1");
-    }, 350);
+      <div style="
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        margin-top:8px;
+      ">
+        <a class="a-btn small primary"
+           href="tel:${hallPhone}">
+           ☎ 회관연결
+        </a>
+      </div>
+    `;
   }
+
+}else{
+
+  // ⭐ 일반 회원 상세페이지 (원래대로)
+  const callBtn = el("modalCall");
+  const smsBtn  = el("modalSms");
+
+  if(callBtn) callBtn.style.display = "";
+  if(smsBtn)  smsBtn.style.display = "";
+
+}
+
+  const actions = el("profileModal")?.querySelector(".modal-actions");
+  if(actions) actions.style.display = "";
+
+
+if (card && !isMy) {
+  card.classList.remove("swipe-hint");
+  setTimeout(()=> card.classList.add("swipe-hint"), 120);
+  setTimeout(()=> card.classList.remove("swipe-hint"), 900);
 }
 
 
+// 첫 1회 토스트
+if (!isMy && !localStorage.getItem("memberSwipeHint")) {
+  setTimeout(()=>{
 
+  // ⭐ 강제로 toast 잠금 해제
+  toast._lock = false;
 
+  toast("좌우로 밀면 다음 회원을 볼 수 있어요", {
+    duration:2500,
+    force:true
+  });
 
+    // ⭐ 여기 안으로 이동 (핵심)
+    localStorage.setItem("memberSwipeHint","1");
 
-
+  }, 350);
 }
-
-
-
-
-
+}
 
 function closeProfile() {
   el("profileModal").hidden = true;
@@ -1521,68 +1527,24 @@ function closeProfile() {
   document.body.classList.remove("modal-open");
 }
 
-
-// ===============================
-// 👋 카드 흔들림 (iOS Safari 완전 해결)
-// ===============================
-function shakeCard(dir){
-  const card = el("profileModal")?.querySelector(".modal-card");
-  if (!card) return;
-
-  // 기존 애니메이션 제거
-  if (card.getAnimations) {
-    card.getAnimations().forEach(a => a.cancel());
-  }
-
-  const dx = dir > 0 ? -14 : 14;
-
-  card.animate(
-    [
-      { transform: "translateX(0px)" },
-      { transform: `translateX(${dx}px)` },
-      { transform: "translateX(0px)" }
-    ],
-    {
-      duration: 220,
-      easing: "ease-out",
-      composite: "add"   // 🔥🔥🔥 이게 핵심
-    }
-  );
-}
-
-
-
-
-
-
 function nextMember(dir) {
   if (!modalCtx.list.length) return;
 
-  // ===============================
-  // 실제 이동 계산
-  // ===============================
   let n = modalCtx.index + dir;
   if (n < 0) n = 0;
   if (n >= modalCtx.list.length) n = modalCtx.list.length - 1;
 
-  // 이동 불가면 → 현재 카드만 흔들고 종료
-  if (n === modalCtx.index) {
-    shakeCard(dir);
-    return;
-  }
-
-  // 🔥 카드 먼저 교체
+  if (n === modalCtx.index) return;
   openProfileAt(modalCtx.list, n);
+// ⭐ swipe 사용 횟수 기록
+swipeCount++;
+localStorage.setItem("memberSwipeCount", swipeCount);
 
-  // 🔥 교체된 카드에 흔들림 적용 (핵심)
-  requestAnimationFrame(() => {
-    shakeCard(dir);
-  });
-
-  swipeCount++;
-  localStorage.setItem("memberSwipeCount", swipeCount);
+// ⭐ 3번 넘기면 힌트 종료
+if (swipeCount >= 3) {
+  localStorage.setItem("memberSwipeHint","1");
 }
-
+}
 
 (function bindModalSwipe() {
   const modal = el("profileModal");
