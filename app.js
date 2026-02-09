@@ -1517,26 +1517,30 @@ function closeProfile() {
 
 
 // ===============================
-// 👋 카드 흔들림 (swipe-hint 충돌 완전 차단)
+// 👋 카드 흔들림 (매번 강제 실행)
 // ===============================
 function shakeCard(dir){
   const card = el("profileModal")?.querySelector(".modal-card");
   if (!card) return;
 
-  // 🔥 기존 실행 중인 모든 animation 강제 종료 (핵심)
+  // 🔥 1. 실행 중인 모든 애니메이션 강제 종료
   if (card.getAnimations) {
     card.getAnimations().forEach(a => a.cancel());
   }
 
-  // 🔥 애니메이션 리셋
+  // 🔥 2. animation 완전 제거
   card.style.animation = "none";
-  card.offsetHeight; // reflow
 
+  // 🔥 3. reflow 강제 (이 줄이 없으면 1번만 흔들림)
+  void card.offsetHeight;
+
+  // 🔥 4. 다시 애니메이션 적용
   card.style.animation =
     dir > 0
       ? "shakeLeft 0.22s ease"
       : "shakeRight 0.22s ease";
 }
+
 
 
 
