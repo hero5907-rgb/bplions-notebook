@@ -1518,21 +1518,44 @@ function closeProfile() {
 function nextMember(dir) {
   if (!modalCtx.list.length) return;
 
+  // ===============================
+  // 👋 스와이프 미세 떨림 (항상 실행)
+  // ===============================
+  const card = el("profileModal")?.querySelector(".modal-card");
+  if (card) {
+    card.classList.remove("shake-left", "shake-right");
+    void card.offsetWidth; // ⭐ reflow 강제 (핵심)
+
+    card.classList.add(dir > 0 ? "shake-left" : "shake-right");
+
+    setTimeout(() => {
+      card.classList.remove("shake-left", "shake-right");
+    }, 220);
+  }
+
+  // ===============================
+  // 실제 이동 계산
+  // ===============================
   let n = modalCtx.index + dir;
   if (n < 0) n = 0;
   if (n >= modalCtx.list.length) n = modalCtx.list.length - 1;
 
+  // ❗ 이동 불가면 여기서 종료 (떨림은 이미 실행됨)
   if (n === modalCtx.index) return;
-  openProfileAt(modalCtx.list, n);
-// ⭐ swipe 사용 횟수 기록
-swipeCount++;
-localStorage.setItem("memberSwipeCount", swipeCount);
 
-// ⭐ 3번 넘기면 힌트 종료
-if (swipeCount >= 3) {
-  localStorage.setItem("memberSwipeHint","1");
+  openProfileAt(modalCtx.list, n);
+
+  // ===============================
+  // 힌트 카운트 관리
+  // ===============================
+  swipeCount++;
+  localStorage.setItem("memberSwipeCount", swipeCount);
+
+  if (swipeCount >= 3) {
+    localStorage.setItem("memberSwipeHint", "1");
+  }
 }
-}
+
 
 (function bindModalSwipe() {
   const modal = el("profileModal");
