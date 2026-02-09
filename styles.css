@@ -731,7 +731,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
   box-shadow: 0 20px 40px rgba(0,0,0,.2);
   margin: 0;
   text-align: center;
-will-change: transform;   /* ⭐ 이거 추가 */
+
 
 }
 
