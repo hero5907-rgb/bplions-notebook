@@ -970,6 +970,13 @@ setAdminButton(false);
   bindSearch();
 
 
+// 🔵 상단 로그인 사용자 이름 → 마이페이지
+const nameBox = el("loginUserName");
+if (nameBox) {
+  nameBox.addEventListener("click", openMyPage);
+}
+
+
 
 const logo = el("clubLogoSmall");
 if (logo) {
@@ -1268,6 +1275,21 @@ btnI?.addEventListener("click", () => {
   `);
 });
 
+function openMyPage(){
+  if (!state || !state.me) {
+    toast("로그인이 필요합니다");
+    return;
+  }
+
+  // ✅ 내 정보로 프로필 모달 열기
+  openProfile(state.me);
+
+  // 🔵 마이페이지 모드 ON (CSS 조건용)
+  const modal = el("profileModal");
+  if (modal) modal.classList.add("mypage");
+}
+
+
 
 function openProfileAt(list, index) {
 
@@ -1442,10 +1464,18 @@ if (!localStorage.getItem("memberSwipeHint")) {
 }
 
 function closeProfile() {
-  el("profileModal").hidden = true;
+  const modal = el("profileModal");
+  if (modal) {
+    modal.hidden = true;
+
+    // 🔵 마이페이지 모드 OFF (다음 열림 대비)
+    modal.classList.remove("mypage");
+  }
+
   resetPhotoTransform();
   document.body.classList.remove("modal-open");
 }
+
 
 function nextMember(dir) {
   if (!modalCtx.list.length) return;

@@ -997,6 +997,20 @@ will-change: transform;   /* ⭐ 이거 추가 */
   white-space: nowrap;
 }
 
+/* 🔵 상단 사용자 이름 클릭 가능 표시 */
+#loginUserName{
+  cursor: pointer;
+}
+
+#loginUserName:active{
+  transform: scale(0.97);
+  background: rgba(255,255,255,0.28);
+}
+
+
+
+
+
 /* 관리자 아이콘 버튼 */
 .icon-btn{
   width: 34px;
@@ -1308,3 +1322,37 @@ html, body {
   overscroll-behavior: none;
 }
 
+
+
+/* ===============================
+   🔵 마이페이지 전용 프로필 헤더
+   =============================== */
+
+#profileModal.mypage .modal-card{
+  padding-top: 0;   /* 헤더 공간 확보 */
+}
+
+/* 가짜 헤더 바 */
+#profileModal.mypage .modal-card::before{
+  content: "마이페이지";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 54px;
+  margin: 0;
+  border-radius: 18px 18px 0 0;
+
+  background: linear-gradient(180deg, #0b4ea2 0%, #083a78 100%);
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+
+/* 마이페이지일 때 프로필 내용 살짝 아래로 */
+#profileModal.mypage .modal-photo{
+  margin-top: 12px;
+}
