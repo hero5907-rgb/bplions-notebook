@@ -97,14 +97,12 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
         </div>
       </div>
 
-      <label class="label">휴대폰번호</label>
-<input id="inputPhone" class="input" inputmode="numeric" placeholder="01012345678" />
+      <div class="form">
+        <label class="label">휴대폰번호</label>
+        <input id="inputPhone" class="input" inputmode="numeric" placeholder="01012345678" />
 
-<label class="label">접속코드</label>
-<div class="pw-wrap">
-  <input id="inputCode" class="input" type="password" inputmode="numeric" placeholder="폰번호4자리" />
-  <button type="button" id="btnTogglePw" class="pw-toggle">👁</button>
-</div>
+        <label class="label">접속코드</label>
+        <input id="inputCode" class="input" inputmode="numeric" placeholder="폰번호4자리" />
 
         <label class="checkline">
           <input id="keepLogin" type="checkbox" />
@@ -322,21 +320,19 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
   <!-- 텍스트 -->
   <section id="screenText" class="screen" hidden>
 
-  <!-- ✅ 내부 스크롤 컨테이너 추가 -->
-  <div class="text-scroll">
 
     <div class="card">
-      <div class="card-header">
-        <div class="card-title" id="textTitle">제목</div>
-        <a id="btnBylawsPdf" class="pdf-btn" href="#" target="_blank" rel="noopener" hidden>원본PDF</a>
-      </div>
+<div class="card-header">
+  <div class="card-title" id="textTitle">제목</div>
+
+  <!-- ✅ 회칙 화면에서만 보일 버튼 -->
+  <a id="btnBylawsPdf" class="pdf-btn" href="#" target="_blank" rel="noopener" hidden>원본PDF</a>
+</div>
+
 
       <div id="textBody" class="prose"></div>
     </div>
-
-  </div>
-
-</section>
+  </section>
 
 <!-- 🔵 라이오니즘 화면 -->
 <section id="screenLionism" class="screen" hidden>
@@ -386,10 +382,8 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 
+
 <!-- ===== 프로필 확대 팝업 ===== -->
-
-
-
 <div id="profileModal" class="modal" hidden>
 
   <div class="modal-backdrop" onclick="closeProfile()"></div>
@@ -424,15 +418,6 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
       <a id="modalCall" class="a-btn primary">📞 통화</a>
       <a id="modalSms" class="a-btn">💬 문자</a>
     </div>
-
-
-<!-- ⭐ MY PAGE 전용 액션바 (내 이름 클릭 시) -->
-<div id="myActionBar" class="modal-actions my-actions" hidden>
-  <button id="btnMyEdit" class="btn primary">내 정보 수정</button>
-  <button id="btnMyLogout" class="btn">로그아웃</button>
-</div>
-
-
 
     <button class="modal-close" onclick="closeProfile()">닫기</button>
   </div>

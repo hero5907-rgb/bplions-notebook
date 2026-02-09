@@ -1,15 +1,16 @@
 
-//===========================
-// 🔒 모바일 줌 완전 차단 (전역 - 최종 안정버전)
+// ===============================
+// 🔒 모바일 줌 완전 차단 (전역)
 // ===============================
 (function blockZoom(){
 
-  // 두손가락 확대 차단
+  // iOS / Android 공통
+  document.addEventListener("gesturestart", e => e.preventDefault(), { passive:false });
+  document.addEventListener("gesturechange", e => e.preventDefault(), { passive:false });
+  document.addEventListener("gestureend", e => e.preventDefault(), { passive:false });
+
+  // 두 손가락 확대 차단
   document.addEventListener("touchmove", e => {
-
-    // ⭐ 로그인 화면은 허용
-    if (e.target.closest("#screenLogin")) return;
-
     if (e.touches && e.touches.length > 1) {
       e.preventDefault();
     }
@@ -17,25 +18,15 @@
 
   // 더블탭 확대 차단
   let lastTouchEnd = 0;
-
   document.addEventListener("touchend", e => {
-
-    // ⭐ 로그인 화면은 허용
-    if (e.target.closest("#screenLogin")) return;
-
     const now = Date.now();
-
     if (now - lastTouchEnd <= 300) {
       e.preventDefault();
     }
-
     lastTouchEnd = now;
-
   }, false);
 
 })();
-
-  
 
 
 
@@ -318,16 +309,11 @@ setAdminButton(false);
 
 
 // 🔕 로그인 사용자 이름 숨김
+const nameBox = document.getElementById("loginUserName");
 if (nameBox) {
   nameBox.hidden = true;
+  nameBox.textContent = "";
 }
-
-// 텍스트는 따로 초기화 (자식 span 기준)
-const nameText = document.getElementById("loginUserNameText");
-if (nameText) {
-  nameText.textContent = "";
-}
-
 
 
 document.body.classList.remove("logged-in"); // ← 이 줄
@@ -461,7 +447,6 @@ function setBrand(settings) {
 
   if (el("docTitle")) el("docTitle").textContent = `${clubName} 수첩`;
 }
-
 
 
 
@@ -721,10 +706,8 @@ document.body.classList.add("logged-in");
 
 // 🔔 로그인 사용자 이름 상단 표시
 const nameBox = document.getElementById("loginUserName");
-const nameText = document.getElementById("loginUserNameText");
-
-if (nameBox && nameText && state.me?.name) {
-  nameText.textContent = `${state.me.name} L`;
+if (nameBox && state.me?.name) {
+  nameBox.textContent = `${state.me.name} L`;
   nameBox.hidden = false;
 }
 
@@ -946,53 +929,7 @@ if (btnMembersRefresh) {
 
 
   // 로그인 버튼 / 엔터
-  window.addEventListener("DOMContentLoaded", () => {
   el("btnLogin")?.addEventListener("click", handleLogin);
-});
-
-
-// ✅ 상단 이름 터치 → MY 페이지
-el("loginUserName")?.addEventListener("click", ()=>{
-  if(!state.me) return;
-
-  // ⭐ 내정보 바로 프로필모달로
-  const meIndex = state.members.findIndex(
-    m => normalizePhone(m.phone) === normalizePhone(state.me.phone)
-  );
-
-  if(meIndex >= 0){
-    openProfileAt(state.members, meIndex);
-  }
-});
-
-// ✅ MY 로그아웃 버튼
-el("btnMyLogout")?.addEventListener("click", ()=>{
-  btnLogout?.click();
-});
-
-// ✅ 개별메시지 (지금은 자리만)
-el("btnMyMessages")?.addEventListener("click", ()=>{
-  toast("준비중입니다");
-});
-
-
-// 🔐 접속코드 보기/숨기기 (⭐ 여기 추가)
-  el("btnTogglePw")?.addEventListener("click", () => {
-
-    const input = el("inputCode");
-    if (!input) return;
-
-    if (input.type === "password") {
-      input.type = "text";
-    } else {
-      input.type = "password";
-    }
-
-});
-
-
-
-
   ["inputPhone", "inputCode"].forEach((id) => {
     el(id)?.addEventListener("keydown", (e) => {
       if (e.key === "Enter") handleLogin();
@@ -1279,18 +1216,6 @@ swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
   const m = modalCtx.list[modalCtx.index];
   if (!m) return;
 
-
-
-// ⭐ 내정보일 때만 "내 메시지" 버튼 보이기
-const myMsgRow = el("myMessageRow");
-
-if (state.me && normalizePhone(m.phone) === normalizePhone(state.me.phone)) {
-  if (myMsgRow) myMsgRow.hidden = false;
-} else {
-  if (myMsgRow) myMsgRow.hidden = true;
-}
-
-
   // ✅ 멤버 데이터 주입
  const imgEl = el("modalPhoto");
 const newSrc = m.photoUrl || "";
@@ -1426,81 +1351,7 @@ document.body.classList.add("modal-open");
 
 // 카드 흔들림 힌트
 const card = el("profileModal")?.querySelector(".modal-card");
-
-const isMy =
-  state.me &&
-  normalizePhone(m.phone) === normalizePhone(state.me.phone);
-
-// ⭐ MY일 때 기능 제거
-if(isMy){
-
-  // ⭐ MY 모드 (내정보)
-
- 
-
-  // 흔들림 제거
-  card?.classList.remove("swipe-hint");
-
-  // 토스트 영구 차단
-  localStorage.setItem("memberSwipeHint","1");
-
-  // ===== 통화/문자 버튼 숨김 =====
-  const callBtn = el("modalCall");
-  const smsBtn  = el("modalSms");
-
-  if(callBtn) callBtn.style.display = "none";
-  if(smsBtn)  smsBtn.style.display = "none";
-
-  // ===== 안내문구 + 회관버튼 =====
-  const phoneEl = el("modalPhone");
-
-  const hallPhone =
-    state.settings?.phone ||
-    state.settings?.hallPhone ||
-    "";
-
-  if(phoneEl){
-
-    phoneEl.innerHTML = `
-      <div style="
-        margin-top:14px;
-        font-size:13px;
-        color:#64748b;
-        text-align:center;
-      ">
-        내용 수정이 필요한 경우 회관으로 문의하시기 바랍니다.
-      </div>
-
-      <div style="
-        display:flex;
-        gap:8px;
-        justify-content:center;
-        margin-top:8px;
-      ">
-        <a class="a-btn small primary"
-           href="tel:${hallPhone}">
-           ☎ 회관연결
-        </a>
-      </div>
-    `;
-  }
-
-}else{
-
-  // ⭐ 일반 회원 상세페이지 (원래대로)
-  const callBtn = el("modalCall");
-  const smsBtn  = el("modalSms");
-
-  if(callBtn) callBtn.style.display = "";
-  if(smsBtn)  smsBtn.style.display = "";
-
-}
-
-  const actions = el("profileModal")?.querySelector(".modal-actions");
-  if(actions) actions.style.display = "";
-
-
-if (card && !isMy) {
+if (card) {
   card.classList.remove("swipe-hint");
   setTimeout(()=> card.classList.add("swipe-hint"), 120);
   setTimeout(()=> card.classList.remove("swipe-hint"), 900);
@@ -1508,7 +1359,7 @@ if (card && !isMy) {
 
 
 // 첫 1회 토스트
-if (!isMy && !localStorage.getItem("memberSwipeHint")) {
+if (!localStorage.getItem("memberSwipeHint")) {
   setTimeout(()=>{
 
   // ⭐ 강제로 toast 잠금 해제
@@ -2189,47 +2040,7 @@ const HOLD_TIME  = 2000;   // 원형 애니메이션 2초
 
 function isKakaoInApp() {
   return /KAKAOTALK/i.test(navigator.userAgent);
-
 }
-
-
-
-// ===== Ctrl + 마우스 오른쪽 클릭 → 캐시 초기화 (PC 전용) =====
-window.addEventListener("load", () => {
-
-  const box = el("loginUserName");
-  if (!box) return;
-
-  box.addEventListener("contextmenu", (e) => {
-
-    // Ctrl + 우클릭만 허용
-    if (!e.ctrlKey) return;
-
-    // 기본 우클릭 메뉴 + 클릭 이벤트 차단
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (confirm("앱 캐시를 초기화하시겠습니까?")) {
-
-      localStorage.clear();
-
-      if (window.caches) {
-        caches.keys().then(keys => {
-          keys.forEach(k => caches.delete(k));
-        });
-      }
-
-      alert("초기화되었습니다. 다시 로그인하세요.");
-      location.reload();
-    }
-  });
-
-});
-
-
-
-
-
 
 
 
