@@ -244,6 +244,8 @@ const screens = {
   calendar: el("screenCalendar"), // 🔥 이 줄 추가
 lionism: el("screenLionism"),
   ceremony: el("screenCeremony"),
+mypage: el("screenMyPage"),
+
 
 };
 
@@ -274,7 +276,24 @@ function normalizePhone(p) {
 
 
 
+function openMyPage(){
 
+  if(!state.me){
+    toast("로그인이 필요합니다");
+    return;
+  }
+
+  const m = state.me;
+
+  el("myPhoto").src = m.photoUrl || "";
+  el("myName").textContent = `${m.name} L`;
+  el("myInfo").textContent = [m.workplace, m.position].filter(Boolean).join(" / ");
+
+  el("myCall").href = `tel:${m.phone || ""}`;
+  el("mySms").href  = `sms:${m.phone || ""}`;
+
+  pushNav("mypage");
+}
 
 function toast(msg, opts = {}) {
   const t = el("toast");
