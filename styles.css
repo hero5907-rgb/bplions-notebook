@@ -1324,39 +1324,15 @@ html, body {
 
 
 
-
-/* ===============================
-   🔵 마이페이지 전용 프로필 헤더
-   =============================== */
-
-#profileModal.mypage .modal-card{
-  padding-top: 0;   /* 헤더 공간 확보 */
+/*마이페이지*/
+.mypage-card{
+  border-radius:24px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
 
-/* 가짜 헤더 바 */
-#profileModal.mypage .modal-card::before{
-  content: "마이페이지";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 54px;
-  margin: 0;
-  border-radius: 18px 18px 0 0;
-
-  background: linear-gradient(180deg, #0b4ea2 0%, #083a78 100%);
-  color: #fff;
-
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: -0.3px;
+.mypage-center{
+  text-align:center;
+  margin-top:10px;
 }
-
-
-/* 마이페이지일 때 프로필 내용 살짝 아래로 */
-#profileModal.mypage .modal-photo{
-  margin-top: 12px;
-}
-
 
 
