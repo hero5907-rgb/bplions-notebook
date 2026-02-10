@@ -1294,19 +1294,7 @@ btnI?.addEventListener("click", () => {
   `);
 });
 
-function openMyPage(){
-  if (!state || !state.me) {
-    toast("로그인이 필요합니다");
-    return;
-  }
 
-  // ✅ 내 정보로 프로필 모달 열기
-  openProfile(state.me);
-
-  // 🔵 마이페이지 모드 ON (CSS 조건용)
-  const modal = el("profileModal");
-  if (modal) modal.classList.add("mypage");
-}
 
 
 
