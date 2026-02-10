@@ -345,21 +345,39 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 <!-- 🔵 마이페이지 -->
 <section id="screenMyPage" class="screen" hidden>
-  <div class="card">
 
-    <div class="card-title">마이페이지</div>
+  <div class="card mypage-card">
 
-    <div style="text-align:center;margin-top:14px;">
+    <div class="card-header">
+      <div class="card-title">마이페이지</div>
+    </div>
+
+    <div class="mypage-center">
       <img id="myPhoto" class="modal-photo" />
     </div>
 
-    <div id="myName" class="modal-name" style="text-align:center;margin-top:12px;"></div>
-    <div id="myInfo" class="row-sub" style="text-align:center;"></div>
-
-    <div class="modal-actions" style="margin-top:20px;">
-      <a id="myCall" class="a-btn primary">📞 통화</a>
-      <a id="mySms" class="a-btn">💬 문자</a>
+    <div class="modal-name-row">
+      <div class="modal-name" id="myName"></div>
+      <span class="badge" id="myPosition"></span>
+      <span class="badge" id="myGroup"></span>
     </div>
+
+    <div class="modal-address-row">
+      <button id="myMap" class="a-btn primary" type="button">📍 지도</button>
+      <div class="modal-workplace" id="myWorkplace"></div>
+    </div>
+
+    <div class="modal-engname" id="myEngName"></div>
+    <div class="modal-memberinfo" id="myMemberInfo"></div>
+    <div class="modal-recommender" id="myRecommender"></div>
+    <div class="modal-phone" id="myPhone"></div>
+
+    <div class="modal-actions">
+      <button id="btnHallCall" class="a-btn primary">☎ 회관 통화</button>
+      <button id="btnMyInbox" class="a-btn">📩 메시지함</button>
+    </div>
+
+    <button class="btn primary" onclick="popNav()">닫기</button>
 
   </div>
 </section>
