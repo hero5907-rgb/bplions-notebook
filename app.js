@@ -2063,6 +2063,9 @@ window.addEventListener("load", () => {
 
   const box = el("clubLogoSmall");   // 🔥 여기만 변경
 
+// ⭐ 안드로이드 이미지 롱터치 메뉴 차단 (필수)
+box.addEventListener("contextmenu", e => e.preventDefault());
+
   const overlay = el("holdOverlay");
   const circle = overlay?.querySelector("circle");
 
