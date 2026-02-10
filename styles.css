@@ -1373,3 +1373,27 @@ html, body {
   font-size:15px;
   letter-spacing:0.3px;
 }
+
+
+
+/* ===============================
+   🔵 iOS 느낌 마이페이지 배경 업그레이드
+   =============================== */
+
+/* 마이페이지 전체 배경 살짝 블루톤 */
+#screenMyPage{
+  background: linear-gradient(
+    180deg,
+    #f3f8ff 0%,
+    #eef5ff 100%
+  );
+}
+
+/* 카드 더 떠보이게 (테두리 대신 그림자 강화) */
+#screenMyPage .card{
+  background:#fff;
+  border:none;
+  box-shadow:
+    0 8px 20px rgba(11,78,162,.08),
+    0 2px 6px rgba(0,0,0,.04);
+}
