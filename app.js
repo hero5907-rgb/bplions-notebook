@@ -336,13 +336,29 @@ function openMyPage(){
     CFG.hallPhone ||
     "";
 
-  const btnHall = el("btnHallCall");
-  if(btnHall){
-    btnHall.onclick = ()=>{
-      if(!hallPhone) return toast("회관 전화번호 없음");
-      location.href = `tel:${hallPhone}`;
-    };
+  // 🔥 회관 전화 버튼 (config.js 사용 + 번호 표시)
+const btnHall = el("btnHallCall");
+
+if(btnHall){
+
+  const hallPhone =
+    (window.APP_CONFIG && window.APP_CONFIG.phone) || "";
+
+  // ⭐ 버튼에 번호까지 표시
+  if(hallPhone){
+    btnHall.textContent = `☎ 회관 통화 (${hallPhone})`;
+  }else{
+    btnHall.textContent = "☎ 회관 통화";
   }
+
+  btnHall.onclick = ()=>{
+    if(!hallPhone){
+      toast("회관 전화번호가 없습니다");
+      return;
+    }
+    location.href = `tel:${hallPhone}`;
+  };
+}
 
   // 📩 메시지함 (추후 기능)
   el("btnMyInbox").onclick = ()=>{
