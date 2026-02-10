@@ -286,11 +286,68 @@ function openMyPage(){
   const m = state.me;
 
   el("myPhoto").src = m.photoUrl || "";
-  el("myName").textContent = `${m.name} L`;
-  el("myInfo").textContent = [m.workplace, m.position].filter(Boolean).join(" / ");
 
-  el("myCall").href = `tel:${m.phone || ""}`;
-  el("mySms").href  = `sms:${m.phone || ""}`;
+  el("myName").textContent = m.name || "";
+  el("myPosition").textContent = m.position || "";
+  el("myGroup").textContent = m.group || "";
+
+  // 직장 + 주소
+  const workplaceRaw = String(m.workplace || "").trim();
+  const title = String(m.title || "").trim();
+  const address = String(m.address || "").trim();
+
+  const parts = [];
+  if (workplaceRaw) parts.push(workplaceRaw);
+  if (title) parts.push(title);
+
+  el("myWorkplace").innerHTML =
+    `<div>${parts.join(" ")}</div>` +
+    `<div>${address}</div>`;
+
+  // 지도 버튼
+  const btnMap = el("myMap");
+  if(btnMap && address){
+    const q = encodeURIComponent(address);
+    btnMap.onclick = ()=> window.open(`https://map.naver.com/v5/search/${q}`,"_blank");
+  }
+
+  el("myEngName").textContent = m.engName || "";
+
+  el("myMemberInfo").innerHTML =
+    `${m.memberNo ? `<div>회원번호: ${m.memberNo}</div>` : ""}` +
+    `${m.joinDate ? `<div>입회일자: ${m.joinDate}</div>` : ""}`;
+
+  const rec = el("myRecommender");
+  if(m.recommender){
+    rec.textContent = `추천인: ${m.recommender}`;
+    rec.hidden = false;
+  }else{
+    rec.hidden = true;
+  }
+
+  // 폰번호 포맷
+  const p = String(m.phone||"").replace(/[^0-9]/g,"");
+  el("myPhone").textContent =
+    p.length===11 ? `${p.slice(0,3)}-${p.slice(3,7)}-${p.slice(7)}` : p;
+
+  // 🔥 회관 전화 버튼 (config 사용)
+  const hallPhone =
+    state.settings?.hallPhone ||
+    CFG.hallPhone ||
+    "";
+
+  const btnHall = el("btnHallCall");
+  if(btnHall){
+    btnHall.onclick = ()=>{
+      if(!hallPhone) return toast("회관 전화번호 없음");
+      location.href = `tel:${hallPhone}`;
+    };
+  }
+
+  // 📩 메시지함 (추후 기능)
+  el("btnMyInbox").onclick = ()=>{
+    toast("개별 메시지함은 준비중입니다");
+  };
 
   pushNav("mypage");
 }
