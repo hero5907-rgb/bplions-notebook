@@ -1335,4 +1335,41 @@ html, body {
   margin-top:10px;
 }
 
+/* ===============================
+   🔵 마이페이지 중앙정렬 + 폰번호 강조 (최종)
+   =============================== */
 
+#screenMyPage .card{
+  text-align:center;
+}
+
+/* 사진 완전 중앙 */
+#screenMyPage .modal-photo{
+  display:block;
+  margin:12px auto 0;
+}
+
+/* 이름 + 배지 가운데 */
+#screenMyPage .modal-name-row{
+  justify-content:center;
+}
+
+/* 직장/주소 가운데 */
+#screenMyPage .modal-workplace{
+  text-align:center;
+}
+
+/* 영문이름 / 입회일자 / 추천인 가운데 */
+#screenMyPage .modal-engname,
+#screenMyPage .modal-memberinfo,
+#screenMyPage .modal-recommender{
+  text-align:center;
+}
+
+/* 🔥 폰번호 진하게 */
+#screenMyPage .modal-phone{
+  font-weight:900;
+  color:#0b1220;
+  font-size:15px;
+  letter-spacing:0.3px;
+}
