@@ -2075,8 +2075,8 @@ window.addEventListener("load", () => {
 
   let start = 0;
   let raf = null;
-  const HOLD_DELAY = 3000;   // 처음 3초 대기
-const HOLD_TIME  = 2000;   // 원형 애니메이션 2초
+  const HOLD_DELAY = 1500;   // 처음 3초 대기
+const HOLD_TIME  = 1500;   // 원형 애니메이션 2초
 
   function reset(){
   overlay.hidden = true;
