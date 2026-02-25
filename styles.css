@@ -1420,7 +1420,6 @@ a:active{
 }
 
 
-/* iOS 자동 감지 텍스트 색상 강제 초기화 */
-body * {
-  -webkit-text-fill-color: inherit !important;
+.tile-title{
+  color: var(--text) !important;
 }
