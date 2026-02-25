@@ -1418,3 +1418,9 @@ a:active{
   -webkit-text-fill-color: inherit !important;
   text-decoration: none !important;
 }
+
+
+/* iOS 자동 감지 텍스트 색상 강제 초기화 */
+body * {
+  -webkit-text-fill-color: inherit !important;
+}
