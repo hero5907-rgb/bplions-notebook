@@ -1397,3 +1397,12 @@ html, body {
     0 8px 20px rgba(11,78,162,.08),
     0 2px 6px rgba(0,0,0,.04);
 }
+
+
+/* iOS 자동 링크 파란색 제거 */
+a,
+a:visited,
+a:active{
+  color: inherit !important;
+  text-decoration: none !important;
+}
