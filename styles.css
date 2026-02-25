@@ -1406,3 +1406,15 @@ a:active{
   color: inherit !important;
   text-decoration: none !important;
 }
+
+
+/* iOS 자동 링크 파란색 강제 제거 */
+a,
+a:link,
+a:visited,
+a:hover,
+a:active{
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  text-decoration: none !important;
+}
