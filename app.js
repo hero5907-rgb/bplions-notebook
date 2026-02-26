@@ -1387,34 +1387,6 @@ btnA?.addEventListener("click", async () => {
 
 
 
-  // ❌ 크롬이 아닌 환경 (네이버, 카카오, 다음, 기타 인앱)
-  if (!/Chrome/i.test(ua) || /KAKAOTALK|NAVER|Daum/i.test(ua)) {
-    showHint(`
-      ⚠️ 이 브라우저에서는 앱 설치가 불가능합니다.<br><br>
-      <b>반드시 Chrome 브라우저에서 설치</b>해 주세요.
-    `);
-    return;
-  }
-
-  // ❌ 크롬이지만 설치 트리거가 안 잡힌 경우
-  if (!deferredPrompt) {
-    showHint(`
-      ⚠️ 설치 환경에 문제가 발생했습니다.<br>
-      관리자에게 문의하세요.
-    `);
-    return;
-  }
-
-  // ✅ 정상 크롬 → 설치 진행
-  deferredPrompt.prompt();
-
-  const choice = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-
-  if (choice?.outcome !== "accepted") {
-    showHint("설치를 취소했습니다. 필요하면 다시 설치할 수 있습니다.");
-  }
-});
 
 btnI?.addEventListener("click", () => {
   showHint(`
