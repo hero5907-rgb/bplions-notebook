@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>앱 열기</title>
+
+<style>
+:root{
+  --blue:#0b4ea2;
+  --blue2:#083a78;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --radius:22px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;
+  background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);
+}
+.card{
+  width:min(420px,92vw);
+  background:rgba(255,255,255,.95);
+  border-radius:var(--radius);
+  padding:28px 22px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+.title{font-size:20px;font-weight:900;color:var(--text);}
+.desc{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.4;}
+.btn{
+  width:100%;height:48px;border:none;border-radius:16px;
+  font-size:15px;font-weight:900;margin-top:16px;cursor:pointer;
+}
+.btn.primary{
+  background:linear-gradient(135deg,var(--blue),#2563eb);
+  color:#fff;box-shadow:0 10px 25px rgba(37,99,235,.35);
+}
+.btn.ghost{background:#eef2ff;color:var(--blue);}
+.notice{margin-top:14px;font-size:12px;color:#475569;line-height:1.4;}
+.badge{
+  display:inline-block;margin-top:12px;padding:6px 10px;
+  font-size:12px;font-weight:700;border-radius:999px;
+  background:rgba(11,78,162,.12);color:var(--blue);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="title">앱을 크롬에서 열어주세요</div>
+
+  <div class="desc">
+    설치가 잘 되려면<br>
+    Chrome 브라우저에서 열어주세요.
+  </div>
+
+  <button class="btn primary" onclick="openInChrome()">
+    🌐 크롬으로 열기
+  </button>
+
+  <button class="btn ghost" onclick="copyAddress()">
+    📋 주소 복사하기
+  </button>
+
+  <div class="notice" id="browserNotice"></div>
+  <div class="badge">안드로이드 권장</div>
+</div>
+
+<script>
+const APP_URL = "https://bplions.khanreal.kr/";
+
+/* ---------- 주소 복사 ---------- */
+function copyAddress(){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(APP_URL)
+      .then(()=> alert("주소가 복사되었습니다.\n크롬을 열고 붙여넣기 해주세요."))
+      .catch(()=> fallbackCopy());
+  }else{
+    fallbackCopy();
+  }
+}
+
+function fallbackCopy(){
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=APP_URL;
+    ta.style.position="fixed";
+    ta.style.left="-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    alert("주소가 복사되었습니다.\n크롬을 열고 붙여넣기 해주세요.");
+  }catch(e){
+    alert("복사가 차단되었습니다.\n주소를 길게 눌러 복사하세요:\n\n"+APP_URL);
+  }
+}
+
+/* ---------- 크롬 실행 ---------- */
+function openInChrome(){
+  const ua = navigator.userAgent;
+
+  // PC 테스트 방지
+  if(!/Android/i.test(ua)){
+    alert("PC에서는 크롬 앱 실행 테스트가 안됩니다.\n안드로이드에서 테스트하세요.");
+    return;
+  }
+
+  if(/iPhone|iPad|iPod/i.test(ua)){
+    alert("아이폰은 사파리에서 열어주세요.\n공유 → 홈 화면에 추가");
+    return;
+  }
+
+  alert("크롬 실행을 시도합니다.");
+
+  const u = new URL(APP_URL);
+  const hostPath = u.host + u.pathname + u.search;
+  const fallback = encodeURIComponent(APP_URL);
+
+  location.href =
+    "intent://" + hostPath +
+    "#Intent;scheme=https;" +
+    "package=com.android.chrome;" +
+    "action=android.intent.action.VIEW;" +
+    "category=android.intent.category.BROWSABLE;" +
+    "S.browser_fallback_url=" + fallback + ";" +
+    "end";
+
+  setTimeout(()=>{
+    alert("자동으로 열리지 않으면\n1) 상단 메뉴 → 다른 브라우저로 열기\n2) 또는 주소 복사 후 크롬에 붙여넣기");
+  },900);
+}
+
+/* ---------- 인앱 감지 ---------- */
+(function detectInApp(){
+  const ua = navigator.userAgent;
+  const notice = document.getElementById("browserNotice");
+
+  if(/KAKAOTALK/i.test(ua)){
+    notice.innerHTML =
+      "📌 카카오톡에서 열렸습니다.<br>우측 상단 ⋮ → <b>다른 브라우저로 열기</b>";
+  }
+  else if(/NAVER|Band/i.test(ua)){
+    notice.innerHTML =
+      "📌 밴드 인앱브라우저입니다.<br>상단 메뉴 → <b>외부 브라우저로 열기</b>";
+  }
+})();
+</script>
+
+</body>
+</html>
