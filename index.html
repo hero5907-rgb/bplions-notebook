@@ -83,6 +83,16 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
   <section id="screenLogin" class="screen login-bg">
     <div class="card hero">
 
+
+<!-- ✅ 설치 배너(안드로이드 크롬에서만 자동 표시) -->
+<div id="installBar" style="display:none; margin-bottom:12px;">
+  <button id="btnInstallBar" type="button">
+    📲 앱 설치하기
+  </button>
+</div>
+
+
+
       <!-- ✅ hero-text는 딱 1개만 -->
       <div class="hero-text">
         <div class="hero-title">
@@ -122,7 +132,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 
-        <div id="installHint" class="hint" hidden></div>
+        
 
         <div id="loginError" class="error" hidden></div>
       </div>
@@ -131,6 +141,16 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 <!-- 🔽 로그인 카드 밖 액션 영역 -->
 <div class="login-actions">
+
+
+
+  <!-- ✅ 설치/안내 메시지 위치를 여기로 (항상 눈에 띔) -->
+  <div id="installHint" class="hint" hidden></div>
+
+
+
+
+
   <div class="install-row">
     <button id="btnInstallAndroid" class="btn install">
       안드로이드 앱 설치

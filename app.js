@@ -1287,6 +1287,31 @@ if ("serviceWorker" in navigator) {
 
 let deferredPrompt = null;
 
+
+function isRealChromeOnAndroid(){
+  const ua = navigator.userAgent || "";
+  const isAndroid = /Android/i.test(ua);
+
+  // 크롬(Chromium) 기반 브라우저 제외
+  const isEdge = /EdgA|EdgiOS|Edg\//i.test(ua);
+  const isSamsung = /SamsungBrowser/i.test(ua);
+  const isOpera = /OPR\//i.test(ua);
+  const isWhale = /Whale/i.test(ua);
+
+  // 인앱 제외
+  const isKakao = /KAKAOTALK/i.test(ua);
+  const isNaver = /NAVER/i.test(ua);
+  const isDaum = /Daum/i.test(ua);
+
+  // ✅ “진짜 크롬” 조건
+  const isChrome = /Chrome\/\d+/i.test(ua) && /Google/i.test(navigator.vendor || "");
+
+  return isAndroid && isChrome && !isEdge && !isSamsung && !isOpera && !isWhale && !isKakao && !isNaver && !isDaum;
+}
+
+
+
+
 const btnA = el("btnInstallAndroid");
 const btnI = el("btnInstallIOS");
 const hint = el("installHint");
@@ -1324,9 +1349,43 @@ if (isStandalone()) {
   if (btnI) btnI.style.display = "none";
   if (hint) hint.hidden = true;
 }
+
+
 btnA?.addEventListener("click", async () => {
 
-  const ua = navigator.userAgent;
+  // ✅ 진짜 크롬이 아니면 무조건 안내
+  if (!isRealChromeOnAndroid()) {
+    showHint(`
+      ⚠️ 이 브라우저에서는 앱 설치가 불가능합니다.<br><br>
+      <b>반드시 'Chrome'에서 열어 설치</b>해 주세요.<br>
+      (카톡/밴드/네이버앱 안에서는 설치가 안 됩니다)
+    `);
+    return;
+  }
+
+  // ✅ 설치 트리거가 아직 안 잡힘
+  if (!deferredPrompt) {
+    showHint(`
+      ⚠️ 아직 설치 준비가 안 됐습니다.<br>
+      <b>5초 뒤 다시 눌러보세요.</b><br><br>
+      그래도 안 뜨면:<br>
+      크롬 우측상단 <b>⋮ 메뉴</b> → <b>앱 설치</b>를 눌러주세요.
+    `);
+    return;
+  }
+
+  // ✅ 정상 설치 진행
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+
+  if (choice?.outcome !== "accepted") {
+    showHint("설치를 취소했습니다. 필요하면 다시 설치할 수 있습니다.");
+  }
+});
+
+
+
 
   // ❌ 크롬이 아닌 환경 (네이버, 카카오, 다음, 기타 인앱)
   if (!/Chrome/i.test(ua) || /KAKAOTALK|NAVER|Daum/i.test(ua)) {
