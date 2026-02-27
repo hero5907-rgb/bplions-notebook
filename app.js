@@ -950,25 +950,6 @@ __popupPromise.then(res=>{
 
 
 
-
-
-} catch (e) {
-
-  console.error("LOGIN_ERROR:", e);
-
-  const err = el("loginError");
-  if (err) {
-    err.hidden = false;
-    err.textContent =
-      e?.message && e.message !== "LOGIN_FAILED"
-        ? e.message
-        : "휴대폰번호 또는 접속코드가 올바르지 않습니다.";
-  }
-
-  toast("로그인 실패", { force: true });
-
-}
-
 // ✅ 여기부터는 handleLogin 정상 흐름
 history.pushState({ app: true }, "", location.href);
 window.scrollTo(0, 0);
