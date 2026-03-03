@@ -533,9 +533,18 @@ el("btnChangePw")?.addEventListener("click", () => {
       el("newPw").value = "";
       el("newPw2").value = "";
 
-    } else {
-      toast(res.error || "변경 실패");
-    }
+} else {
+
+  const errorMap = {
+    "PASSWORD_MUST_BE_4_DIGITS": "비밀번호는 숫자 4자리입니다.",
+    "WRONG_CURRENT_PASSWORD": "현재 비밀번호가 일치하지 않습니다.",
+    "LOGIN_REQUIRED": "로그인이 필요합니다.",
+    "USER_NOT_FOUND": "회원 정보를 찾을 수 없습니다.",
+    "EMPTY_PASSWORD": "비밀번호를 입력하세요."
+  };
+
+  toast(errorMap[res.error] || "변경 실패");
+}
   });
 });
 
