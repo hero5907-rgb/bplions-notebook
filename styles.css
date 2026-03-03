@@ -1470,6 +1470,9 @@ html, body {
 }
 
 .pw-panel{
+
+  width:60%;              /* 🔥 폭 줄임 (50~65% 조절 가능) */
+  margin:12px auto 0;     /* 🔥 가운데 정렬 */
   background:#fff;
   border-radius:18px;
   overflow:hidden;
