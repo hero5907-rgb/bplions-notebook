@@ -402,20 +402,34 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 <div class="pw-section">
 
   <button id="btnPwToggle" class="pw-toggle">
-    <span>비밀번호 변경</span>
+    비밀번호 변경
     <span class="pw-arrow">›</span>
   </button>
 
   <div id="pwPanel" class="pw-panel" hidden>
-    <input id="oldPw" class="pw-input" type="password" placeholder="현재 비밀번호">
-    <input id="newPw" class="pw-input" type="password" placeholder="새 비밀번호 (4자리 숫자만가능)">
-    <input id="newPw2" class="pw-input" type="password" placeholder="새 비밀번호 확인">
 
-    <button id="btnChangePw" class="pw-save">변경하기</button>
+    <div class="pw-row">
+      <label>현재</label>
+      <input type="password" id="oldPw" placeholder="현재접속코드">
+    </div>
+
+    <div class="pw-row">
+      <label>새 비번</label>
+      <input type="password" id="newPw" placeholder="새접속코드(4자리 숫자만)">
+    </div>
+
+    <div class="pw-row">
+      <label>확인</label>
+      <input type="password" id="newPw2" placeholder="다시 입력">
+    </div>
+
+    <div class="pw-save-row">
+      <button id="btnChangePw" class="pw-save">변경</button>
+    </div>
+
   </div>
 
 </div>
-
 
 
     <button class="btn primary" onclick="popNav()">닫기</button>
