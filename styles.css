@@ -1438,9 +1438,9 @@ html, body {
   font-weight:700;
 
   display:flex;
-  justify-content:space-between;
+  justify-content:center;   /* 🔥 추가 */
   align-items:center;
-
+ 
   padding:0 6px;             /* 🔥 좌우 여백 축소 */
   cursor:pointer;
 
@@ -1455,4 +1455,72 @@ html, body {
   font-size:18px;
   color:#94a3b8;
   transition:transform .2s ease;
+}
+
+
+
+
+
+/* ===============================
+   🍎 진짜 iOS 스타일 비밀번호 변경
+   =============================== */
+
+.pw-section{
+  margin-top:18px;
+}
+
+.pw-panel{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+  border:1px solid #eef1f5;
+}
+
+.pw-row{
+  display:flex;
+  align-items:center;
+  padding:12px 14px;
+  border-bottom:1px solid #eef1f5;
+}
+
+.pw-row:last-child{
+  border-bottom:none;
+}
+
+.pw-row label{
+  width:110px;
+  font-size:14px;
+  font-weight:600;
+  color:#475569;
+}
+
+.pw-row input{
+  flex:1;
+  border:none;
+  outline:none;
+  font-size:14px;
+  background:transparent;
+}
+
+.pw-row input::placeholder{
+  color:#94a3b8;
+}
+
+.pw-save-row{
+  padding:12px 14px;
+  text-align:center;
+}
+
+.pw-save{
+  background:none;
+  border:none;
+  color:#0b4ea2;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.pw-save:active{
+  opacity:.6;
 }
