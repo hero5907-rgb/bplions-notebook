@@ -365,6 +365,29 @@ if(btnHall){
     toast("개별 메시지함은 준비중입니다");
   };
 
+
+
+  // 🔐 비밀번호 패널 토글 (마이페이지 열릴 때 연결)
+  const toggleBtn = el("btnPwToggle");
+  const panel = el("pwPanel");
+  const arrow = document.querySelector(".pw-arrow");
+
+  if (toggleBtn && panel) {
+    toggleBtn.onclick = function(){
+      const isOpen = !panel.hidden;
+      panel.hidden = isOpen;
+
+      if (arrow) {
+        arrow.style.transform = isOpen ? "rotate(0deg)" : "rotate(90deg)";
+      }
+    };
+  }
+
+
+
+
+
+
   pushNav("mypage");
 }
 
