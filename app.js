@@ -474,6 +474,50 @@ document.body.classList.remove("logged-in"); // ← 이 줄
 });
 
 
+// 🔐 마이페이지 비밀번호 변경
+el("btnChangePw")?.addEventListener("click", () => {
+
+  const oldCode = el("oldPw")?.value.trim();
+  const newCode = el("newPw")?.value.trim();
+  const newCode2 = el("newPw2")?.value.trim();
+
+  if (!oldCode || !newCode){
+    toast("모든 항목 입력");
+    return;
+  }
+
+  if (newCode !== newCode2){
+    toast("새 비밀번호 불일치");
+    return;
+  }
+
+  api("changePassword", {
+    oldCode,
+    newCode
+  }, (res) => {
+
+    if (res.ok){
+      toast("비밀번호 변경 완료");
+
+      state._authCode = newCode;
+
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        phone: state._authPhone,
+        code: newCode
+      }));
+
+      el("oldPw").value = "";
+      el("newPw").value = "";
+      el("newPw2").value = "";
+
+    } else {
+      toast(res.error || "변경 실패");
+    }
+  });
+});
+
+
+
 // ===== API (JSONP: doGet + callback) =====
 function apiJsonp(paramsObj) {
   return new Promise((resolve, reject) => {
