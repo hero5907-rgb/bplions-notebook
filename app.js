@@ -541,6 +541,27 @@ el("btnChangePw")?.addEventListener("click", () => {
 
 
 
+// 🔐 iOS 비번 패널 토글
+el("btnPwToggle")?.addEventListener("click", ()=>{
+
+  const panel = el("pwPanel");
+  const arrow = document.querySelector(".pw-arrow");
+
+  if(!panel) return;
+
+  const isOpen = !panel.hidden;
+
+  panel.hidden = isOpen;
+
+  if(arrow){
+    arrow.style.transform = isOpen ? "rotate(0deg)" : "rotate(90deg)";
+  }
+});
+
+
+
+
+
 // ===== API (JSONP: doGet + callback) =====
 function apiJsonp(paramsObj) {
   return new Promise((resolve, reject) => {
