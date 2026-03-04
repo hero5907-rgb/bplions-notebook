@@ -462,39 +462,41 @@ function popNav() {
 }
 
 btnBack?.addEventListener("click", () => popNav());
-btnLogout?.addEventListener("click", () => {
 
 
-setAdminButton(false);
+
+btnLogout?.addEventListener("click", async () => {
+
+  const ok = await appConfirm("로그아웃 하시겠습니까?");
+  if (!ok) return;
+
+  setAdminButton(false);
 
   localStorage.removeItem(LS_KEY);
 
-  // ✅ 관리자 버튼 잔상 제거(무조건 숨김)
   const tileAdmin = el("tileAdmin");
   if (tileAdmin) {
     tileAdmin.hidden = true;
     tileAdmin.onclick = null;
   }
 
+  const nameBox = document.getElementById("loginUserName");
+  if (nameBox) {
+    nameBox.hidden = true;
+    nameBox.textContent = "";
+  }
 
-// 🔕 로그인 사용자 이름 숨김
-const nameBox = document.getElementById("loginUserName");
-if (nameBox) {
-  nameBox.hidden = true;
-  nameBox.textContent = "";
-}
-
-
-document.body.classList.remove("logged-in"); // ← 이 줄
-
+  document.body.classList.remove("logged-in");
 
   state = { me: null, settings: null, members: [], announcements: [], navStack: ["login"] };
   showScreen("login");
+
   toast("로그아웃");
 
-
-
 });
+
+
+
 
 
 // 🔐 마이페이지 비밀번호 변경
@@ -2313,6 +2315,37 @@ if (p >= 1) {
 
 function isKakaoInApp() {
   return /KAKAOTALK/i.test(navigator.userAgent);
+}
+
+
+
+
+// 🔥 공통 confirm 함수
+function appConfirm(message){
+
+  return new Promise(resolve => {
+
+    const modal = document.getElementById("confirmModal");
+    const msg = document.getElementById("confirmMessage");
+    const btnOk = document.getElementById("confirmOk");
+    const btnCancel = document.getElementById("confirmCancel");
+
+    msg.textContent = message;
+    modal.hidden = false;
+
+    function close(result){
+      modal.hidden = true;
+      btnOk.removeEventListener("click", okHandler);
+      btnCancel.removeEventListener("click", cancelHandler);
+      resolve(result);
+    }
+
+    function okHandler(){ close(true); }
+    function cancelHandler(){ close(false); }
+
+    btnOk.addEventListener("click", okHandler);
+    btnCancel.addEventListener("click", cancelHandler);
+  });
 }
 
 
