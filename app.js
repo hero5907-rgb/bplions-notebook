@@ -1487,6 +1487,10 @@ swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
   const m = modalCtx.list[modalCtx.index];
   if (!m) return;
 
+// ✅ ⭐⭐⭐ 추가 (히스토리 쌓기)
+  history.pushState({ modal: "profile" }, "", location.href);
+
+
   // ✅ 멤버 데이터 주입
  const imgEl = el("modalPhoto");
 const newSrc = m.photoUrl || "";
