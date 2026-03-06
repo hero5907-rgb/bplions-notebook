@@ -989,6 +989,26 @@ __popupPromise.then(res=>{
   const list = res.events || [];
   if (!list.length) return;
 
+
+// 🔥 날짜 + 시간 오름차순 정렬 (빠른 일정이 위)
+list.sort((a, b) => {
+  const dateA = a.date || "";
+  const dateB = b.date || "";
+
+  const timeA = a.time || a.startTime || "00:00";
+  const timeB = b.time || b.startTime || "00:00";
+
+  const dA = new Date(`${dateA} ${timeA}`);
+  const dB = new Date(`${dateB} ${timeB}`);
+
+  return dA - dB;
+});
+
+
+
+
+
+
   openModal(`
     <div style="text-align:center;margin-bottom:18px;">
       <div style="font-size:24px;">📢</div>
