@@ -1156,6 +1156,65 @@ setAdminButton(false);
   bindSearch();
 
 
+// ===== 🔥 상단 설치 배너 연결 =====
+const installBar = el("installBar");
+const btnInstallBar = el("btnInstallBar");
+
+if (installBar && btnInstallBar) {
+
+  // 기본 숨김
+  installBar.style.display = "none";
+
+  // 🤖 안드로이드 + 설치 가능할 때만 표시
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    installBar.style.display = "block";
+  });
+
+  btnInstallBar.addEventListener("click", async () => {
+
+    // 🤖 안드로이드 (진짜 크롬만)
+    if (isRealChromeOnAndroid()) {
+
+      if (!deferredPrompt) {
+        showHint(`
+          ⚠️ 아직 설치 준비가 안 됐습니다.<br>
+          잠시 후 다시 눌러주세요.
+        `);
+        return;
+      }
+
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+
+      if (choice?.outcome === "accepted") {
+        installBar.style.display = "none";
+      }
+
+    } else if (IS_IOS) {
+
+      // 🍎 아이폰 안내
+      showHint(`
+        <b>아이폰 설치 방법</b><br><br>
+        1) 사파리로 접속<br>
+        2) 하단 공유버튼(⬆️)<br>
+        3) 홈 화면에 추가
+      `);
+
+    } else {
+
+      showHint("이 브라우저에서는 설치가 지원되지 않습니다.");
+    }
+
+  });
+}
+
+
+
+
 // 🔵 상단 로그인 사용자 이름 → 마이페이지
 const nameBox = el("loginUserName");
 if (nameBox) {
