@@ -3292,13 +3292,13 @@ html, body {
 
 #installBar{
   position: sticky;
-  top: 10px;
+  top: 8px;
   z-index: 9999;
 
-  width: min(520px, 92vw);
-  margin: 0 auto 14px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  backdrop-filter: blur(12px);
+  width: min(520px, 92vw);
 }
 
 #btnInstallBar{
