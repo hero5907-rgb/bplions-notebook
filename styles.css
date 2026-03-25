@@ -1399,26 +1399,7 @@ html, body {
 }
 
 
-/* ✅ 로그인 화면 설치 배너(고정, 눈에 확 띔) */
-#installBar{
-  position: sticky;
-  top: 8px;
-  z-index: 9999;
-  width: min(520px, 92vw);
-  margin: 0 auto 12px;
-}
-#btnInstallBar{
-  width: 100%;
-  height: 46px;
-  border: none;
-  border-radius: 16px;
-  font-weight: 900;
-  font-size: 15px;
-  color: #fff;
-  background: linear-gradient(135deg, #0b4ea2, #2563eb);
-  box-shadow: 0 10px 22px rgba(37,99,235,.35);
-}
-#btnInstallBar:active{ transform: scale(.98); }
+
 
 
 
@@ -3045,26 +3026,31 @@ html, body {
 }
 
 
-/* ✅ 로그인 화면 설치 배너(고정, 눈에 확 띔) */
+/* 🔥 설치 배너 (진짜 고정 상단) */
 #installBar{
-  position: sticky;
-  top: 8px;
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 9999;
   width: min(520px, 92vw);
-  margin: 0 auto 12px;
 }
+
 #btnInstallBar{
   width: 100%;
-  height: 46px;
+  height: 48px;
   border: none;
   border-radius: 16px;
   font-weight: 900;
   font-size: 15px;
   color: #fff;
   background: linear-gradient(135deg, #0b4ea2, #2563eb);
-  box-shadow: 0 10px 22px rgba(37,99,235,.35);
+  box-shadow: 0 12px 28px rgba(37,99,235,.35);
 }
-#btnInstallBar:active{ transform: scale(.98); }
+
+#btnInstallBar:active{
+  transform: scale(.97);
+}
 
 
 
@@ -3286,45 +3272,5 @@ html, body {
   border-radius:10px;
   font-weight:600;
 }
-
-
-/* ===== 🔥 설치 배너 업그레이드 (iOS 느낌) ===== */
-
-#installBar{
-  position: sticky;
-  top: 8px;
-  z-index: 9999;
-
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: min(520px, 92vw);
-}
-
-#btnInstallBar{
-  width: 100%;
-  height: 48px;
-
-  border: none;
-  border-radius: 18px;
-
-  font-weight: 900;
-  font-size: 15px;
-
-  color: #fff;
-
-  background: linear-gradient(135deg, #0b4ea2, #3b82f6);
-
-  box-shadow:
-    0 10px 22px rgba(37,99,235,.35),
-    inset 0 1px rgba(255,255,255,.3);
-
-  letter-spacing: -0.2px;
-}
-
-#btnInstallBar:active{
-  transform: scale(.97);
-}
-
 
 
