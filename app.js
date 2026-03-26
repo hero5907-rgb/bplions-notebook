@@ -756,8 +756,17 @@ function renderMembers(list) {
 
  for (let i = 0; i < list.length; i++) {
   const m = list[i];
+
     const row = document.createElement("div");
-    row.className = "row";
+
+// 🔥 회장 강조 (H열=10)
+let cls = "row";
+if (Number(m.sortOrder) === 10) {
+  cls += " is-president";
+}
+
+row.className = cls;
+
     row.innerHTML = `
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">

@@ -3306,4 +3306,13 @@ html, body {
   font-weight:600;
 }
 
-
+/* ===============================
+   🔵 회장 카드 강조 (iOS 느낌)
+   =============================== */
+.row.is-president{
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  border: 1px solid #bfd8ff;
+  box-shadow:
+    0 6px 16px rgba(11,78,162,.08),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
