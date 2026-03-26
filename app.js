@@ -1119,6 +1119,22 @@ else if (target === "ceremony") {
   pushNav("ceremony");
 }
       
+
+else if (target === "bplc") {
+
+  const cfg = window.APP_CONFIG?.homeTiles?.bplc;
+
+  if (!cfg) return;
+
+  pushNav("text");
+
+  document.getElementById("textTitle").textContent = cfg.title;
+  document.getElementById("textBody").textContent = cfg.body;
+}
+
+
+
+
     });
   });
 }
@@ -1155,6 +1171,18 @@ setAdminButton(false);
   bindNav();
   bindSearch();
 
+
+// 🔥 여기부터 복붙
+(function(){
+  const cfg = window.APP_CONFIG?.homeTiles?.bplc;
+  if (!cfg) return;
+
+  const t1 = document.getElementById("tileBplcTitle");
+  const t2 = document.getElementById("tileBplcDesc");
+
+  if (t1) t1.textContent = cfg.title;
+  if (t2) t2.textContent = cfg.desc;
+})();
 
 // ===== 🔥 상단 설치 배너 연결 =====
 const installBar = el("installBar");

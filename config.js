@@ -13,7 +13,14 @@ window.APP_CONFIG = {
 
   // (선택) 기본 이미지 (설정시트에 로고/배경이 있으면 그게 우선)
   logoUrl: "./logo.png",
-  coverUrl: "" // 예: "./cover.jpg" 또는 빈칸
+  coverUrl: "", // 예: "./cover.jpg" 또는 빈칸
 
-
+  // 🔥 여기 추가
+  homeTiles: {
+    bplc: {
+      title: "북포항LC",
+      desc: "클럽 소개",
+      body: "여기에 북포항 라이온스클럽 소개 내용 넣으면 된다"
+    }
+  }
 };

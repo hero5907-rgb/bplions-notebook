@@ -1696,21 +1696,27 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
   border:1px solid var(--line);
   background:#fff;
   border-radius:16px;
-
-  padding:10px 10px;        /* 🔥 핵심 줄이기 */
-
-  box-shadow:0 6px 12px rgba(12,20,38,.06);  /* 🔥 가볍게 */
+  padding:10px;
+  min-height:104px;              /* ✅ 핵심 */
+  display:flex;                  /* ✅ 핵심 */
+  flex-direction:column;         /* ✅ 핵심 */
+  justify-content:center;        /* ✅ 핵심 */
+  box-shadow:0 6px 12px rgba(12,20,38,.06);
 }
 
 .tile-title{
   font-weight:900;
-  font-size:13px;     /* 🔥 줄임 */
+  font-size:13px;
   line-height:1.2;
+  word-break:keep-all;
 }
 
 .tile-desc{
-  font-size:11px;     /* 🔥 줄임 */
-  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+  line-height:1.2;
+  word-break:keep-all;
 }
 
 .card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
@@ -2043,12 +2049,10 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-/* 홈 타일 2x3: 이미 기본이 2열이라 6개면 자동으로 2x3 됨 */
-
 .tile-image{
-  position: relative;
-  overflow: hidden;
-  min-height: 110px;
+  position:relative;
+  overflow:hidden;
+  min-height:104px;   /* ✅ 다른 타일과 맞춤 */
 }
 
 /* 타일 배경 이미지(라이온스 노래) */
