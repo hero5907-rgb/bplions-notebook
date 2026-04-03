@@ -1,29 +1,20 @@
 [hidden] { display: none !important; }
 
 
+html, body { height: 100%; }
+html, body { overscroll-behavior-y: none; }
 
 
 :root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);
-  color:#fff;
-  padding:10px 12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 6px 16px rgba(0,0,0,.18);
-}
+.topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
 
 .brand{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
 .brand-logo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.14);object-fit:contain;padding:4px}
 .brand-title{min-width:0}.brand-sub{font-size:12px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand-main{font-size:16px;font-weight:800;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.container{max-width:720px;margin:0 auto 40px;padding:0 14px}
+.container{max-width:720px;margin:14px auto 40px;padding:0 14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
 .hero{
   padding:18px;
@@ -63,7 +54,9 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR"
 .cover-content{position:relative;padding:16px;color:#fff}
 .cover-title{font-size:20px;font-weight:950;letter-spacing:-.3px}
 .cover-sub{margin-top:4px;opacity:.92;font-size:13px}
+
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+
 .tile{text-align:left;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;box-shadow:0 10px 18px rgba(12,20,38,.08)}
 .tile-title{font-weight:950;font-size:15px}.tile-desc{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.25}
 .card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
@@ -200,94 +193,81 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-/* ===============================
-   🤍 Boot (화이트 프리미엄)
-   =============================== */
-
+/* ===== Boot (Splash) Screen ===== */
 .screen.boot{
-  min-height: calc(100vh - 56px);
+  min-height: calc(100vh - 56px); /* topbar 높이 감안(대충) */
   display:flex;
   align-items:center;
   justify-content:center;
   padding:24px;
-
-  /* 🔥 거의 흰색 + 살짝 블루 */
-  background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+  background:
+    radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b4ea2 0%, #06346f 100%);
 }
 
-/* 카드 */
 .boot-card{
   width:min(420px, 92vw);
-  border-radius: 22px;
-  padding: 32px 24px;
+  border-radius: 18px;
+  padding: 26px 22px;
   text-align:center;
-
-  background:#ffffff;
-
-  border:1px solid #e5eaf3;
-
-  /* 🔥 iOS 느낌 그림자 */
-  box-shadow:
-    0 10px 30px rgba(15,23,42,0.08),
-    0 2px 6px rgba(15,23,42,0.04);
+  color:#fff;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
 }
 
-/* 로고 */
 .boot-logo{
-  width:88px;
-  height:88px;
-  margin: 6px auto 14px;
+  width:84px;
+  height:84px;
+  object-fit:contain;
+  margin: 4px auto 10px;
   display:block;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
 }
 
-/* 타이틀 */
 .boot-title{
   font-size: 22px;
-  font-weight: 900;
-  color:#0b4ea2;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-top: 6px;
 }
 
-/* 서브 */
 .boot-sub{
-  font-size: 15px;
-  font-weight: 600;
-  color:#334155;
-  margin-top:4px;
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0.92;
+  margin-top: 4px;
 }
 
-/* 로딩 */
 .boot-loading{
-  margin-top: 18px;
+  margin-top: 16px;
   display:flex;
-  gap:8px;
+  gap:10px;
   align-items:center;
   justify-content:center;
-  font-weight:600;
-  color:#2563eb;
+  font-weight: 700;
+  opacity: 0.95;
 }
 
-/* 스피너 */
 .spinner{
   width:18px;
   height:18px;
-  border-radius:50%;
-  border:2.5px solid #c7d2fe;
-  border-top-color:#2563eb;
-  animation: spin 0.7s linear infinite;
-}
-
-/* 설명 */
-.boot-tip{
-  margin-top: 12px;
-  font-size: 13px;
-  color:#64748b;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.95);
+  animation: spin 0.9s linear infinite;
 }
 
 @keyframes spin{
   to { transform: rotate(360deg); }
 }
 
-
+.boot-tip{
+  margin-top: 14px;
+  font-size: 13px;
+  opacity: 0.80;
+}
 
 
 .modal-photo {
@@ -619,7 +599,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
   line-height: 1.15;
 
   /* 🔥 핵심: 화면폭 기준 자동 스케일 */
-font-size: clamp(15px, 5vw, 24px);
+  font-size: clamp(18px, 6.8vw, 32px);
   letter-spacing: -0.4px;
 }
 
@@ -716,7 +696,7 @@ font-size: clamp(15px, 5vw, 24px);
   z-index: 9999;
 
   display: flex;
-  align-items: center;   
+  align-items: center;
   justify-content: center;
 }
 
@@ -730,30 +710,27 @@ font-size: clamp(15px, 5vw, 24px);
   position: relative;
   background: #fff;
   width: min(92vw, 420px);
-
-  height: 80vh;                 /* 🔥 max → height */
-  display: flex;                /* 🔥 핵심 */
-  flex-direction: column;       /* 🔥 핵심 */
-
+  max-height: 80vh;
+  overflow-y: auto;   /* 🔥 이걸로 교체 */
   border-radius: 18px;
-  padding: 0;                   /* 🔥 제거 */
-
+  padding: 16px;
   box-shadow: 0 20px 40px rgba(0,0,0,.2);
+  margin: 0;
+  text-align: center;
+will-change: transform;   /* ⭐ 이거 추가 */
+
 }
 
 .modal-close{
-  width: 100%;
-  height: 48px;
-  border-radius: 14px;
-  border: none;
-
-  background: linear-gradient(180deg,#0b4ea2,#083a78);
+  margin-top:6px;     /* 🔥 14 → 6 줄여서 위로 당김 */
+  width:100%;
+  height:46px;
+  border:none;
+  border-radius:14px;
+  background:#0b4ea2;
   color:#fff;
-
   font-weight:900;
-  font-size:15px;
 }
-
 
 /* 📅 달력 요일 색상 */
 .fc-day-sun .fc-daygrid-day-number {
@@ -879,28 +856,6 @@ font-size: clamp(15px, 5vw, 24px);
   margin-top: 2px;
 }
 
-/* 🔥 프로필 상세 전체 정렬 강제 중앙 (핵심 해결) */
-#profileModal .modal-card{
-  text-align: center;
-}
-
-/* 🔥 회원정보 (입회일자, 회원번호 등) 중앙 */
-#profileModal .modal-memberinfo{
-  text-align: center;
-}
-
-/* 🔥 전화번호 중앙 */
-#profileModal .modal-phone{
-  text-align: center;
-}
-
-/* 🔥 주소도 완전 중앙 기준 */
-#profileModal .modal-workplace{
-  text-align: center;
-}
-
-
-
 /* 추천인 */
 .modal-recommender{
   margin-top: 10px;
@@ -919,7 +874,7 @@ font-size: clamp(15px, 5vw, 24px);
   justify-content: center;      /* 🔥 카드 기준 가운데 */
   gap: 6px;
   margin-top: 8px;
-  text-align: center;
+  text-align: left;
 }
 
 /* 지도 버튼 전체 크기 조정 */
@@ -1168,9 +1123,8 @@ font-size: clamp(15px, 5vw, 24px);
 
 
 #modalBody{
-  flex: 1;                /* 🔥 핵심 */
-  overflow-y: auto;       /* 🔥 여기만 스크롤 */
-  padding: 16px;
+  max-height: calc(80vh - 90px);   /* 🔥 버튼 높이만큼 더 확보 */
+  overflow-y: auto;
 }
 
 
@@ -1448,477 +1402,6 @@ html, body {
 
 
 
-/* ===================================
-   🤍 HANDONG REAL CLEAN VERSION
-   =================================== */
-
-#screenLogin.handong.login-bg{
-  background: url('./login_bg.png') center top / cover no-repeat !important;
-}
-
-/* ❌ 오버레이 완전 제거 */
-#screenLogin.handong.login-bg::before{
-  content:none !important;
-}
-
-/* 카드 유리 느낌 */
-#screenLogin.handong .card.hero{
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(8px);
-  border-radius: 30px;
-  border: 1px solid rgba(255,255,255,0.6);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-}
-
-/* 타이틀 */
-#screenLogin.handong .title-main{
-  color:#0f172a !important;
-  font-weight:800;
-  text-shadow:none !important;
-}
-
-#screenLogin.handong .title-sub{
-  color:#1e293b !important;
-  text-shadow:none !important;
-}
-
-/* 설명 */
-#screenLogin.handong .hero-desc{
-  color:#475569 !important;
-}
-
-
-
-
-/* =====================================
-   🤍 HANDONG PREMIUM FINAL
-   ===================================== */
-
-/* 배경 그대로 사용 */
-#screenLogin.handong.login-bg{
-  background: url('./login_bg.png') center top / cover no-repeat !important;
-}
-
-/* 카드 - 유리 프리미엄 */
-#screenLogin.handong .card.hero{
-  background: rgba(255,255,255,0.82) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 36px;
-  border: 1px solid rgba(255,255,255,0.9);
-  box-shadow:
-    0 20px 60px rgba(15,23,42,.08),
-    0 2px 0 rgba(255,255,255,.9) inset;
-  padding: 40px 28px;
-}
-
-/* 타이틀 - 대학 느낌 네이비 */
-#screenLogin.handong .title-main{
-  color:#0b2545 !important;
-  font-weight:800;
-  letter-spacing:-0.5px;
-}
-
-#screenLogin.handong .title-sub{
-  color:#1e293b !important;
-  font-weight:600;
-}
-
-/* 설명 */
-#screenLogin.handong .hero-desc{
-  color:#475569 !important;
-  font-size:15px;
-}
-
-/* 입력창 - 더 고급스럽게 */
-#screenLogin.handong .input{
-  background: rgba(255,255,255,0.9);
-  border:1px solid rgba(15,23,42,.08);
-  border-radius:16px;
-}
-
-/* 버튼 - 은은한 고급 블루 */
-#screenLogin.handong .btn.primary{
-  background: linear-gradient(135deg,#1e3a8a,#2563eb) !important;
-  box-shadow:0 10px 25px rgba(37,99,235,.35);
-  border-radius:18px;
-}
-
-/* 하단 새로고침 - 보이게 */
-#screenLogin.handong .reload-link{
-  color:#1e3a8a !important;
-  font-weight:600;
-}
-
-#screenLogin.handong .card.hero{
-  position: relative;
-}
-
-#screenLogin.handong .card.hero::after{
-  content:"";
-  position:absolute;
-  inset:10px;
-  border-radius:28px;
-  border:1.5px solid rgba(15,23,42,0.12);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.6) inset;
-  pointer-events:none;
-}
-
-/* 🔽 로그인 화면 하단 겹침 해결 */
-#screenLogin a{
-  display:block;
-  margin-top:40px;   /* 위쪽 여백 */
-  margin-bottom:20px;
-}
-
-#screenLogin img{
-  display:block;
-  margin:0 auto;
-  margin-top:20px;   /* 로고 위 여백 */
-  width:140px;
-  opacity:0.9;
-}
-
-
-.tile-title{
-  color: var(--text) !important;
-}
-
-
-
-
-/* ✅ 로그인 라벨(휴대폰번호/접속코드) 네이비로 강제 */
-#screenLogin.handong .label{
-  color:#0b2545 !important;   /* 타이틀(main) 네이비 */
-  text-shadow:none !important;
-  opacity:1 !important;
-}
-
-
-
-/* 🔥 설치 배너 (진짜 고정 상단) */
-#installBar{
-  position: fixed;
-  top: 64px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  width: min(520px, 92vw);
-}
-
-#btnInstallBar{
-  width: 100%;
-  height: 48px;
-  border: none;
-  border-radius: 16px;
-  font-weight: 900;
-  font-size: 15px;
-  color: #fff;
-  background: linear-gradient(135deg, #0b4ea2, #2563eb);
-  box-shadow: 0 12px 28px rgba(37,99,235,.35);
-}
-
-#btnInstallBar:active{
-  transform: scale(.97);
-}
-
-
-
-/* 🔵 기수 필터 버튼 */
-.class-filter-btn {
-  font-size: 13px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #d6deea;
-  background: #f3f6fb;
-  color: #0b4ea2;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-
-.class-filter-btn:hover {
-  background: #e8effa;
-}
-
-.class-filter-btn:active {
-  transform: scale(.96);
-}
-
-
-/* 🔵 기수 슬라이드 */
-.class-slide {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-}
-
-.class-slide-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.35);
-  backdrop-filter: blur(2px);
-}
-
-.class-slide-panel {
-  position: fixed;      /* 🔥 absolute → fixed */
-  left: 0;
-  top: 0;
-  height: 100vh;        /* 🔥 bottom 제거하고 vh 사용 */
-  width: 260px;
-
-  background: #fff;
-  box-shadow: 8px 0 30px rgba(0,0,0,.15);
-  padding: 16px;
-
-  transform: translateX(-100%);
-  transition: transform .25s ease;
-
-  display: flex;
-  flex-direction: column;
-}
-.class-slide.show .class-slide-panel {
-  transform: translateX(0);
-}
-
-.class-slide-header {
-  font-size: 17px;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-.class-slide-list {
-  overflow-y: auto;
-  flex: 1;
-}
-
-.class-item {
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #0b4ea2;
-  transition: background .15s ease;
-}
-
-.class-item:hover {
-  background: #f1f5fb;
-}
-
-.class-item.active {
-  background: #0b4ea2;
-  color: #fff;
-}
-
-/* 🔵 슬라이드 상시 스와이프 표시 */
-.class-slide-panel {
-  position: relative;
-}
-
-.swipe-indicator {
-  position: absolute;
-  right: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-
-  font-size: 18px;
-  font-weight: 600;
-  color: rgba(0,0,0,.35);
-
-  pointer-events: none;  /* 터치 방해 금지 */
-}
-
-
-
-/* 🔥 기수 슬라이드 내부 스크롤 강제 허용 */
-
-
-.class-slide-list {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;  /* iOS 부드러운 스크롤 */
-  touch-action: pan-y;                 /* 세로 스크롤 허용 */
-}
-
-.gisu-badge{
-  display:inline-block;
-  padding:4px 10px;
-  margin-right:8px;
-  font-size:0.85rem;
-  font-weight:600;
-  border-radius:999px;
-  background:linear-gradient(135deg,#dbeafe,#bfdbfe);
-  color:#1e3a8a;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-}
-
-.name-text{
-  font-weight:700;
-  font-size:1.2rem;
-}
-
-
-.gisu-medal{
-  display:inline-block;
-  padding:5px 12px;
-  margin-right:10px;
-  font-size:0.85rem;
-  font-weight:700;
-  border-radius:999px;
-
-  /* 고급 골드 그라데이션 */
-  background:linear-gradient(
-    145deg,
-    #fff6d5 0%,
-    #f5d88a 40%,
-    #e6b85c 70%,
-    #c9972c 100%
-  );
-
-  color:#5c3d00;
-
-  /* 입체감 */
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.6);
-
-  letter-spacing:0.5px;
-}
-
-.name-text{
-  font-weight:700;
-  font-size:1.2rem;
-}
-
-
-/* ===== iOS Wheel Engine ===== */
-
-.wheel{
-  position:relative;
-  height:260px;
-  border-radius:20px;
-  background:#fff;
-  border:1px solid #e5e7eb;
-  overflow:hidden;   /* 🔥 복구 */
-}
-
-/* 위아래 페이드 */
-.wheel::before,
-.wheel::after{
-  content:"";
-  position:absolute;
-  left:0; right:0;
-  height:80px;
-  z-index:10;
-  pointer-events:none;
-}
-/* ===== Stronger Fade ===== */
-.wheel::before{
-  top:0;
-  background:linear-gradient(
-    180deg,
-    #ffffff 0%,
-    rgba(255,255,255,.9) 40%,
-    rgba(255,255,255,.4) 70%,
-    transparent 100%
-  );
-}
-
-.wheel::after{
-  bottom:0;
-  background:linear-gradient(
-    0deg,
-    #ffffff 0%,
-    rgba(255,255,255,.9) 40%,
-    rgba(255,255,255,.4) 70%,
-    transparent 100%
-  );
-}
-
-
-/* ===== iOS Glass Highlight ===== */
-.highlightBtn{
-  position:absolute;
-  left:14px;
-  right:14px;
-  top:50%;
-  transform:translateY(-50%);
-  height:48px;
-  border-radius:16px;
-
-  background:rgba(255,255,255,0.25);
-  backdrop-filter:blur(4px);
-
-  border:1.5px solid rgba(11,78,162,.35);
-  box-shadow:0 6px 18px rgba(11,78,162,.15);
-
-  z-index:0;            /* 🔥 핵심 수정 */
-  pointer-events:none;
-}
-
-.scroller{
-  height:100%;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch;
-
-  /* 🔥 중앙 정렬 정확히 맞춤 */
-  padding:88px 12px;
-
-  scrollbar-width:none;
-}
-.scroller::-webkit-scrollbar{display:none}
-
-.wheel-item{
-  height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-weight:900;
-  border-radius:12px;
-  transition:transform .15s ease, opacity .15s ease;
-  color:#1f2937;
-}
-
-.wheel-item[data-active="1"]{
-  color:#0b4ea2;
-  transform:scale(1.08);
-  opacity:1;
-}
-.wheel-item[data-active="0"]{
-  opacity:.65;       /* 🔥 더 흐리게 */
-  transform:scale(.85);
-  color:#9ca3af;     /* 🔥 회색 고정 */
-}
-
-
-
-
-/* 🔥 기수 피커 휠 전체 세로 확장 */
-
-.class-slide-panel{
-  display:flex;
-  flex-direction:column;
-}
-
-.wheel{
-  flex:1;                 /* 🔥 남은 공간 전부 차지 */
-  height:auto !important; /* 기존 260px 무력화 */
-}
-
-.wheel-item{
-  position:relative;
-  z-index:2;            /* 🔥 클릭 복구 */
-}
-
-/* 🔥 버튼 클릭 복구 */
-#btnExecView,
-#btnSelectAll{
-  position:relative;
-  z-index:5;
-}
-
-
 
 
 
@@ -1940,7 +1423,7 @@ html, body {
   display:flex;
   justify-content:center;   /* 🔥 추가 */
   align-items:center;
-  
+ 
   padding:0 6px;             /* 🔥 좌우 여백 축소 */
   cursor:pointer;
 
@@ -1956,9 +1439,6 @@ html, body {
   color:#94a3b8;
   transition:transform .2s ease;
 }
-
-
-
 
 
 
@@ -1992,13 +1472,14 @@ html, body {
 
   opacity: 0;
   transition: all .25s cubic-bezier(.4,0,.2,1);
-  z-index: 30000 !important;
+  z-index: 9999;
 }
 
 #toast:not([hidden]){
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
 
 
 
@@ -2065,27 +1546,6 @@ html, body {
 .pw-save:active{
   opacity:.6;
 }
-
-
-
-
-
-
-
-
-
-
-
-#btnMembersRefresh {
-  background: #f1f4f9;
-  color: #0b4ea2;
-  border: none;
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-weight: 600;
-}
-
-
 
 
 
@@ -2167,1372 +1627,1692 @@ html, body {
 
 
 
-/* =========================
-   iOS 스타일 - 기수 선택 패널
-========================= */
+[hidden] { display: none !important; }
 
-/* 패널 배경 */
-.class-slide-panel{
-  background:linear-gradient(180deg,#f9fafb,#f1f5f9);
-  border-right:1px solid rgba(0,0,0,0.05);
-  box-shadow:8px 0 30px rgba(0,0,0,0.08);
-}
 
-/* 제목 */
-.class-slide-title{
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:-0.3px;
-}
+html, body { height: 100%; }
+html, body { overscroll-behavior-y: none; }
 
-/* 기수전체 버튼 */
-#btnSelectAll{
-  background:linear-gradient(180deg,#ffffff,#f1f5f9);
-  border:1px solid rgba(0,0,0,0.06);
-  border-radius:14px;
-  padding:6px 14px;
-  font-weight:600;
-  font-size:14px;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-  transition:all .15s ease;
-}
 
-#btnSelectAll:active{
-  transform:scale(.96);
-  box-shadow:0 1px 3px rgba(0,0,0,0.15) inset;
-}
+:root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
+.topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
 
-/* 총동문 집행부 버튼 */
-#btnExecView{
-  font-size:14px;
-  font-weight:600;
-  padding:8px 12px;
-  border-radius:14px;
-  background:linear-gradient(180deg,#ffffff,#eef2f7);
-  border:1px solid rgba(0,0,0,0.05);
-  box-shadow:
-    0 2px 6px rgba(0,0,0,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-  transition:all .15s ease;
-}
-
-#btnExecView:active{
-  transform:scale(.97);
-  box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
-}
-
-
-
-
-/* ===== 맨위로 버튼 ===== */
-
-.scroll-top-btn{
-  position:fixed;
-  right:18px;
-  bottom:90px;
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:none;
-  background:#0b4ea2;
-  color:#fff;
-  font-size:20px;
-  box-shadow:0 6px 14px rgba(0,0,0,.2);
-  z-index:9998;
-}
-
-
-
-
-
-
-
-/* ==================================
-   회원명부 상단 iOS 스타일 (완성)
-   ================================== */
-
-.membersSticky{
-  position: sticky;
-  top:64px;
-  z-index:20;
-
-  background:#fff;
-
-  margin:0 0 12px;
-  padding:12px 16px 14px;
-
-  border-radius:18px;
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-}
-
-
-/* 회원명부 헤더 */
-.membersSticky .card-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 4px 10px;
-  margin:0;
-  border:none;
-}
-
-
-/* 회원명부 글씨 */
-.membersSticky .card-header .title{
-  font-weight:700;
-  font-size:17px;
-  letter-spacing:-0.2px;
-}
-
-
-/* 기수 버튼 */
-.membersSticky .class-btn{
-  margin-left:8px;
-}
-
-
-/* 회원 수 */
-.membersSticky .count{
-  margin-right:2px;
-}
-
-
-
-/* ===============================
-   검색 영역
-   =============================== */
-
-#memberSearch{
-  margin-top:2px;
-}
-
-
-/* 검색 input */
-
-#memberSearch input{
-
-  width:100%;
-  height:42px;
-
-  padding:0 16px;
-
-  border-radius:12px;
-  border:1px solid var(--line);
-
-  background:#f6f7fb;
-
-  font-size:15px;
-
-  outline:none;
-}
-
-
-/* 검색창 포커스 */
-
-#memberSearch input:focus{
-  border-color:#c9d7ff;
-  background:#fff;
-}
-
-
-
-/* ===============================
-   회원카드 영역 간격
-   =============================== */
-
-#memberList{
-  padding-top:4px;
-}
-
-
-
-/* ===============================
-   카드 인터랙션 (iOS 느낌)
-   =============================== */
-
-.member-card{
-  transition:transform .08s ease, box-shadow .08s ease;
-}
-
-.member-card:active{
-  transform:scale(.98);
-  box-shadow:0 6px 14px rgba(0,0,0,.08);
-}
-
-
-
-/* 버튼 눌림 */
-
-button{
-  transition:transform .05s ease;
-}
-
-button:active{
-  transform:scale(.95);
-}
-
-
-
-
-/* ===== 총동문회 소개 ===== */
-
-.intro-photo-wrap{
-  margin-top:12px;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-.intro-photo{
-  width:100%;
-  display:block;
-  object-fit:cover;
-}
-
-.intro-text{
-  margin-top:16px;
-  font-size:15px;
-  line-height:1.7;
-  color:#374151;
-  white-space:pre-line;
-}
-
-
-
-#imgModalPhoto {
-  touch-action: none;
-  transform-origin: center;
-}
-
-
-/* ===============================
-   🔥 집행부 배지 (최종 강제)
-   =============================== */
-.badge.badge-exec{
-  background: linear-gradient(135deg, #7c5cff, #4f2bff) !important;
-  color: #ffffff !important;
-  border: none !important;
-
-  font-weight: 900;
-  letter-spacing: 0.3px;
-
-  box-shadow: 0 2px 6px rgba(92, 62, 255, 0.35);
-}
-
-
-/* ===============================
-   🔥 프로필 배지 여러개 정렬 (핵심)
-   =============================== */
-
-.profile-badges{
-  display:flex;
-  flex-wrap:wrap;          /* 🔥 줄바꿈 핵심 */
-  justify-content:center;  /* 🔥 가운데 정렬 */
-  gap:6px;
-
-  margin-top:8px;
-}
-
-/* 배지 크기 살짝 정리 */
-.profile-badges .badge{
-  font-size:12px;
-  padding:5px 10px;
-  border-radius:999px;
-}
-
-/* ===============================
-   🔵 기수별 그룹 묶음
-   =============================== */
-/* ===============================
-   🍎 iOS 스타일 기수 그룹 (최종)
-   =============================== */
-
-.gisu-group{
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:10px;
-  margin-bottom:14px;
-  background:#fff;
-  box-shadow:0 4px 10px rgba(12,20,38,.04);
-}
-
-.gisu-title{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-
-  margin:6px 0 12px;
-
-  font-size:14px;        /* 🔥 살짝 키움 */
-  font-weight:800;       /* 🔥 조금 더 굵게 */
-  color:#0b4ea2;         /* 🔥 파란색 강조 */
-
-  letter-spacing:0.3px;
-}
-
-.gisu-title::before,
-.gisu-title::after{
-  content:"";
-  flex:1;
-  height:1.5px;          /* 🔥 살짝 두껍게 */
-  background:#c7d7f5;    /* 🔥 연한 파랑 */
-}
-
-/* 마지막 카드 여백 제거 */
-.gisu-group .row:last-child{
-  margin-bottom:0;
-}
-
-/* ===============================
-   🔥 회장 강조
-   =============================== */
-
-/* 🟡 총동문 회장 (최상위) */
-.row.is-grand-president{
-  border:1.5px solid #e6b85c;
-
-  background:linear-gradient(
-    180deg,
-    #fff9e8 0%,
-    #fff3cc 100%
-  );
-
-  box-shadow:0 6px 14px rgba(230,184,92,.25);
-}
-
-/* 🔵 기수 회장 (강하게) */
-.row.is-class-president{
-  border:1.5px solid #3b82f6;
-  background:#f0f7ff;
-  box-shadow:0 6px 14px rgba(59,130,246,.12);
-}
-
-
-
-
-/* ===============================
-   🔵 브랜드 카드 (슬로건 통합)
-   =============================== */
-
-.brand-hero{
-  margin-top:12px;
-  padding:18px 14px;
-
-  border-radius:22px;
-
-  background: linear-gradient(180deg,#0b4ea2 0%,#083a78 100%);
-
-  color:#fff;
+.brand{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
+.brand-logo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.14);object-fit:contain;padding:4px}
+.brand-title{min-width:0}.brand-sub{font-size:12px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-main{font-size:16px;font-weight:800;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.container{max-width:720px;margin:14px auto 40px;padding:0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+.hero{
+  padding:18px;
   text-align:center;
-
-  box-shadow:
-    0 12px 28px rgba(11,78,162,.35),
-    inset 0 1px 0 rgba(255,255,255,.25);
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
 }
-
-/* 슬로건 (위 큰 글씨) */
-.brand-hero-title{
+.hero-logo-wrap{display:flex;justify-content:center;margin-top:8px}
+.hero-logo{width:120px;height:120px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+.hero-title{
+  font-size:30px;
   font-weight:900;
-  font-size:clamp(16px,5vw,24px);
-  line-height:1.2;
-  letter-spacing:-0.3px;
+  margin-top:18px;
+  color:#fff;
+  text-shadow:0 4px 14px rgba(0,0,0,.55);
 }
 
-/* 중간 구분선 */
-.brand-hero-divider{
-  width:60%;
-  height:1px;
-  margin:12px auto 10px;
-
-  background:rgba(255,255,255,.35);
+.hero-desc{
+  margin-top:10px;
+  color:rgba(255,255,255,.92);
+  line-height:1.45;
+  text-shadow:0 2px 8px rgba(0,0,0,.45);
 }
 
-/* 아래 영역 */
-.brand-hero-sub{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
+.form{margin-top:16px;text-align:left}
+.label{display:block;font-size:13px;color:#334155;margin:10px 2px 6px;font-weight:700}
+.input{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;outline:none;font-size:15px;background:#fff}
+.input:focus{border-color:rgba(11,78,162,.55);box-shadow:0 0 0 4px rgba(11,78,162,.12)}
+.checkline{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;margin:10px 2px 0}
+.btn{width:100%;border:none;border-radius:14px;padding:12px;font-size:16px;font-weight:900;margin-top:12px}
+.btn.primary{background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff}
+.error{margin-top:10px;color:#b91c1c;background:#fee2e2;border:1px solid #fecaca;padding:10px 12px;border-radius:14px;font-size:13px}
+.cover{position:relative;overflow:hidden;padding:0;min-height:120px}
+.cover::before{content:"";position:absolute;inset:0;background:radial-gradient(1200px 200px at 10% 0%,rgba(255,255,255,.25),transparent 60%),linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%)}
+.cover-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,32,71,.78),rgba(9,32,71,.35))}
+.cover-content{position:relative;padding:16px;color:#fff}
+.cover-title{font-size:20px;font-weight:950;letter-spacing:-.3px}
+.cover-sub{margin-top:4px;opacity:.92;font-size:13px}
 
-/* 제00대 클럽명 */
-.brand-hero-main{
-  font-size:15px;
-  font-weight:900;
-}
-
-/* 지구명 */
-.brand-hero-desc{
-  font-size:13px;
-  color:rgba(255,255,255,.9);
-}
-
-
-/* ===============================
-   🔥 불규칙 타일 레이아웃 (핵심)
-   =============================== */
-
-/* 🔥 불규칙 레이아웃 */
 .grid{
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:10px;
-
-  /* 🔥 기준 높이 */
-  grid-auto-rows: 110px;
+  grid-template-columns:repeat(3,1fr);  /* 🔥 3열 */
+  gap:10px;                             /* 🔥 살짝 줄임 */
+  margin-top:12px;
 }
 
-/* 긴 타일 */
-.tile.big{
-  grid-row: span 2;
-}
-
-/* 내부 정렬 안정화 */
 .tile{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  text-align:left;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  min-height:104px;              /* ✅ 핵심 */
+  display:flex;                  /* ✅ 핵심 */
+  flex-direction:column;         /* ✅ 핵심 */
+  justify-content:center;        /* ✅ 핵심 */
+  box-shadow:0 6px 12px rgba(12,20,38,.06);
 }
 
-/* ===============================
-   🔥 한동 홈 불규칙 타일 레이아웃
-   =============================== */
-#screenHome .grid{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  grid-auto-flow: row dense;
-  grid-auto-rows: 110px;
-}
-
-#screenHome .tile{
-  min-height: 0;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#screenHome .tile.big{
-  grid-row: span 2;
-}
-
-#screenHome .tile-image{
-  min-height: 0;
-}
-
-/* ===============================
-   🔥 홈 타일 커스텀 레이아웃 (최종)
-   =============================== */
-
-/* 기본 그리드 */
-#screenHome .grid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:12px;
-  grid-auto-rows:88px;
-}
-
-/* 세로 긴 타일 (회원명부) */
-#screenHome .hero-tall{
-  grid-row: span 2;
-}
-
-/* 가로 전체 타일 (총동문회소개) */
-#screenHome .hero-wide{
-  grid-column: span 2;
-}
-
-/* 타일 내부 정렬 */
-#screenHome .tile{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.calendar-legend{
-  display:flex;
-  gap:12px;
-  justify-content:flex-end;
-  margin-top:-6px;
-  margin-bottom:6px;
-
-  font-size:12px;
-  font-weight:700;
-}
-
-.legend-all{
-  color:#e53935;   /* 🔴 전체 */
-}
-
-.legend-class{
-  color:#0b1220;   /* ⚫ 기수 */
-}
-
-/* ===============================
-   🍎 일정 입력 슬라이드 (iOS 스타일)
-=============================== */
-
-.event-sheet{
-  position:fixed;
-  inset:0;
-  z-index:20000;
-  display:flex;
-  align-items:flex-end;
-}
-
-/* 배경 */
-.event-sheet-backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.35);
-  backdrop-filter:blur(4px);
-}
-
-
-
-/* 헤더 */
-.event-sheet-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;   /* 🔥 추가 */
-
-  position:relative;               /* 🔥 추가 */
-
-  padding:14px 16px;
-  border-bottom:1px solid #eef1f5;
-
-  font-weight:800;
-}
-
-
-.event-sheet-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:14px 16px;
-  border-bottom:1px solid #eef1f5;
-
-  font-weight:800;
-}
-
-
-
-/* 버튼 */
-.btn-cancel{
-  background:none;
-  border:none;
-  font-size:14px;
-  color:#64748b;
-  font-weight:700;
-}
-
-.btn-save{
-  background:none;
-  border:none;
-  font-size:14px;
-  color:#0b4ea2;
+.tile-title{
   font-weight:900;
+  font-size:13px;
+  line-height:1.2;
+  word-break:keep-all;
 }
 
-/* 본문 */
-.event-sheet-body{
-  padding:16px;
-  overflow-y:auto;
+.tile-desc{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+  line-height:1.2;
+  word-break:keep-all;
 }
 
-/* 제목 */
-.ev-input.title{
-  width:100%;
-  font-size:18px;
-  font-weight:800;
-  border:none;
-  outline:none;
-  margin-bottom:14px;
-}
-
-/* 일반 입력 */
-.ev-input{
-  width:100%;
-  padding:10px 12px;
-  border-radius:12px;
-  border:1px solid #e5e7eb;
-  margin-bottom:10px;
-  font-size:14px;
-}
-
-/* 텍스트 */
-.ev-textarea{
-  width:100%;
-  min-height:80px;
-  padding:10px 12px;
-  border-radius:12px;
-  border:1px solid #e5e7eb;
-  resize:none;
-  font-size:14px;
-  margin-bottom:12px;
-}
-
-/* 행 */
-.ev-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-  font-size:14px;
-}
-
-/* 옵션 */
-.ev-options{
-  margin-top:6px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-/* 스위치 느낌 */
-.switch{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  font-size:14px;
-  font-weight:600;
-}
-
-/* 삭제 버튼 */
-.btn-delete{
-  margin-top:16px;
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:14px;
+.card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.card-title{font-weight:950;font-size:16px}
+.link{border:none;background:none;color:var(--blue);font-weight:900;padding:6px 8px;border-radius:10px}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.avatar{width:54px;height:54px;border-radius:14px;object-fit:cover;background:#e8eef8;border:1px solid var(--line)}
+.row-main{flex:1;min-width:0}
+.row-title{font-weight:950;font-size:15px;display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;font-weight:900;padding:4px 8px;border-radius:999px;background:rgba(11,78,162,.10);color:var(--blue);border:1px solid rgba(11,78,162,.18)}
+.badge-new{
+  font-size:11px;
+  font-weight:950;
+  padding:4px 8px;
+  border-radius:999px;
   background:#ef4444;
   color:#fff;
-  font-weight:800;
+  border:1px solid rgba(0,0,0,.08);
 }
 
-/* 눌림 효과 */
-.btn-delete:active,
-.btn-save:active,
-.btn-cancel:active{
-  opacity:.6;
-}
-
-
-/* ===============================
-   📅 이벤트 입력 시트 (iOS 스타일)
-   =============================== */
-
-.event-sheet{
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  z-index: 10000;
-
-  transform: translateY(100%);
-  transition: transform .28s ease;
-
-  display: block;   /* 🔥 modal 영향 제거 */
-}
-
-.event-sheet.show{
-  transform: translateY(0);
-}
-
-/* 배경 */
-.event-sheet .sheet-backdrop{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.35);
-}
-
-
-
-.sheet-card{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-
-  width: 100%;
-  height: 65vh;   /* 🔥 핵심 (이거 없어서 끝까지 올라감) */
-
-  background: #fff;
-  border-radius: 22px 22px 0 0;
-
-  box-shadow: 0 -10px 30px rgba(0,0,0,.2);
-
-  transform: translateY(100%);
-  transition: transform .28s cubic-bezier(.22,.61,.36,1);
-
+.row-sub{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.a-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:900;font-size:12px;color:#0b1220;text-decoration:none}
+.a-btn.primary{background:rgba(11,78,162,.10);border-color:rgba(11,78,162,.22);color:var(--blue)}
+.pill{font-size:12px;font-weight:950;padding:6px 10px;border-radius:999px;background:rgba(100,116,139,.10);color:#334155;border:1px solid rgba(100,116,139,.18)}
+.prose{color:#0f172a;line-height:1.6;font-size:14px;white-space:pre-wrap}
+.mt12{margin-top:12px}.mt16{margin-top:16px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:10001;   /* ⭐⭐⭐ 이거 한줄 추가 */background:rgba(15,23,42,.92);color:#fff;padding:10px 12px;border-radius:14px;font-weight:800;font-size:13px;box-shadow:0 12px 30px rgba(0,0,0,.25);max-width:calc(100% - 28px)}
+@media (max-width:380px){.grid{grid-template-columns:1fr}}
+/* ===== 로그인 배경 ===== */
+.login-bg{
+  /* topbar가 위에 있으니 그만큼 빼고 화면 꽉 채우기 */
+  min-height: calc(100vh - 64px); /* topbar 높이에 맞춰 필요시 56~72로 조절 */
   display: flex;
-  flex-direction: column;
-}
 
+flex-direction: column;   /* 🔥 이거 추가 */
 
-.sheet-card{
-  position: fixed;
-
-  bottom: 0;        /* 🔥 바닥 딱 붙임 */
-  left: 0;
-  width: 100%;
-
-  height: 60vh;     /* 🔥 살짝 줄임 (더 자연스러움) */
-
-  background: #fff;
-  border-radius: 22px 22px 0 0;   /* 🔥 위만 둥글게 */
-
-  box-shadow: 0 -10px 30px rgba(0,0,0,.2);
-
-  transform: translateY(100%);
-  transition: transform .28s cubic-bezier(.22,.61,.36,1);
-
-  display: flex;
-  flex-direction: column;
-}
-
-.event-sheet.show .sheet-card{
-  transform: translateY(0);
-}
-
-
-
-/* 🔥 이벤트 시트 최종 */
-.event-sheet .sheet-card{
-  position: fixed;
-
-  bottom: 0;
-  left: 0;
-  width: 100%;
-
-  height: 65vh;
-
-  background: #fff;
-  border-radius: 22px 22px 0 0;
-  padding: 16px;
-
-  overflow-y: auto;
-
-  box-shadow: 0 -12px 30px rgba(0,0,0,.25);
-
-  transform: translateY(100%);
-  transition: transform .28s cubic-bezier(.22,.61,.36,1);
-}
-
-.event-sheet.show .sheet-card{
-  transform: translateY(0);
-}
-
-
-/* 🔥 일정 헤더 UI 최종 (맨 아래에만 추가) */
-.event-sheet-header{
-  position: relative;
-  height: 52px;
-  padding: 0 14px;
-  border-bottom: 1px solid #eef1f5;
-  background: #fff;
-
-  display: flex;
-  align-items: center;
-  
-}
-
-
-#btnEventCancel{
-  color:#94a3b8;
-}
-
-#btnEventSave{
-  color:#0b4ea2;
-  font-weight:900;
-}
-
-
-.event-sheet-header .title{
-  flex:1;
-  text-align:center;
-  font-weight:800;
-  font-size:15px;
-}
-
-
-#btnEventCancel{
-  margin-right:auto;
-}
-
-#btnEventSave{
-  margin-left:auto;
-}
-
-
-.event-sheet-header{
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  height: 52px;
-  padding: 0 14px;
-  border-bottom: 1px solid #eef1f5;
-  background: #fff;
-}
-
-#btnEventCancel{
-  justify-self: start;
-  color:#94a3b8;
-}
-
-#btnEventSave{
-  justify-self: end;
-  color:#0b4ea2;
-  font-weight:900;
-}
-
-.event-sheet-header .title{
-  justify-self: center;
-  font-weight:800;
-  font-size:15px;
-}
-
-/* 🔥 핵심 */
-.event-sheet-header .title{
-  position: static;        /* 🔥 이거 핵심 */
-  flex:1;                  /* 🔥 양쪽 밀기 */
-  text-align:center;
-  font-weight:800;
-  font-size:15px;
-}
-
-#btnEventCancel{
-  margin-right:auto;
-}
-
-#btnEventSave{
-  margin-left:auto;
-}
-
-
-
-
-/* 🔥 제목 입력칸 - 깔끔 버전 */
-.ev-input.title{
-  border: 1.5px solid #e5e7eb !important;
-  background: #fff !important;
-  border-radius: 14px;
-  padding: 12px 14px;
-  font-size: 18px;
-  font-weight: 600;
-  transition: all .2s ease;
-}
-
-/* placeholder (부드럽게) */
-.ev-input.title::placeholder{
-  color:#9ca3af;
-  font-weight:500;
-}
-
-/* 포커스 */
-.ev-input.title:focus{
-  border-color:#0b4ea2 !important;
-  box-shadow:0 0 0 3px rgba(11,78,162,.15);
-}
-
-/* 🔥 에러 상태 (이때만 빨갛게) */
-.ev-input.title.error{
-  border-color:#ff4d4f !important;
-  background:#fff;
-  box-shadow:0 0 0 3px rgba(255,77,79,.15);
-}
-
-
-/* 🔥 좌우 버튼 균형 맞추기 (핵심) */
-#btnEventCancel,
-#btnEventSave{
-  min-width: 70px;     /* 👉 동일하게 맞춤 */
-  text-align: center;
-}
-
-.btn-danger{
-  background:#e53935;
-  color:#fff;
-  border:none;
-}
-
-.btn-danger:active{
-  opacity:.7;
-}
-
-
-/* 🔥 로딩 오버레이 */
-#loading{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  display: none;
   align-items: center;
   justify-content: center;
-  z-index: 20000;
-  backdrop-filter: blur(2px);
+
+  /* 네가 올린 배경 이미지 */
+  background: url("./login_bg.png") center center / cover no-repeat;
+  position: relative;
+  padding: 24px 16px;
 }
 
-/* 🔥 로딩 박스 */
-#loading .loading-box{
-  background: #fff;
-  padding: 18px 26px;
-  border-radius: 16px;
-  font-size: 15px;
-  font-weight: 600;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  animation: fadeIn .2s ease;
+/* 배경 위에 살짝 어둡게(글자/카드 가독성) */
+.login-bg::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;   /* 🔥 핵심 */
+  z-index: 0;
 }
 
-/* 🔥 스피너 */
+
+/* 로그인 카드가 오버레이 위로 올라오게 */
+.login-bg > .card.hero{
+  position: relative;
+  z-index: 1;
+
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+}
+
+
+/* ✅ 로그인에서만 topbar를 더 깔끔하게 보이게 하고 싶으면 아래 사용
+   (원치 않으면 이 블록은 삭제) */
+.login-bg ~ * {} /* 아무것도 안함 (안전) */
+#screenLogin .hero-logo{
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
+}
+
+/* 로그인 타이틀 크게 + 흰색 */
+.login-bg .hero-title{
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-0.5px;
+  margin-top:12px;
+}
+
+/* 로그인 설명도 흰색(살짝 연하게) */
+.login-bg .hero-desc{
+  color:rgba(255,255,255,0.9);
+}
+
+/* 라벨도 흰색으로 */
+.login-bg .label{
+  color:rgba(255,255,255,0.92);
+}
+
+/* 로그인 타이틀 중앙 정렬 + 줄바꿈 스타일 */
+.login-bg .hero-title{
+  text-align:center;
+  margin-top:12px;
+}
+
+.login-bg .title-main{
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-0.5px;
+  line-height:1.2;
+}
+
+.login-bg .title-sub{
+  color:#fff;
+  font-size:20px;
+  font-weight:800;
+  margin-top:6px;
+  letter-spacing:-0.3px;
+}
+
+
+
+
+.hint{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  font-size:13px;
+  line-height:1.35;
+  background:rgba(0,0,0,.25);
+  color:#fff;
+}
+
+
+/* ===== Boot (Splash) Screen ===== */
+.screen.boot{
+  min-height: calc(100vh - 56px); /* topbar 높이 감안(대충) */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, #0b4ea2 0%, #06346f 100%);
+}
+
+.boot-card{
+  width:min(420px, 92vw);
+  border-radius: 18px;
+  padding: 26px 22px;
+  text-align:center;
+  color:#fff;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+}
+
+.boot-logo{
+  width:84px;
+  height:84px;
+  object-fit:contain;
+  margin: 4px auto 10px;
+  display:block;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+}
+
+.boot-title{
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-top: 6px;
+}
+
+.boot-sub{
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0.92;
+  margin-top: 4px;
+}
+
+.boot-loading{
+  margin-top: 16px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
 .spinner{
-  width: 18px;
-  height: 18px;
-  border: 3px solid #ddd;
-  border-top-color: #0b4ea2;
+  width:18px;
+  height:18px;
   border-radius: 50%;
-  animation: spin .8s linear infinite;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.95);
+  animation: spin 0.9s linear infinite;
 }
 
 @keyframes spin{
   to { transform: rotate(360deg); }
 }
 
-@keyframes fadeIn{
-  from{
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to{
-    opacity: 1;
-    transform: scale(1);
-  }
+.boot-tip{
+  margin-top: 14px;
+  font-size: 13px;
+  opacity: 0.80;
 }
 
 
-/* 🔥 일정 하단 닫기 버튼 정리 */
-.event-sheet-footer{
-  margin-top: 12px;
-  padding: 12px 0 4px;
-  border-top: 1px solid #eef1f5;
+.modal-photo {
+  width: 220px;
+  height: 230px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 25%;
+  background: #eee;
+
+  transform: translate(0px,0px) scale(1);
+  transform-origin: center center;
+
+  user-select: none;
+  -webkit-user-select:none;
+
+  margin:0 auto;
 }
 
-.event-sheet-footer .btn-cancel{
-  width: 100%;
-  font-size: 15px;
-  color: #64748b;
-  font-weight: 700;
-}
-
-
-
-
-
-
-
-
-
-/* ⋯ 버튼 */
-.menu-btn{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  border:none;
-  background:transparent;
-  font-size:20px;
-  color:#444;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  transition:background .2s;
-}
-
-.menu-btn:active{
-  background:rgba(0,0,0,.08);
-}
-
-
-/* 드롭다운 메뉴 */
-.menu-popup{
-  display:none;
-  position:absolute;
-  top:36px;
-  right:0;
-
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,.15);
-
-  overflow:hidden;
-  min-width:100px;
-  z-index:9999;
-}
-
-/* 메뉴 아이템 */
-.menu-item{
-  padding:10px 14px;
-  font-size:14px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-.menu-item:hover{
-  background:#f5f5f5;
-}
-
-/* 삭제 (위험) */
-.menu-item.danger{
-  color:#e53935;
-}
-
-
-.menu-wrap{
-  position:relative;
-  display:flex;
-  justify-content:flex-end;
-}
-
-
-
-.modal-footer{
-  padding: 12px 16px 16px;
-  border-top: 1px solid #eee;
-  background: #fff;
-}
-
-
-
-
-
-/* =========================
-   📅 일정 팝업 UI 개선
-========================= */
-
-/* 전체 모달 안쪽 여백 */
-#modalBody {
-  padding: 18px 16px 12px;
-}
-
-/* 날짜 제목 */
-#modalBody h3 {
-  text-align: center;
+.modal-name {
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-top: 10px;
 }
 
-/* =========================
-   ❌ 일정 없음 상태
-========================= */
-#modalBody p {
-  text-align: center;
-  color: #94a3b8;
-  font-size: 15px;
-  margin: 40px 0 20px;
-}
-
-/* =========================
-   ✅ 일정 카드 스타일
-========================= */
-#modalBody > div > div {
-  padding: 14px 2px;
-  border-bottom: 1px solid #eef2f7;
-}
-
-/* 마지막 줄 밑줄 제거 */
-#modalBody > div > div:last-child {
-  border-bottom: none;
-}
-
-/* 제목 라인 */
-#modalBody > div > div > div:first-child {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-/* 날짜/시간 */
-#modalBody > div > div > div:nth-child(2) {
-  font-size: 13px;
-  color: #64748b;
+.modal-position {
+  color: #0b4ea2;
+  font-weight: 600;
   margin-top: 4px;
 }
 
-/* 내용 */
-#modalBody > div > div > div:nth-child(3) {
+.modal-workplace {
+  font-size: 14px;
+  color: #444;
+  margin-top: 6px;
+  white-space: pre-line; /* ✅ 줄바꿈 표시 */
+}
+
+.modal-phone {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.modal-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.modal-close {
+  margin-top: 14px;
+  width: 100%;
+  border-radius: 12px;
+  border: none;
+  padding: 10px;
+  background: #eee;
+  font-weight: 600;
+}
+
+
+
+
+
+/* ===== Topbar icon buttons (iOS-like) ===== */
+.icon-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+}
+.icon-btn:hover{ background: rgba(255,255,255,.16); }
+.icon-btn:active{ transform: scale(.97); }
+.icon-btn .ico{
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: block;
+}
+
+/* ===== Admin chip button ===== */
+.chip-btn{
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  transition: transform .08s ease, background .15s ease, border-color .15s ease;
+}
+.chip-btn:hover{ background: rgba(255,255,255,.16); }
+.chip-btn:active{ transform: scale(.98); }
+.chip-btn .ico{
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  display: block;
+}
+.chip-btn .chip-text{
+  font-size: 13px;
+}
+
+
+.tile-image{
+  position:relative;
+  overflow:hidden;
+  min-height:104px;   /* ✅ 다른 타일과 맞춤 */
+}
+
+/* 타일 배경 이미지(라이온스 노래) */
+.tile-image::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: url("./lions_song.jpg") center center / cover no-repeat; /* ✅ 파일명만 맞춰 */
+  filter: saturate(1.05);
+  transform: scale(1.02);
+}
+
+/* 글자 가독성 오버레이 */
+.tile-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.45));
+}
+
+.tile-image .tile-title,
+.tile-image .tile-desc{
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0,0,0,.45);
+}
+
+/* 기타(준비중) 살짝 흐리게 */
+.tile-soon{
+  opacity: .65;
+}
+
+#modalName { font-weight: 800; }
+#modalPhone { 
+  font-weight: 900 !important;
+  text-shadow: 0 0 0.3px rgba(0,0,0,.6);
+}
+
+
+.modal-map-actions{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:6px;
+}
+
+
+/* ===== 회칙: 헤더 오른쪽 원본PDF 버튼 ===== */
+/* ===== 회칙: 카드 헤더 오른쪽 원본PDF 버튼(흰 배경용) ===== */
+.pdf-btn{
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(11,78,162,.25);
+  background: rgba(11,78,162,.10);
+
+  color: #0b4ea2;          /* ✅ 파란 글씨로 변경 (중요) */
+  font-weight: 900;
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+.pdf-btn:active{ transform: scale(.98); }
+
+
+/* 탭 줄 고정 */
+.header .tabs{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #fff;
+  padding: 10px 0;
+}
+
+
+/* ===== 메인 슬로건 블럭 ===== */
+.slogan-box{
+  margin-top:12px;
+  background: linear-gradient(180deg, #0b4ea2 0%, #083a78 100%);
+  border-radius: 18px;
+  padding: 18px 14px;
+  color:#fff;
+  text-align:center;
+  box-shadow: 0 10px 22px rgba(11,78,162,.35);
+}
+
+
+
+
+/* ===== 하단 정보 ===== */
+.footer-info{
+  margin: 18px 4px 0;
+  padding: 12px 10px;
+  text-align:center;
+  font-size: 12px;
+  color:#64748b;
+  line-height:1.5;
+}
+
+.footer-info .copyright{
+  margin-top:6px;
+  font-size:11px;
+  opacity:0.75;
+}
+
+/* ===== 메인 슬로건 + 클럽정보 ===== */
+
+.slogan-box{
+  background: rgba(11,78,162,0.95);
+  border-radius: 18px;
+  padding: 18px 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+/* ================슬로건 글짜 크기 ============================== */
+
+/* 아래 정보 블럭 */
+.clubinfo-box{
+  background: rgba(11,78,162,0.9);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.clubinfo-main{
+  font-size: 15px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.clubinfo-sub{
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  margin-top: 2px;
+}
+
+.club-footer{
+  margin: 18px 4px 0;
+  padding: 12px 10px;
+  text-align:center;
+  font-size: 12px;
+  color:#64748b;
+  line-height:1.55;
+}
+.club-footer #copyrightText{
+  margin-top:6px;
+  font-size:11px;
+  opacity:0.75;
+}
+
+.slogan-text::before{
+  content: "“";
+  margin-right: 4px;
+  opacity: 0.9;
+}
+
+.slogan-text::after{
+  content: "”";
+  margin-left: 4px;
+  opacity: 0.9;
+}
+
+
+.toast{
+  min-height:44px;
+  font-size:14px;
+  cursor:pointer;
+  z-index:10001;   /* ⭐ 추가 */
+}
+
+
+
+
+/* 따옴표(“ ”)로 폭이 줄어드는 것 방지 */
+.slogan-text::before,
+.slogan-text::after{
+  content: "" !important;
+  margin: 0 !important;
+}
+
+
+/* ===============================
+   메인 슬로건 : 한줄 자동 맞춤
+   =============================== */
+
+.slogan-text{
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+
+  font-weight: 900;
+  line-height: 1.15;
+
+  /* 🔥 핵심: 화면폭 기준 자동 스케일 */
+  font-size: clamp(18px, 6.8vw, 32px);
+  letter-spacing: -0.4px;
+}
+
+
+.login-bg::before{
+  pointer-events: none;
+}
+
+
+
+
+/* ===== 새로고침: 링크 느낌 ===== */
+.reload-link{
+  background: none;
+  border: none;
+  padding: 4px;
+
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.reload-link:hover{
+  color: #fff;
+}
+
+/* ===== 로그인 하단 액션 영역 (최종 정리본) ===== */
+
+.login-actions{
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.reload-link:hover{
+  color: #fff;
+}
+
+
+/* ===== 설치 버튼 최종 강제 고정 ===== */
+.install-row{
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.install-row .btn.install,
+.install-row .btn.install.ghost{
+  flex: 1 !important;      /* 🔥 폭 완전 동일 */
+  width: auto !important;  /* 🔥 btn 기본 width:100% 무력화 */
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  white-space: nowrap;     /* 🔥 무조건 한 줄 */
+  font-size: 13px;
+  font-weight: 900;
+
+  color: #ffffff;
+  background: rgba(255,255,255,0.42);   /* 🔥 확실히 진함 */
+  border: 1px solid rgba(255,255,255,0.75);
+
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7); /* 🔥 글씨 또렷 */
+  border-radius: 14px;
+}
+
+.btn.install{
+  background: rgba(255,255,255,0.92);
+  color: #0b1220;
+  font-weight: 900;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.btn.install.ghost{
+  background: rgba(11,78,162,0.95);
+  color: #ffffff;
+}
+
+
+/* ✅ 공용 모달 스타일 */
+
+.modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+}
+
+.modal-card{
+  position: relative;
+  background: #fff;
+  width: min(92vw, 420px);
+  max-height: 80vh;
+  overflow-y: auto;   /* 🔥 이걸로 교체 */
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+  margin: 0;
+  text-align: center;
+will-change: transform;   /* ⭐ 이거 추가 */
+
+}
+
+.modal-close{
+  margin-top:6px;     /* 🔥 14 → 6 줄여서 위로 당김 */
+  width:100%;
+  height:46px;
+  border:none;
+  border-radius:14px;
+  background:#0b4ea2;
+  color:#fff;
+  font-weight:900;
+}
+
+/* 📅 달력 요일 색상 */
+.fc-day-sun .fc-daygrid-day-number {
+  color: #e53935; /* 빨강 */
+  font-weight: 600;
+}
+
+.fc-day-sat .fc-daygrid-day-number {
+  color: #1e88e5; /* 파랑 */
+  font-weight: 600;
+}
+
+/* 📅 달력 날짜에서 '일' 글자 제거 (데이터 유지) */
+.fc-daygrid-day-number::after {
+  content: none !important;
+}
+
+/* 혹시 locale 영향으로 '일'이 붙는 경우 대비 */
+.fc-daygrid-day-number {
+  font-size: 0.9rem;
+}
+
+
+
+/* 📅 달력 모바일 글씨 넘침 방지 */
+#calendar .fc-daygrid-event {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#calendar .fc-event-title,
+#calendar .fc-event-time {
+  white-space: nowrap;       /* 줄바꿈 금지 */
+  overflow: hidden;          /* 넘치면 숨김 */
+  text-overflow: ellipsis;   /* … 처리 */
+  display: block;
+  font-size: 12px;           /* 모바일 가독성 */
+}
+
+/* 📵 달력 텍스트 선택 방지 */
+#calendar {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#calendar * {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+.fc-title-only {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+
+.fc-daygrid-event {
+  pointer-events: none;
+}
+
+#calendar, #calendar * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+.calendar-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.calendar-header h2{
+  margin:0;
+  font-size:18px;
+  font-weight:800;
+}
+
+.btn-blue{
+  background:#0b4ea2;
+  color:#fff;
+  border:none;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-blue:active{
+  transform:scale(0.96);
+}
+
+
+
+/* ===== 회원 프로필 팝업 추가 정보 ===== */
+
+/* 영문이름 */
+.modal-engname{
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.2px;
+}
+
+/* 회원번호 / 입회일자 */
+.modal-memberinfo{
   margin-top: 8px;
   font-size: 14px;
-  line-height: 1.6;
+  font-weight: 600;
+  color: #0b1220;
 }
 
-/* =========================
-   🔘 버튼 영역 개선
-========================= */
+/* 회원번호 / 입회일자 줄 간격 */
+.modal-memberinfo > div{
+  margin-top: 2px;
+}
 
-/* 버튼 기본 */
-#modalBody .btn {
-  width: 100%;
-  height: 52px;
-  border-radius: 14px;
-  font-size: 16px;
+/* 추천인 */
+.modal-recommender{
+  margin-top: 10px;
+  font-size: 14px;
   font-weight: 700;
+  color: #0b4ea2;
 }
 
-/* 등록 버튼 */
-#btnAddEvent {
-  margin-top: 20px;
+
+
+
+/* 주소 + 지도 버튼 묶음 (가운데 정렬) */
+.modal-address-row{
+  display: flex;
+  align-items: center;          /* 🔥 핵심: 주소 첫 줄과 중앙 맞춤 */
+  justify-content: center;      /* 🔥 카드 기준 가운데 */
+  gap: 6px;
+  margin-top: 8px;
+  text-align: left;
 }
 
-/* 닫기 버튼 하단 고정 느낌 */
-#modalBody .btn:last-child {
-  margin-top: 14px;
+/* 지도 버튼 전체 크기 조정 */
+.modal-address-row .a-btn{
+  flex-shrink: 0;
+
+  height: 28px;                 /* 🔥 버튼 높이 고정 */
+  padding: 0 8px;               /* 🔥 위아래 여백 제거 */
+
+  font-size: 12px;              /* 🔥 아이콘 포함 크기 감소 */
+  line-height: 1;               /* 🔥 버튼 내부 중앙 정렬 */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* =========================
-   📱 스크롤 개선
-========================= */
-#modalBody {
-  max-height: 70vh;
+/* 주소 텍스트 */
+.modal-workplace{
+  white-space: pre-line;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+
+
+/* 지도 버튼 + 주소를 한 줄로 가운데 */
+.modal-map-actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+}
+
+/* 지도 버튼 크기 + 높이 축소 (주소 기준선 맞춤) */
+#btnMap{
+  height: 28px;             /* 🔥 작게 */
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* 영문이름 / 추천인도 중앙 유지 */
+.modal-engname,
+.modal-recommender{
+  text-align: center;
+}
+/* ===============================
+   이름 + 직위(전직회장) 높이 고정
+   =============================== */
+
+#profileModal .modal-name-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#profileModal .modal-name{
+  font-size: 20px;
+  font-weight: 900;
+  height: 24px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+#profileModal .badge{
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🔥 프로필 팝업 이름/직위 높이 문제 최종 해결 */
+
+#profileModal .modal-name{
+  margin-top: 0 !important;   /* ❗ 기존 10px 제거 */
+  height: 24px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+#profileModal .badge{
+  height: 24px;
+  line-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.login-user{
+  margin-left: auto;        /* brand 다음, 관리자 앞 정렬 */
+  margin-right: 10px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #fff;
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+
+/* 로그인 사용자 이름 */
+.login-user{
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* 🔵 상단 사용자 이름 클릭 가능 표시 */
+#loginUserName{
+  cursor: pointer;
+}
+
+#loginUserName:active{
+  transform: scale(0.97);
+  background: rgba(255,255,255,0.28);
+}
+
+
+
+
+
+/* 관리자 아이콘 버튼 */
+.icon-btn{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* ===== 상단 우측 사용자 영역 정렬 ===== */
+.topbar{
+  justify-content: space-between; /* 좌: brand / 우: user area */
+}
+
+/* 이름 + 아이콘 묶음을 오른쪽으로 */
+.login-user{
+  margin-left: auto;      /* 🔥 왼쪽 영역 밀어내기 */
+  margin-right: 0.5px;      /* 로그아웃 버튼과 간격 */
+}
+
+/* 관리자(톱니) 버튼 */
+#btnAdmin{
+  margin-right: 0.5px;      /* 로그아웃 버튼과 간격 */
+}
+
+/* 로그아웃 버튼은 맨 끝 */
+#btnLogout{
+  margin-right: 0;
+}
+
+
+/* ===============================
+   Topbar 우측 버튼 - iOS 쫀쫀한 간격 최종본
+   =============================== */
+
+/* 1️⃣ topbar 전체 간격 최소화 (가장 중요) */
+.topbar{
+  gap: 2px !important;   /* 🔥 기존 10px 완전 무력화 */
+}
+
+/* 2️⃣ 로그인 사용자 이름 (황문기 L) */
+.login-user{
+  margin-left: auto;     /* 🔥 무조건 오른쪽으로 밀기 */
+  margin-right: 2px;     /* 🔥 톱니바퀴와 간격 */
+  height: 30px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+/* 3️⃣ 관리자(톱니) 버튼 */
+#btnAdmin{
+  margin-right: 2px;
+  transform: translateX(-1px);  /* 🔥 iOS식 미세 압축 */
+}
+
+/* 4️⃣ 로그아웃 버튼도 살짝 당김 */
+#btnLogout{
+  transform: translateX(-1px);
+}
+
+/* 5️⃣ 아이콘 버튼 전체 크기 살짝 축소 */
+.icon-btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+#btnAdmin { display: none; }
+
+/* ===== 회원명부 새로고침(↻) 아이콘 버튼 ===== */
+#screenMembers .icon-btn.small{
+  width: 24px;
+  height: 24px;
+
+  font-size: 14px;     /* ↻ 크기 */
+  line-height: 1;
+
+  padding: 0;
+  border-radius: 50%;
+
+  background: transparent;
+  border: none;
+
+  color: #64748b;      /* muted 느낌 */
+  opacity: 0.75;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screenMembers .icon-btn.small:hover{
+  opacity: 1;
+  color: #0b4ea2;
+}
+
+#screenMembers .icon-btn.small:active{
+  transform: scale(0.92);
+}
+
+
+#modalBody{
+  max-height: calc(80vh - 90px);   /* 🔥 버튼 높이만큼 더 확보 */
   overflow-y: auto;
 }
 
-/* 스크롤바 살짝 */
-#modalBody::-webkit-scrollbar {
-  width: 6px;
-}
-#modalBody::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 10px;
-}
 
+/* ===== 그룹 badge 자동 색상 ===== */
 
-
-.day-wrap{
-  display:flex;
-  flex-direction:column;
-  max-height:70vh;
+.badge.group-exec {
+  background:#e8f1ff;
+  color:#0b4ea2;
 }
 
-.day-scroll{
-  flex:1;
-  overflow-y:auto;
-  padding:16px;
+.badge.group-member {
+  background:#f1f5f9;
+  color:#475569;
 }
 
-.day-footer{
-  border-top:1px solid #eee;
-  padding:12px;
-  background:#fff;
+.badge.group-guest {
+  background:#fef3c7;
+  color:#92400e;
 }
 
-.event-item{
-  padding:14px 0;
-  border-bottom:1px solid #e5e7eb;
+@keyframes swipeHint {
+0%   { transform: translateX(0); }
+25%  { transform: translateX(4px); }
+50%  { transform: translateX(-4px); }
+75%  { transform: translateX(2px); }
+100% { transform: translateX(0); }
 }
 
-.event-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.swipe-hint {
+animation: swipeHint .45s cubic-bezier(.22,.61,.36,1);
 }
 
-.event-title{
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
 
-.event-meta{
-  font-size:13px;
-  color:#64748b;
-  margin-top:4px;
-}
-
-.event-desc{
-  margin-top:6px;
-  white-space:pre-wrap;
+.ceremony-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:12px;
 }
 
 
 
-
-.day-wrap{
-  display:flex;
-  flex-direction:column;
-  height:100%;
+.ceremony-icon{
+  font-size:28px;
 }
 
-.day-header{
-  text-align:center;
-  padding:12px;
-}
-
-.day-scroll{
-  flex:1;
-  overflow-y:auto;
-  padding:12px;
-}
-
-.day-footer{
-  padding:12px;
-  border-top:1px solid #eee;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  background:#fff;
-}
-
-.empty{
-  text-align:center;
-  margin-top:40px;
-  color:#94a3b8;
-}
-
-
-
-
-/* =========================
-   📅 스크롤 부드럽게 (iOS 느낌)
-========================= */
-.day-scroll{
-  flex:1;
-  overflow-y:auto;
-  padding:14px 16px;
-
-  /* 🔥 부드러운 스크롤 */
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 스크롤바 얇게 */
-.day-scroll::-webkit-scrollbar{
-  width:6px;
-}
-.day-scroll::-webkit-scrollbar-thumb{
-  background:#cbd5e1;
-  border-radius:10px;
-}
-
-/* =========================
-   📅 일정 카드 구분 강화
-========================= */
-.event-item{
-  padding:14px 0;
-
-  /* 🔥 기존보다 살짝 진하게 */
-  border-bottom:1.5px solid #d1d5db;
-}
-
-/* 마지막 줄 제거 */
-.event-item:last-child{
-  border-bottom:none;
-}
-
-/* 제목 더 또렷하게 */
-.event-title{
+.ceremony-name{
+  margin-top:8px;
   font-weight:700;
   font-size:15px;
 }
 
-/* 메타 */
-.event-meta{
-  font-size:13px;
-  color:#64748b;
-  margin-top:4px;
+
+/* ===== iOS 느낌 의전 UI ===== */
+
+.ceremony-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:14px;
 }
 
-/* 내용 */
-.event-desc{
-  margin-top:6px;
-  line-height:1.6;
-}
+.ceremony-card{
+  position:relative;
+  border-radius:22px;
+  padding:24px 12px;
+  text-align:center;
+  cursor:pointer;
 
-/* =========================
-   📅 하단 버튼 영역 정리
-========================= */
-.day-footer{
-  padding:10px 14px 14px;
-  border-top:1px solid #e5e7eb;
-  background:#fff;
+  /* ⭐ iOS 핵심 */
+  background:rgba(255,255,255,.65);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,.06),
+    inset 0 1px rgba(255,255,255,.6);
 
   display:flex;
   flex-direction:column;
-
-  /* 🔥 버튼 간격 거의 붙이기 */
-  gap:2px;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
 }
 
-/* 버튼 공통 */
-.day-footer .btn{
-  height:50px;
-  border-radius:14px;
+
+
+/* 🔥 롱터치 진행 원형 게이지 */
+.hold-ring{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.hold-ring svg{
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
+}
+
+.hold-ring circle{
+  fill:none;
+  stroke:#0b4ea2;
+  stroke-width:3;
+  stroke-dasharray:100;
+  stroke-dashoffset:100;
+  transition:stroke-dashoffset .1s linear;
+}
+
+
+
+/* 🔥 이름 롱터치시 텍스트 선택 방지 */
+#loginUserName{
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+}
+
+
+
+/* ===== 롱터치 중앙 원형 애니메이션 ===== */
+
+#holdOverlay{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(6px);
+}
+
+#holdOverlay svg{
+  width:90px;
+  height:90px;
+  transform:rotate(-90deg);
+}
+
+#holdOverlay circle{
+  fill:none;
+  stroke:#0b4ea2;
+  stroke-width:4;
+
+  stroke-dasharray:100;
+  stroke-dashoffset:100;
+
+  transition:stroke-dashoffset .08s linear;
+}
+
+
+
+/* ===================================
+   🔒 북포항 수첩 앱느낌 잠금 (최종 안전버전)
+   =================================== */
+
+/* 전체 텍스트 선택 방지 */
+body{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* 입력칸은 허용 */
+input, textarea{
+  -webkit-user-select:text;
+  user-select:text;
+}
+
+/* 이미지 롱프레스 저장 차단 */
+img{
+  -webkit-user-drag:none;
+  -webkit-touch-callout:none;
+}
+
+/* 버튼 길게누르기 메뉴 최소화 */
+a, button, .row, .card{
+  -webkit-touch-callout:none;
+}
+
+/* 🔒 모달 열릴 때 뒤 화면 스크롤 완전 차단 */
+body.modal-open {
+  overflow: hidden;
+}
+
+
+
+html, body {
+  touch-action: manipulation;   /* 🔥 클릭은 살리고 확대만 차단 */
+  overscroll-behavior: none;
+}
+
+
+
+/*마이페이지*/
+.mypage-card{
+  border-radius:24px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.mypage-center{
+  text-align:center;
+  margin-top:10px;
+}
+
+/* ===============================
+   🔵 마이페이지 중앙정렬 + 폰번호 강조 (최종)
+   =============================== */
+
+#screenMyPage .card{
+  text-align:center;
+}
+
+/* 사진 완전 중앙 */
+#screenMyPage .modal-photo{
+  display:block;
+  margin:12px auto 0;
+}
+
+/* 이름 + 배지 가운데 */
+#screenMyPage .modal-name-row{
+  justify-content:center;
+}
+
+/* 직장/주소 가운데 */
+#screenMyPage .modal-workplace{
+  text-align:center;
+}
+
+/* 영문이름 / 입회일자 / 추천인 가운데 */
+#screenMyPage .modal-engname,
+#screenMyPage .modal-memberinfo,
+#screenMyPage .modal-recommender{
+  text-align:center;
+}
+
+/* 🔥 폰번호 진하게 */
+#screenMyPage .modal-phone{
+  font-weight:900;
+  color:#0b1220;
+  font-size:15px;
+  letter-spacing:0.3px;
+}
+
+
+
+/* ===============================
+   🔵 iOS 느낌 마이페이지 배경 업그레이드
+   =============================== */
+
+/* 마이페이지 전체 배경 살짝 블루톤 */
+#screenMyPage{
+  background: linear-gradient(
+    180deg,
+    #f3f8ff 0%,
+    #eef5ff 100%
+  );
+}
+
+/* 카드 더 떠보이게 (테두리 대신 그림자 강화) */
+#screenMyPage .card{
+  background:#fff;
+  border:none;
+  box-shadow:
+    0 8px 20px rgba(11,78,162,.08),
+    0 2px 6px rgba(0,0,0,.04);
+}
+
+
+/* 🔥 설치 배너 (진짜 고정 상단) */
+#installBar{
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: min(520px, 92vw);
+}
+
+#btnInstallBar{
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 16px;
+  font-weight: 900;
+  font-size: 15px;
+  color: #fff;
+  background: linear-gradient(135deg, #0b4ea2, #2563eb);
+  box-shadow: 0 12px 28px rgba(37,99,235,.35);
+}
+
+#btnInstallBar:active{
+  transform: scale(.97);
+}
+
+
+
+/* ===== 슬림 iOS 셀 스타일 (최종) ===== */
+
+.pw-section{
+  margin-top:14px;
+}
+
+.pw-toggle{
+  width:100%;
+  height:38px;               /* 🔥 44 → 38 줄임 */
+  border:none;
+  background:transparent;    /* 🔥 덩어리 느낌 제거 */
+  border-radius:10px;
+  font-size:14px;
   font-weight:700;
+
+  display:flex;
+  justify-content:center;   /* 🔥 추가 */
+  align-items:center;
+ 
+  padding:0 6px;             /* 🔥 좌우 여백 축소 */
+  cursor:pointer;
+
+  color:#0b1220;
 }
 
-/* 등록 버튼 */
-#btnAddEvent{
-  margin:0;
+.pw-toggle:active{
+  opacity:.6;
 }
 
-/* 닫기 버튼 (살짝 톤 다운) */
-.day-footer .btn:last-child{
-  background:#f1f5f9;
-  color:#111;
+.pw-arrow{
+  font-size:18px;
+  color:#94a3b8;
+  transition:transform .2s ease;
 }
 
-/* 🔥 공용 모달 정리 */
-#modal{
+
+
+
+/* ===============================
+   🍎 iOS 스타일 Toast
+================================ */
+
+#toast{
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  transform: translateX(-50%) translateY(20px);
+  padding: 14px 20px;
+  min-width: 220px;
+  max-width: 80%;
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -.2px;
+
+  color: #fff;
+  background: rgba(20,20,20,.85);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+
+  opacity: 0;
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+  z-index: 9999;
+}
+
+#toast:not([hidden]){
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+
+
+/* ===============================
+   🍎 진짜 iOS 스타일 비밀번호 변경
+   =============================== */
+
+.pw-section{
+  margin-top:18px;
+}
+
+.pw-panel{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+  border:1px solid #eef1f5;
+}
+
+.pw-row{
+  display:flex;
+  align-items:center;
+  padding:12px 14px;
+  border-bottom:1px solid #eef1f5;
+}
+
+.pw-row:last-child{
+  border-bottom:none;
+}
+
+.pw-row label{
+  width:110px;
+  font-size:14px;
+  font-weight:600;
+  color:#475569;
+}
+
+.pw-row input{
+  flex:1;
+  border:none;
+  outline:none;
+  font-size:14px;
+  background:transparent;
+}
+
+.pw-row input::placeholder{
+  color:#94a3b8;
+}
+
+.pw-save-row{
+  padding:12px 14px;
+  text-align:center;
+}
+
+.pw-save{
+  background:none;
+  border:none;
+  color:#0b4ea2;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.pw-save:active{
+  opacity:.6;
+}
+
+
+
+
+
+/* ===============================
+   🔥 앱스타일 Confirm 모달
+================================ */
+
+.confirm-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-#modalBody{
-  width:90%;
-  max-width:420px;
+.confirm-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter: blur(4px);
+}
+
+.confirm-box{
+  position:relative;
+  width:85%;
+  max-width:320px;
   background:#fff;
-  border-radius:20px;
-  overflow:hidden;
+  border-radius:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  padding:22px;
+  text-align:center;
+  animation:confirmPop .2s ease;
 }
 
-/* 🔥 내부 구조 */
-.day-wrap{
+@keyframes confirmPop{
+  from{ transform:scale(.9); opacity:0 }
+  to{ transform:scale(1); opacity:1 }
+}
+
+.confirm-title{
+  font-weight:700;
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+.confirm-message{
+  font-size:14px;
+  color:#444;
+  margin-bottom:20px;
+}
+
+.confirm-actions{
   display:flex;
-  flex-direction:column;
-  height:100%;
+  gap:10px;
 }
 
-.day-scroll{
-  max-height:60vh;
-  overflow-y:auto;
-  padding:16px;
+.btn-cancel{
+  flex:1;
+  background:#f1f3f7;
+  border:none;
+  padding:10px 0;
+  border-radius:10px;
+  font-weight:600;
 }
 
-/* 🔥 하단 버튼 고정 */
-.day-footer{
-  padding:12px;
-  border-top:1px solid #eee;
+.btn-ok{
+  flex:1;
+  background:var(--blue);
+  color:#fff;
+  border:none;
+  padding:10px 0;
+  border-radius:10px;
+  font-weight:600;
 }
 
-.day-footer .btn{
-  width:100%;
-  height:48px;
-  border-radius:12px;
+/* ===============================
+   🔵 회장 카드 강조 (iOS 느낌)
+   =============================== */
+.row.is-president{
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  border: 1px solid #bfd8ff;
+  box-shadow:
+    0 6px 16px rgba(11,78,162,.08),
+    inset 0 1px 0 rgba(255,255,255,.9);
 }
-
-
-
-
