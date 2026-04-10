@@ -2176,7 +2176,20 @@ datesSet(info){
 },
 
 
-    events
+    eventSources: [
+
+  events,
+
+  {
+    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+    className: "holiday-event",
+    color: "#d60000",
+    textColor: "#d60000"
+  }
+
+],
+googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM"
+
   });
 
   calendar.render();
