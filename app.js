@@ -2066,13 +2066,8 @@ if (!calendar) {
 
   calendar.removeAllEvents();
 
-  calendar.addEventSource(allEvents);
-
-  // 🔥 공휴일 다시 넣기
-  calendar.addEventSource({
-    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
-    className: "holiday-event"
-  });
+calendar.removeAllEvents();
+calendar.addEventSource(allEvents);
 
 }
 
@@ -2116,13 +2111,8 @@ __calendarReloading = false;
 
     calendar.removeAllEvents();
 
-    calendar.addEventSource(allEvents);
-
-    // 🔥 공휴일 다시 넣기
-    calendar.addEventSource({
-      googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
-      className: "holiday-event"
-    });
+calendar.removeAllEvents();
+calendar.addEventSource(allEvents);
 
   }
 
@@ -2151,17 +2141,9 @@ if (loading) loading.style.display = "block";
 
 if (calendar) {
 
-  // 🔥 여기 바꿔라
   calendar.removeAllEvents();
 
-  // 🔥 일반 일정 다시 넣기
   calendar.addEventSource(events);
-
-  // 🔥 공휴일 다시 넣기
-  calendar.addEventSource({
-    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
-    className: "holiday-event"
-  });
 
   calendar.render();
 
@@ -2236,6 +2218,14 @@ events: events,
 googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM"
 
   });
+
+
+// 🔴 공휴일 딱 여기만
+calendar.addEventSource({
+  googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+  className: "holiday-event"
+});
+
 
   calendar.render();
 
