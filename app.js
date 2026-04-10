@@ -2149,11 +2149,24 @@ if (calendar) {
     },
 
     // 달력 칸에는 제목만
-    eventContent(arg) {
-      return {
-        html: `<span class="fc-title-only">${arg.event.title}</span>`
-      };
-    },
+eventContent(arg) {
+
+  // 🔴 공휴일이면 (googleCalendar 이벤트)
+  if (arg.event.source?.internalEventSource?.googleCalendarId) {
+    return {
+      html: `<div style="
+        color:#d60000;
+        font-size:12px;
+        font-weight:600;
+      ">${arg.event.title}</div>`
+    };
+  }
+
+  // 🔵 일반 일정
+  return {
+    html: `<span class="fc-title-only">${arg.event.title}</span>`
+  };
+},
 
     // 날짜 클릭 → 팝업
     dateClick(info){
