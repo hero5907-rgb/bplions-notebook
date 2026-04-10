@@ -3348,3 +3348,13 @@ html, body {
   color:#0b4ea2;
 }
 
+
+
+
+.holiday-event {
+  background: none !important;
+  border: none !important;
+  color: #d60000 !important;
+  font-weight: 600;
+  font-size: 12px;
+}

@@ -2166,11 +2166,12 @@ if (calendar) {
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
-  if (__calendarReloading) return;  // 🔥 중복 방지
+  if (__calendarReloading) return;
 
+  // 🔥 핵심 수정 (info.start → currentStart)
   const yyyymm =
-    info.start.getFullYear() +
-    String(info.start.getMonth() + 1).padStart(2, "0");
+    info.view.currentStart.getFullYear() +
+    String(info.view.currentStart.getMonth() + 1).padStart(2, "0");
 
   loadCalendar(yyyymm);
 },
@@ -2180,12 +2181,11 @@ datesSet(info){
 
   events,
 
-  {
-    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
-    className: "holiday-event",
-    color: "#d60000",
-    textColor: "#d60000"
-  }
+{
+  googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+  className: "holiday-event",
+  display: "auto"
+}
 
 ],
 googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM"
