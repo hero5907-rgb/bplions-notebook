@@ -2060,18 +2060,8 @@ function loadCalendar(yyyymm){
   // 이미 다 캐시돼 있으면 바로 그림
 if (!need.length) {
   allEvents = keys.flatMap(k => calendarCache[k]);
-if (!calendar) {
   initCalendar(allEvents);
-} else {
-
-  calendar.removeAllEvents();
-
-calendar.removeAllEvents();
-calendar.addEventSource(allEvents);
-
-}
-
-__calendarReloading = false;
+  __calendarReloading = false;   // 🔥 반드시 풀어준다
   return;
 }
 
@@ -2103,21 +2093,10 @@ __calendarReloading = false;
 
 
   ).then(() => {
-  allEvents = keys.flatMap(k => calendarCache[k]);
-
-  if (!calendar) {
+    allEvents = keys.flatMap(k => calendarCache[k]);
     initCalendar(allEvents);
-  } else {
-
-    calendar.removeAllEvents();
-
-calendar.removeAllEvents();
-calendar.addEventSource(allEvents);
-
-  }
-
-  __calendarReloading = false;
-}).catch(e=>{
+    __calendarReloading = false;   // ← 추가
+  }).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
     __calendarReloading = false;   // ← 추가
@@ -2140,13 +2119,11 @@ if (loading) loading.style.display = "block";
 
 
 if (calendar) {
-
   calendar.removeAllEvents();
-
   calendar.addEventSource(events);
-
   calendar.render();
 
+  // 🔥 추가 (이거 한줄이 핵심)
   const loading = document.getElementById("calendarLoading");
   if (loading) loading.style.display = "none";
 
@@ -2172,24 +2149,11 @@ if (calendar) {
     },
 
     // 달력 칸에는 제목만
-eventContent(arg) {
-
-  // 🔴 공휴일이면 (googleCalendar 이벤트)
-  if (arg.event.source?.internalEventSource?.googleCalendarId) {
-    return {
-      html: `<div style="
-        color:#d60000;
-        font-size:12px;
-        font-weight:600;
-      ">${arg.event.title}</div>`
-    };
-  }
-
-  // 🔵 일반 일정
-  return {
-    html: `<span class="fc-title-only">${arg.event.title}</span>`
-  };
-},
+    eventContent(arg) {
+      return {
+        html: `<span class="fc-title-only">${arg.event.title}</span>`
+      };
+    },
 
     // 날짜 클릭 → 팝업
     dateClick(info){
@@ -2202,30 +2166,18 @@ eventContent(arg) {
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
-  if (__calendarReloading) return;
+  if (__calendarReloading) return;  // 🔥 중복 방지
 
-  // 🔥 핵심 수정 (info.start → currentStart)
   const yyyymm =
-    info.view.currentStart.getFullYear() +
-    String(info.view.currentStart.getMonth() + 1).padStart(2, "0");
+    info.start.getFullYear() +
+    String(info.start.getMonth() + 1).padStart(2, "0");
 
   loadCalendar(yyyymm);
 },
 
 
-events: events,
-
-googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM"
-
+    events
   });
-
-
-// 🔴 공휴일 딱 여기만
-calendar.addEventSource({
-  googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
-  className: "holiday-event"
-});
-
 
   calendar.render();
 
