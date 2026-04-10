@@ -2200,9 +2200,7 @@ datesSet(info){
 },
 
 
-eventSources: [
-  events
-],
+events: events,
 
 googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM"
 
