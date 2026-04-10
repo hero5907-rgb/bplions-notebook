@@ -2060,8 +2060,23 @@ function loadCalendar(yyyymm){
   // 이미 다 캐시돼 있으면 바로 그림
 if (!need.length) {
   allEvents = keys.flatMap(k => calendarCache[k]);
+if (!calendar) {
   initCalendar(allEvents);
-  __calendarReloading = false;   // 🔥 반드시 풀어준다
+} else {
+
+  calendar.removeAllEvents();
+
+  calendar.addEventSource(allEvents);
+
+  // 🔥 공휴일 다시 넣기
+  calendar.addEventSource({
+    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+    className: "holiday-event"
+  });
+
+}
+
+__calendarReloading = false;
   return;
 }
 
@@ -2093,10 +2108,26 @@ if (!need.length) {
 
 
   ).then(() => {
-    allEvents = keys.flatMap(k => calendarCache[k]);
+  allEvents = keys.flatMap(k => calendarCache[k]);
+
+  if (!calendar) {
     initCalendar(allEvents);
-    __calendarReloading = false;   // ← 추가
-  }).catch(e=>{
+  } else {
+
+    calendar.removeAllEvents();
+
+    calendar.addEventSource(allEvents);
+
+    // 🔥 공휴일 다시 넣기
+    calendar.addEventSource({
+      googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+      className: "holiday-event"
+    });
+
+  }
+
+  __calendarReloading = false;
+}).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
     __calendarReloading = false;   // ← 추가
