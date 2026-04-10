@@ -2119,20 +2119,21 @@ if (loading) loading.style.display = "block";
 
 
 if (calendar) {
-calendar.removeAllEventSources();   // 🔥 이걸로 바꿔
 
-// 🔥 일반 일정
-calendar.addEventSource(events);
+  // 🔥 여기 바꿔라
+  calendar.removeAllEvents();
 
-// 🔥 공휴일 다시 추가
-calendar.addEventSource({
-  googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
-  className: "holiday-event"
-});
+  // 🔥 일반 일정 다시 넣기
+  calendar.addEventSource(events);
 
-calendar.render();
+  // 🔥 공휴일 다시 넣기
+  calendar.addEventSource({
+    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+    className: "holiday-event"
+  });
 
-  // 🔥 추가 (이거 한줄이 핵심)
+  calendar.render();
+
   const loading = document.getElementById("calendarLoading");
   if (loading) loading.style.display = "none";
 
