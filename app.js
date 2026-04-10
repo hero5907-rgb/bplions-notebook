@@ -2119,12 +2119,12 @@ if (loading) loading.style.display = "block";
 
 
 if (calendar) {
-calendar.removeAllEvents();
+calendar.removeAllEventSources();   // 🔥 이걸로 바꿔
 
 // 🔥 일반 일정
 calendar.addEventSource(events);
 
-// 🔥 공휴일 다시 추가 (이게 핵심)
+// 🔥 공휴일 다시 추가
 calendar.addEventSource({
   googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
   className: "holiday-event"
