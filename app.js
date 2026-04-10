@@ -2119,9 +2119,18 @@ if (loading) loading.style.display = "block";
 
 
 if (calendar) {
-  calendar.removeAllEvents();
-  calendar.addEventSource(events);
-  calendar.render();
+calendar.removeAllEvents();
+
+// 🔥 일반 일정
+calendar.addEventSource(events);
+
+// 🔥 공휴일 다시 추가 (이게 핵심)
+calendar.addEventSource({
+  googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+  className: "holiday-event"
+});
+
+calendar.render();
 
   // 🔥 추가 (이거 한줄이 핵심)
   const loading = document.getElementById("calendarLoading");
