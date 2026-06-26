@@ -2124,6 +2124,8 @@ if (loading) loading.style.display = "block";
 
 if (calendar) {
 
+console.count("calendar reload");
+
   calendar.removeAllEventSources();
 
   calendar.addEventSource(events);
