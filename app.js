@@ -2258,6 +2258,7 @@ const list = allEvents.filter(e =>
 );
 
 console.log(calendar.getEvents());
+console.log(calendar.getEventSources());
 
 // 🔴 공휴일 찾기
 const holiday = calendar
