@@ -2196,25 +2196,34 @@ eventContent(arg) {
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
 
-
-console.log(
-  "datesSet",
-  info.startStr,
-  info.endStr,
-  info.view.currentStart,
-  info.view.currentEnd
-);
-
-  if (__calendarReloading) return;
-
   const yyyymm =
     info.view.currentStart.getFullYear() +
     String(info.view.currentStart.getMonth() + 1).padStart(2,"0");
 
-  // 캐시에 없는 달만 불러오기
-  if (!calendarCache[yyyymm]) {
-    loadCalendar(yyyymm);
-  }
+  // 이미 캐시에 있으면 아무것도 안 함
+  if (calendarCache[yyyymm]) return;
+
+  api("events", { yyyymm }, (res)=>{
+
+    const list = (res?.events || []).map(e => ({
+      id: e.id,
+      title: e.title,
+      start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
+      end: e.endTime ? `${e.date}T${e.endTime}` : null,
+      extendedProps: {
+        date: e.date,
+        startTime: e.startTime,
+        place: e.place,
+        desc: e.desc
+      }
+    }));
+
+    calendarCache[yyyymm] = list;
+
+    // 클럽 일정만 추가 (공휴일 Source는 건드리지 않음)
+    calendar.addEventSource(list);
+
+  });
 
 },
 
