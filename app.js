@@ -2485,7 +2485,7 @@ function fitSlogan(el){
 
   if(!el) return;
 
-  let size = 42;      // 최대 글자크기
+  let size = 40;      // 최대 글자크기
   const min = 20;     // 최소 글자크기
 
   el.style.fontSize = size + "px";
