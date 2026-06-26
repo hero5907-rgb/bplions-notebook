@@ -640,8 +640,20 @@ function setBrand(settings) {
   if (el("coverSub")) el("coverSub").textContent = district;
   if (el("districtHomeText")) el("districtHomeText").textContent = district;
 
-  const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
-  if (el("sloganText")) el("sloganText").textContent = slogan ? `“${slogan}”` : "";
+const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
+
+const sloganEl = el("sloganText");
+
+if (sloganEl) {
+
+  sloganEl.textContent =
+    slogan ? `“${slogan}”` : "";
+
+  requestAnimationFrame(() => {
+    fitSlogan(sloganEl);
+  });
+
+}
 
   const club = (settings?.clubName ?? cfg.clubName ?? clubName);
   const term = formatTerm(settings?.term, settings?.generation ?? cfg.generation ?? "");
@@ -2469,4 +2481,24 @@ function appConfirm(message){
 }
 
 
+function fitSlogan(el){
 
+  if(!el) return;
+
+  let size = 48;      // 최대 글자크기
+  const min = 20;     // 최소 글자크기
+
+  el.style.fontSize = size + "px";
+  el.style.lineHeight = "1.15";
+  el.style.whiteSpace = "normal";
+  el.style.wordBreak = "keep-all";
+
+  while(
+    size > min &&
+    el.scrollHeight > el.clientHeight
+  ){
+    size--;
+    el.style.fontSize = size + "px";
+  }
+
+}
