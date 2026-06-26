@@ -2307,7 +2307,11 @@ openModal(`
           font-size:13px;
           font-weight:700;
         ">
-          ${holiday.title}
+          ${
+  /쉬는 날/.test(holiday.title)
+    ? "대체공휴일"
+    : holiday.title
+}
         </div>
       `
       : ""
