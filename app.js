@@ -2263,11 +2263,20 @@ console.log(calendar.getEventSources());
 // 🔴 공휴일 찾기
 const holiday = calendar
   .getEvents()
-  .find(e =>
-    e.source &&
-    e.source.googleCalendarId &&
-    e.startStr.startsWith(date)
-  );
+  .find(e => {
+
+    const src = e.source;
+
+    return (
+      src &&
+      src.internalEventSource &&
+      src.internalEventSource.meta &&
+      src.internalEventSource.meta.googleCalendarId &&
+      e.startStr.startsWith(date)
+    );
+  });
+
+console.log("holiday", holiday);
 
 if (!list.length && !holiday){
 
