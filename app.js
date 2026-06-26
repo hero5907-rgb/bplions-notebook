@@ -2257,6 +2257,8 @@ const list = allEvents.filter(e =>
   e.extendedProps?.date === date
 );
 
+console.log(calendar.getEvents());
+
 // 🔴 공휴일 찾기
 const holiday = calendar
   .getEvents()
