@@ -2266,11 +2266,18 @@ const holiday = calendar
     e.startStr.startsWith(date)
   );
 
-  if (!list.length){
-    openModal(`<h3>${date}</h3><p>일정이 없습니다.</p>`);
-    return;
-  }
+if (!list.length && !holiday){
 
+  openModal(`
+    <div style="text-align:center;margin-bottom:12px;">
+      <h3 style="margin:0;">🗓️ ${date}</h3>
+    </div>
+
+    <p style="text-align:center;">일정이 없습니다.</p>
+  `);
+
+  return;
+}
 openModal(`
   <!-- 날짜 제목 : 가운데 정렬 -->
 <div style="text-align:center;margin-bottom:12px;">
