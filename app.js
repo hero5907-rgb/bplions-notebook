@@ -2485,20 +2485,20 @@ function fitSlogan(el){
 
   if(!el) return;
 
-  let size = 40;      // 최대 글자크기
-  const min = 20;     // 최소 글자크기
+  const min = 20;
 
-  el.style.fontSize = size + "px";
-  el.style.lineHeight = "1.15";
-  el.style.whiteSpace = "normal";
-  el.style.wordBreak = "keep-all";
+  for(let size = 42; size >= min; size--){
 
-  while(
-    size > min &&
-    el.scrollHeight > el.clientHeight
-  ){
-    size--;
     el.style.fontSize = size + "px";
+
+    const style = getComputedStyle(el);
+    const lineHeight = parseFloat(style.lineHeight);
+
+    const lines = Math.round(el.getBoundingClientRect().height / lineHeight);
+
+    if(lines <= 2){
+      break;
+    }
   }
 
 }
