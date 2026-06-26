@@ -2194,6 +2194,15 @@ eventContent(arg) {
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
 
+
+console.log(
+  "datesSet",
+  info.startStr,
+  info.endStr,
+  info.view.currentStart,
+  info.view.currentEnd
+);
+
   if (__calendarReloading) return;
 
   const yyyymm =
