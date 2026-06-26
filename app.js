@@ -2123,17 +2123,26 @@ if (loading) loading.style.display = "block";
 
 
 if (calendar) {
-  calendar.removeAllEvents();
+
+  calendar.removeAllEventSources();
+
   calendar.addEventSource(events);
+
+  calendar.addEventSource({
+    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+    googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM",
+    className: "holiday-event",
+    color: "transparent",
+    textColor: "#d60000"
+  });
+
   calendar.render();
 
-  // 🔥 추가 (이거 한줄이 핵심)
   const loading = document.getElementById("calendarLoading");
   if (loading) loading.style.display = "none";
 
   return;
 }
-
 
   // ✅ 처음 한 번만 생성
   calendar = new FullCalendar.Calendar(el, {
