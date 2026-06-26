@@ -642,17 +642,9 @@ function setBrand(settings) {
 
 const slogan = String(settings?.slogan ?? cfg.slogan ?? "").trim();
 
-const sloganEl = el("sloganText");
-
-if (sloganEl) {
-
-  sloganEl.textContent =
+if (el("sloganText")) {
+  el("sloganText").textContent =
     slogan ? `“${slogan}”` : "";
-
-  requestAnimationFrame(() => {
-    fitSlogan(sloganEl);
-  });
-
 }
 
   const club = (settings?.clubName ?? cfg.clubName ?? clubName);
