@@ -2184,13 +2184,18 @@ eventContent(arg) {
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
-  if (__calendarReloading) return;  // 🔥 중복 방지
+
+  if (__calendarReloading) return;
 
   const yyyymm =
-    info.start.getFullYear() +
-    String(info.start.getMonth() + 1).padStart(2, "0");
+    info.view.currentStart.getFullYear() +
+    String(info.view.currentStart.getMonth() + 1).padStart(2,"0");
 
-  loadCalendar(yyyymm);
+  // 캐시에 없는 달만 불러오기
+  if (!calendarCache[yyyymm]) {
+    loadCalendar(yyyymm);
+  }
+
 },
 
 
