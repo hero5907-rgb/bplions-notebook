@@ -2253,8 +2253,17 @@ if (loading) loading.style.display = "none";
 }
 
 function openDayEvents(date){
-  const list = allEvents.filter(e =>
-    e.extendedProps?.date === date
+const list = allEvents.filter(e =>
+  e.extendedProps?.date === date
+);
+
+// 🔴 공휴일 찾기
+const holiday = calendar
+  .getEvents()
+  .find(e =>
+    e.source &&
+    e.source.googleCalendarId &&
+    e.startStr.startsWith(date)
   );
 
   if (!list.length){
@@ -2264,9 +2273,28 @@ function openDayEvents(date){
 
 openModal(`
   <!-- 날짜 제목 : 가운데 정렬 -->
-  <div style="text-align:center;margin-bottom:12px;">
-    <h3 style="margin:0;">🗓️ ${date}</h3>
-  </div>
+<div style="text-align:center;margin-bottom:12px;">
+
+  <h3 style="margin:0;">
+    🗓️ ${date}
+  </h3>
+
+  ${
+    holiday
+      ? `
+        <div style="
+          margin-top:4px;
+          color:#d60000;
+          font-size:13px;
+          font-weight:700;
+        ">
+          ${holiday.title}
+        </div>
+      `
+      : ""
+  }
+
+</div>
 
   ${list.map(e=>`
     <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee">
