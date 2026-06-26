@@ -2153,11 +2153,25 @@ if (calendar) {
     },
 
     // 달력 칸에는 제목만
-    eventContent(arg) {
-      return {
-        html: `<span class="fc-title-only">${arg.event.title}</span>`
-      };
-    },
+// 달력 칸 표시
+eventContent(arg) {
+
+  const isHoliday =
+    !!arg.event.source?.googleCalendarId;
+
+  return {
+    html: `
+      <span
+        class="fc-title-only"
+        style="
+          color:${isHoliday ? "#d60000" : ""};
+          font-weight:${isHoliday ? "700" : "400"};
+        ">
+        ${arg.event.title}
+      </span>
+    `
+  };
+},
 
     // 날짜 클릭 → 팝업
     dateClick(info){
@@ -2180,7 +2194,19 @@ datesSet(info){
 },
 
 
-    events
+    eventSources: [
+
+  events,
+
+  {
+    googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+    googleCalendarApiKey: "AIzaSyDjyQd4-nHYS2giAgNvO1wDwBGUcBJ3tuM",
+    className: "holiday-event",
+    color: "transparent",
+    textColor: "#d60000"
+  }
+
+]
   });
 
   calendar.render();
